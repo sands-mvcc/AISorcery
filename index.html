@@ -1,0 +1,1568 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI in Action: Transforming Teaching and Learning in the Community College</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #1e3a8a;
+            --secondary-color: #3b82f6;
+            --accent-color: #60a5fa;
+            --dark-bg: #0f172a;
+            --light-bg: #f8fafc;
+            --text-dark: #1e293b;
+            --text-light: #64748b;
+            --success-color: #10b981;
+            --warning-color: #f59e0b;
+            --danger-color: #ef4444;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-dark);
+            background-color: var(--light-bg);
+        }
+
+        /* Admin Button */
+        .admin-toggle {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 1rem 1.5rem;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: bold;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            z-index: 9999;
+            transition: all 0.3s;
+        }
+
+        .admin-toggle:hover {
+            background: var(--secondary-color);
+            transform: translateY(-2px);
+        }
+
+        /* Admin Panel */
+        .admin-panel {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            z-index: 10000;
+            overflow-y: auto;
+        }
+
+        .admin-panel.active {
+            display: block;
+        }
+
+        .admin-content {
+            max-width: 900px;
+            margin: 2rem auto;
+            background: white;
+            border-radius: 10px;
+            padding: 2rem;
+        }
+
+        .admin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid var(--accent-color);
+        }
+
+        .admin-close {
+            background: var(--danger-color);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .admin-section {
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            background: var(--light-bg);
+            border-radius: 8px;
+        }
+
+        .admin-section h3 {
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+
+        .admin-form {
+            display: grid;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .admin-form input,
+        .admin-form textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+
+        .admin-form input:focus,
+        .admin-form textarea:focus {
+            outline: none;
+            border-color: var(--secondary-color);
+        }
+
+        .admin-btn {
+            background: var(--success-color);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background 0.3s;
+        }
+
+        .admin-btn:hover {
+            background: #059669;
+        }
+
+        .admin-btn-danger {
+            background: var(--danger-color);
+        }
+
+        .admin-btn-danger:hover {
+            background: #dc2626;
+        }
+
+        .admin-list {
+            list-style: none;
+            margin-top: 1rem;
+        }
+
+        .admin-list-item {
+            background: white;
+            padding: 1rem;
+            margin-bottom: 0.5rem;
+            border-radius: 5px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 1px solid #e2e8f0;
+        }
+
+        .admin-list-item button {
+            margin-left: 0.5rem;
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .btn-edit {
+            background: var(--secondary-color);
+            color: white;
+        }
+
+        .btn-delete {
+            background: var(--danger-color);
+            color: white;
+        }
+
+        /* Header and Navigation */
+        header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .site-title {
+            font-size: 1.8rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .site-subtitle {
+            font-size: 1rem;
+            opacity: 0.9;
+            margin-bottom: 1rem;
+        }
+
+        nav {
+            background-color: rgba(255,255,255,0.1);
+            border-radius: 8px;
+            padding: 0.5rem;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            justify-content: center;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+            font-weight: 500;
+        }
+
+        nav a:hover {
+            background-color: rgba(255,255,255,0.2);
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 4rem 2rem;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto 2rem;
+            opacity: 0.95;
+        }
+
+        .cta-button {
+            background-color: white;
+            color: var(--primary-color);
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
+            display: inline-block;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+
+        /* Main Content */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        section {
+            margin-bottom: 4rem;
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        h2 {
+            color: var(--primary-color);
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            border-bottom: 3px solid var(--accent-color);
+            padding-bottom: 0.5rem;
+        }
+
+        h3 {
+            color: var(--secondary-color);
+            font-size: 1.5rem;
+            margin: 1.5rem 0 1rem;
+        }
+
+        /* Grant Info Box */
+        .grant-info {
+            background: linear-gradient(135deg, #e0f2fe, #dbeafe);
+            padding: 1.5rem;
+            border-radius: 8px;
+            border-left: 5px solid var(--secondary-color);
+            margin: 1rem 0;
+        }
+
+        .grant-info a {
+            color: var(--primary-color);
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .grant-info a:hover {
+            text-decoration: underline;
+        }
+
+        /* Goals Grid */
+        .goals-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .goal-card {
+            background: linear-gradient(135deg, #f0f9ff, #e0f2fe);
+            padding: 1.5rem;
+            border-radius: 8px;
+            border-top: 4px solid var(--secondary-color);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .goal-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+
+        .goal-card h4 {
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .goal-card ul {
+            margin-left: 1.5rem;
+            color: var(--text-dark);
+        }
+
+        .goal-card li {
+            margin-bottom: 0.5rem;
+        }
+
+        /* Calendar */
+        .calendar-container {
+            background: #f8fafc;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+        }
+
+        .event-item {
+            background: white;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 5px;
+            border-left: 4px solid var(--success-color);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        .event-date {
+            color: var(--secondary-color);
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Resources */
+        .resource-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .resource-card {
+            background: white;
+            border: 2px solid #e2e8f0;
+            padding: 1.5rem;
+            border-radius: 8px;
+            text-align: center;
+            transition: all 0.3s;
+        }
+
+        .resource-card:hover {
+            border-color: var(--secondary-color);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .resource-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .resource-card h4 {
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .download-btn {
+            background-color: var(--secondary-color);
+            color: white;
+            padding: 0.5rem 1.5rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 1rem;
+            transition: background-color 0.3s;
+        }
+
+        .download-btn:hover {
+            background-color: var(--primary-color);
+        }
+
+        /* Community Board */
+        .message-board {
+            background: #f8fafc;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+        }
+
+        .message-form {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--text-dark);
+            font-weight: 500;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 5px;
+            font-size: 1rem;
+            font-family: inherit;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--secondary-color);
+        }
+
+        .submit-btn {
+            background-color: var(--success-color);
+            color: white;
+            padding: 0.75rem 2rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+
+        .submit-btn:hover {
+            background-color: #059669;
+        }
+
+        .message-item {
+            background: white;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        .message-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+        }
+
+        .message-author {
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+
+        .message-date {
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+
+        /* Social Media Section */
+        .social-section {
+            background: linear-gradient(135deg, #fef3c7, #fde68a);
+            padding: 2rem;
+            border-radius: 8px;
+            text-align: center;
+            margin: 2rem 0;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin: 1.5rem 0;
+            flex-wrap: wrap;
+        }
+
+        .social-btn {
+            background-color: white;
+            color: var(--primary-color);
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: transform 0.3s, box-shadow 0.3s;
+            display: inline-block;
+        }
+
+        .social-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        /* Bio Section */
+        .bio-section {
+            background: linear-gradient(135deg, #f3e8ff, #e9d5ff);
+            padding: 2rem;
+            border-radius: 8px;
+            margin: 2rem 0;
+        }
+
+        .bio-link {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            display: inline-block;
+            margin-top: 1rem;
+        }
+
+        .bio-link:hover {
+            background-color: var(--secondary-color);
+        }
+
+        /* Partner Institutions */
+        .partners-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+
+        .partner-item {
+            background: white;
+            padding: 1rem;
+            border-radius: 5px;
+            border: 2px solid #e2e8f0;
+            text-align: center;
+            transition: border-color 0.3s;
+        }
+
+        .partner-item:hover {
+            border-color: var(--secondary-color);
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--dark-bg);
+            color: white;
+            padding: 3rem 2rem;
+            margin-top: 4rem;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .footer-section h3 {
+            color: var(--accent-color);
+            margin-bottom: 1rem;
+        }
+
+        .footer-section a {
+            color: #94a3b8;
+            text-decoration: none;
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-section a:hover {
+            color: white;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid #334155;
+            color: #94a3b8;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .site-title {
+                font-size: 1.4rem;
+            }
+
+            .hero h1 {
+                font-size: 1.8rem;
+            }
+
+            nav ul {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+
+            .goals-grid,
+            .resource-grid,
+            .partners-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .social-links {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .admin-content {
+                margin: 1rem;
+                padding: 1rem;
+            }
+        }
+
+        /* Smooth Scrolling */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Notification */
+        .notification {
+            position: fixed;
+            top: 100px;
+            right: 20px;
+            background-color: var(--success-color);
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: 5px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            display: none;
+            z-index: 2000;
+        }
+
+        .notification.show {
+            display: block;
+            animation: slideIn 0.3s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(400px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Admin Toggle Button -->
+    <button class="admin-toggle" onclick="toggleAdmin()">🔐 Admin Panel</button>
+
+    <!-- Admin Panel -->
+    <div class="admin-panel" id="adminPanel">
+        <div class="admin-content">
+            <div class="admin-header">
+                <h2>Website Admin Panel</h2>
+                <button class="admin-close" onclick="toggleAdmin()">Close</button>
+            </div>
+
+            <!-- Partner Institutions Management -->
+            <div class="admin-section">
+                <h3>📍 Manage Partner Institutions</h3>
+                <div class="admin-form">
+                    <input type="text" id="partnerName" placeholder="Institution Name (e.g., Whatcom Community College)">
+                    <button class="admin-btn" onclick="addPartner()">Add Partner Institution</button>
+                </div>
+                <ul class="admin-list" id="partnersList"></ul>
+            </div>
+
+            <!-- Calendar Events Management -->
+            <div class="admin-section">
+                <h3>📅 Manage Calendar Events</h3>
+                <div class="admin-form">
+                    <input type="text" id="eventDate" placeholder="Date (e.g., Summer 2026 or July 15, 2026)">
+                    <input type="text" id="eventTitle" placeholder="Event Title">
+                    <textarea id="eventDescription" placeholder="Event Description" rows="3"></textarea>
+                    <button class="admin-btn" onclick="addEvent()">Add Event</button>
+                </div>
+                <ul class="admin-list" id="eventsList"></ul>
+            </div>
+
+            <!-- Contact Information Management -->
+            <div class="admin-section">
+                <h3>📧 Manage Contact Information</h3>
+                <div class="admin-form">
+                    <input type="text" id="contactTitle" placeholder="Contact Title (e.g., General Inquiries)">
+                    <input type="text" id="contactDescription" placeholder="Description">
+                    <input type="email" id="contactEmail" placeholder="Email Address">
+                    <button class="admin-btn" onclick="addContact()">Add Contact</button>
+                </div>
+                <ul class="admin-list" id="contactsList"></ul>
+            </div>
+
+            <!-- Export/Import Data -->
+            <div class="admin-section">
+                <h3>💾 Backup & Restore</h3>
+                <button class="admin-btn" onclick="exportData()">Export All Data</button>
+                <button class="admin-btn" onclick="importData()">Import Data</button>
+                <button class="admin-btn admin-btn-danger" onclick="resetData()">Reset to Default</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header>
+        <div class="header-content">
+            <div class="site-title">AI in Action</div>
+            <div class="site-subtitle">Transforming Teaching and Learning in the Community College</div>
+            <nav>
+                <ul>
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#goals">Goals & Objectives</a></li>
+                    <li><a href="#calendar">Calendar</a></li>
+                    <li><a href="#resources">Resources</a></li>
+                    <li><a href="#community">Community</a></li>
+                    <li><a href="#bio">Bio</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <h1>Welcome to AI in Action</h1>
+        <p>A national initiative to prepare community college faculty and students to leverage artificial intelligence for transformative teaching and learning across all disciplines.</p>
+        <a href="#about" class="cta-button">Learn More</a>
+    </section>
+
+    <!-- Main Content -->
+    <div class="container">
+        <!-- About Section -->
+        <section id="about">
+            <h2>About the Project</h2>
+
+            <div class="grant-info">
+                <h3>NSF ATE Grant Project</h3>
+                <p><strong>Grant Award ID:</strong> 2500821</p>
+                <p><strong>Host Institution:</strong> Moraine Valley Community College (MVCC)</p>
+                <p><strong>Partner:</strong> National Cybersecurity Training and Education Center (NCyTE)</p>
+                <p><a href="https://www.nsf.gov/awardsearch/show-award?AWD_ID=2500821" target="_blank">View Full Grant Details →</a></p>
+            </div>
+
+            <h3>Overview</h3>
+            <p>The technical and career workforce must not only comprehend AI technology but also identify innovative ways to leverage this technology to enhance their job performance while providing greater value to their businesses. Building on previous partnerships and success with the Cybersecurity Across Disciplines (CyAd) Conference, which brought together educators from diverse disciplines to explore the intersection of cybersecurity within their specific educational program areas, Moraine Valley Community College (MVCC) proposes a three-year, comprehensive project to meet labor market demand for workers with artificial intelligence (AI) aptitude.</p>
+
+            <p>While other projects have focused on developing and implementing AI curriculum in computer science, this NSF ATE program is specifically designed to prepare graduates of two-year institutions pursuing career and technical jobs. The purpose of this project is to change the perception and utilization of AI as a tool in the classroom which can then be leveraged to strengthen the AI tools of candidates entering the workforce.</p>
+
+            <h3>Intellectual Merit</h3>
+            <p>The intellectual merit of this project is based on changing the perception and utilization of AI both as a tool in the classroom and a new technology that the technical workforce can use to transform modern business and industry. MVCC seeks to address a critical gap in AI education: the practical application of AI technology within the technical and career workforce trained by community colleges.</p>
+
+            <p>Community college graduates must be prepared to integrate AI technologies into their day-to-day responsibilities, across a variety of fields that include healthcare, manufacturing, business, and cybersecurity. This proposal is uniquely positioned to meet this need by offering practical AI education that enhances the ability of technical professionals to leverage AI for operational efficiency, decision-making, and cybersecurity resilience.</p>
+
+            <h3>Broader Impacts</h3>
+            <p>Multiple methods will be incorporated to foster broader impacts. To address the need to include all segments of society, the team will recruit faculty from underrepresented communities to participate. In partnership with the NCyTE National Faculty Development Academy, participants will gain a greater knowledge and understanding of AI. Participating faculty will develop practical applications for their individual classrooms. Faculty will share their knowledge, experiences, and content with colleagues and students from multiple disciplines at their institutions.</p>
+
+            <h3>National AI Teachers and Learning Academy</h3>
+            <p>A central component of our proposal is the creation of a National Academy, which will provide open-source, relevant content for faculty across various disciplines. This academy will be an extension of the existing NCyTE Center and will leverage the NCyTE community to provide nationwide reach. Through this academy, we will establish a Career and Technical Education (CTE) learning community focused on incorporating AI into the classroom.</p>
+
+            <p>Each summer, the academy will train over 100 faculty members. This will include five virtual workshops annually, and we will leverage the Cybersecurity Across Disciplines (CyAD) Conference to bring participants together each year. This will allow them to share their experiences and the content that they developed, sparking further innovation and collaboration.</p>
+
+            <h3>Partner Institutions</h3>
+            <div class="partners-grid" id="partnersGrid">
+                <!-- Partners will be loaded dynamically -->
+            </div>
+        </section>
+
+        <!-- Goals and Objectives Section -->
+        <section id="goals">
+            <h2>Goals & Objectives</h2>
+
+            <div class="goals-grid">
+                <div class="goal-card">
+                    <h4>Goal 1: Produce Interactive Instructional Materials</h4>
+                    <ul>
+                        <li>Develop 10 modular, interactive instructional materials</li>
+                        <li>Design hands-on lab exercises and projects</li>
+                        <li>Integrate cutting-edge AI tools and platforms</li>
+                        <li>Develop custom classroom teaching tools (AI Agents, Chatbots, Neural Networks)</li>
+                        <li>Pilot materials in 15+ community college STEM programs</li>
+                    </ul>
+                </div>
+
+                <div class="goal-card">
+                    <h4>Goal 2: Establish National AI Teachers Academy</h4>
+                    <ul>
+                        <li>Create comprehensive training program for faculty</li>
+                        <li>Offer 5 hybrid training workshops each summer</li>
+                        <li>Serve 100 faculty members per year</li>
+                        <li>Host AI workshops at CyAD conference</li>
+                        <li>Establish online resource center</li>
+                        <li>Develop mentorship program</li>
+                    </ul>
+                </div>
+
+                <div class="goal-card">
+                    <h4>Goal 3: Establish National AI Community of Practice</h4>
+                    <ul>
+                        <li>Develop online collaborative platform</li>
+                        <li>Host local faculty development events</li>
+                        <li>Facilitate regular virtual meetings and webinars</li>
+                        <li>Compile repository of instructional materials</li>
+                        <li>Promote interdisciplinary collaboration</li>
+                    </ul>
+                </div>
+
+                <div class="goal-card">
+                    <h4>Goal 4: Work with Underrepresented Communities</h4>
+                    <ul>
+                        <li>Develop targeted outreach programs</li>
+                        <li>Partner with local organizations and schools</li>
+                        <li>Foster inclusive learning environment</li>
+                        <li>Address the AI digital divide</li>
+                        <li>Create mentorship programs</li>
+                    </ul>
+                </div>
+            </div>
+
+            <h3>Faculty Development Objectives</h3>
+            <div class="grant-info">
+                <ul>
+                    <li><strong>Collaboration and Networking:</strong> Faculty members will work closely with their peers, sharing ideas and experiences to develop innovative approaches to teaching and using AI.</li>
+                    <li><strong>Hands-On Learning:</strong> Participants will engage in practical workshops that explore the latest AI technologies and their applications in education.</li>
+                    <li><strong>Content Creation:</strong> Faculty will collaborate to create new teaching and learning materials that can be utilized in their own classrooms and programs.</li>
+                    <li><strong>Professional Development:</strong> The camps will provide opportunities for faculty to enhance their pedagogical skills and stay current with advancements in AI.</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Calendar Section -->
+        <section id="calendar">
+            <h2>Calendar of Events</h2>
+
+            <div class="calendar-container" id="calendarContainer">
+                <!-- Events will be loaded dynamically -->
+            </div>
+
+            <p style="margin-top: 1rem; color: var(--text-light); font-style: italic;">
+                For the most current calendar and registration information, please check back regularly or subscribe to our mailing list.
+            </p>
+        </section>
+
+        <!-- Resources Section -->
+        <section id="resources">
+            <h2>Resources & Downloads</h2>
+
+            <p>Access our comprehensive library of AI teaching materials, lesson plans, lab activities, and case studies. All materials are available under a Creative Commons license and specifically tailored to community college technical and career programs.</p>
+
+            <div class="resource-grid">
+                <div class="resource-card">
+                    <div class="resource-icon">📚</div>
+                    <h4>Instructional Materials</h4>
+                    <p>Modular AI curriculum, lesson plans, and teaching guides</p>
+                    <a href="https://sands-mvcc.github.io/MVCC/" class="download-btn" target="_blank">Access Resources</a>
+                </div>
+
+                <div class="resource-card">
+                    <div class="resource-icon">🔬</div>
+                    <h4>Lab Activities</h4>
+                    <p>Hands-on exercises and practical AI applications</p>
+                    <a href="https://sands-mvcc.github.io/MVCC/" class="download-btn" target="_blank">View Labs</a>
+                </div>
+
+                <div class="resource-card">
+                    <div class="resource-icon">📊</div>
+                    <h4>Case Studies</h4>
+                    <p>Real-world examples and industry applications</p>
+                    <a href="https://sands-mvcc.github.io/CMMC/" class="download-btn" target="_blank">Explore Cases</a>
+                </div>
+
+                <div class="resource-card">
+                    <div class="resource-icon">🎯</div>
+                    <h4>Assessment Tools</h4>
+                    <p>Evaluation instruments and rubrics</p>
+                    <a href="https://sands-mvcc.github.io/CMMC/" class="download-btn" target="_blank">Download Tools</a>
+                </div>
+
+                <div class="resource-card">
+                    <div class="resource-icon">🤖</div>
+                    <h4>AI Teaching Tools</h4>
+                    <p>Custom AI Agents, Chatbots, and Neural Network examples</p>
+                    <a href="https://sands-mvcc.github.io/MVCC/" class="download-btn" target="_blank">Access Tools</a>
+                </div>
+
+                <div class="resource-card">
+                    <div class="resource-icon">📖</div>
+                    <h4>Best Practices</h4>
+                    <p>Community-developed teaching strategies and methodologies</p>
+                    <a href="https://sands-mvcc.github.io/CMMC/" class="download-btn" target="_blank">Read More</a>
+                </div>
+            </div>
+
+            <div class="grant-info" style="margin-top: 2rem;">
+                <h3>Additional Resource Sites</h3>
+                <p><strong>MVCC Resources:</strong> <a href="https://sands-mvcc.github.io/MVCC/" target="_blank">https://sands-mvcc.github.io/MVCC/</a></p>
+                <p><strong>CMMC Resources:</strong> <a href="https://sands-mvcc.github.io/CMMC/" target="_blank">https://sands-mvcc.github.io/CMMC/</a></p>
+            </div>
+        </section>
+
+        <!-- Community Board Section -->
+        <section id="community">
+            <h2>Community Board</h2>
+
+            <p>Connect with fellow educators, share ideas, discuss challenges, and collaborate on AI teaching initiatives. Join our growing community of practice!</p>
+
+            <div class="message-board">
+                <div class="message-form">
+                    <h3>Post a Message</h3>
+                    <form id="messageForm">
+                        <div class="form-group">
+                            <label for="authorName">Your Name:</label>
+                            <input type="text" id="authorName" required placeholder="Enter your name">
+                        </div>
+                        <div class="form-group">
+                            <label for="institution">Institution:</label>
+                            <input type="text" id="institution" placeholder="Your community college (optional)">
+                        </div>
+                        <div class="form-group">
+                            <label for="messageText">Message:</label>
+                            <textarea id="messageText" rows="4" required placeholder="Share your thoughts, questions, or resources..."></textarea>
+                        </div>
+                        <button type="submit" class="submit-btn">Post Message</button>
+                    </form>
+                </div>
+
+                <div id="messagesContainer">
+                    <h3>Recent Messages</h3>
+
+                    <div class="message-item">
+                        <div class="message-header">
+                            <span class="message-author">Dr. Sarah Chen - Las Positas College</span>
+                            <span class="message-date">March 20, 2026</span>
+                        </div>
+                        <p>Just completed our first AI workshop with healthcare faculty. The response has been incredible! Faculty are already brainstorming ways to integrate AI tools into their medical terminology and patient care courses.</p>
+                    </div>
+
+                    <div class="message-item">
+                        <div class="message-header">
+                            <span class="message-author">Prof. Michael Rodriguez - El Paso CC</span>
+                            <span class="message-date">March 18, 2026</span>
+                        </div>
+                        <p>Looking for resources on teaching AI ethics in automotive technology programs. Anyone have materials they'd recommend?</p>
+                    </div>
+
+                    <div class="message-item">
+                        <div class="message-header">
+                            <span class="message-author">Dr. Jennifer Washington - Sinclair CC</span>
+                            <span class="message-date">March 15, 2026</span>
+                        </div>
+                        <p>Our manufacturing students are loving the AI-powered quality control simulations! This is transforming how we teach industrial automation. Happy to share our curriculum materials.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Bio and Social Media Section -->
+        <section id="bio">
+            <h2>Project Leadership</h2>
+
+            <div class="bio-section">
+                <h3>Principal Investigator Bio</h3>
+                <p>Learn more about the project leadership and their extensive experience in cybersecurity education, AI integration, and community college faculty development.</p>
+                <a href="https://sands-mvcc.github.io/MVCC/bio.html" class="bio-link" target="_blank">View Full Bio</a>
+            </div>
+
+            <div class="social-section">
+                <h3>Connect With Us</h3>
+                <p>Stay updated on the latest AI in Action news, resources, and opportunities. Follow us on social media and explore our published work.</p>
+
+                <div class="social-links">
+                    <a href="#" class="social-btn" onclick="alert('Add your LinkedIn URL here'); return false;">📱 LinkedIn</a>
+                    <a href="#" class="social-btn" onclick="alert('Add your Twitter/X URL here'); return false;">🐦 Twitter/X</a>
+                    <a href="#" class="social-btn" onclick="alert('Add your Facebook URL here'); return false;">📘 Facebook</a>
+                    <a href="#" class="social-btn" onclick="alert('Add your YouTube URL here'); return false;">🎥 YouTube</a>
+                </div>
+            </div>
+
+            <div class="grant-info" style="margin-top: 2rem;">
+                <h3>📚 Featured Textbook</h3>
+                <p><strong>Title:</strong> [Add Your Textbook Title Here]</p>
+                <p><strong>Description:</strong> A comprehensive guide to integrating AI in community college education across all disciplines.</p>
+                <a href="#" onclick="alert('Add your textbook purchase link here'); return false;" style="display: inline-block; margin-top: 1rem; padding: 0.75rem 1.5rem; background-color: var(--primary-color); color: white; text-decoration: none; border-radius: 5px;">Purchase Textbook</a>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact">
+            <h2>Contact & Get Involved</h2>
+
+            <div class="goals-grid" id="contactsGrid">
+                <!-- Contacts will be loaded dynamically -->
+            </div>
+
+            <div class="grant-info" style="margin-top: 2rem;">
+                <h3>Moraine Valley Community College</h3>
+                <p><strong>Project Host Institution</strong></p>
+                <p>9000 W. College Parkway<br>
+                Palos Hills, IL 60465</p>
+                <p><strong>In Partnership with:</strong><br>
+                National Cybersecurity Training and Education Center (NCyTE)</p>
+            </div>
+        </section>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <a href="#about">About the Project</a>
+                <a href="#goals">Goals & Objectives</a>
+                <a href="#calendar">Calendar</a>
+                <a href="#resources">Resources</a>
+                <a href="#community">Community Board</a>
+            </div>
+
+            <div class="footer-section">
+                <h3>Resources</h3>
+                <a href="https://sands-mvcc.github.io/MVCC/" target="_blank">MVCC Resources</a>
+                <a href="https://sands-mvcc.github.io/CMMC/" target="_blank">CMMC Resources</a>
+                <a href="https://www.nsf.gov/awardsearch/show-award?AWD_ID=2500821" target="_blank">NSF Grant Info</a>
+                <a href="https://sands-mvcc.github.io/MVCC/bio.html" target="_blank">PI Bio</a>
+            </div>
+
+            <div class="footer-section">
+                <h3>Partner Institutions</h3>
+                <a href="#">Whatcom CC</a>
+                <a href="#">Las Positas College</a>
+                <a href="#">St Petersburg CC</a>
+                <a href="#">View All Partners</a>
+            </div>
+
+            <div class="footer-section">
+                <h3>Get Involved</h3>
+                <a href="#contact">Join the Academy</a>
+                <a href="#contact">Partnership Opportunities</a>
+                <a href="#community">Community Board</a>
+                <a href="#contact">Contact Us</a>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p>&copy; 2026 AI in Action - Moraine Valley Community College. Funded by NSF ATE Grant #2500821.</p>
+            <p>All instructional materials available under Creative Commons License.</p>
+        </div>
+    </footer>
+
+    <!-- Notification -->
+    <div id="notification" class="notification"></div>
+
+    <!-- JavaScript -->
+    <script>
+        // Data Storage using LocalStorage
+        const STORAGE_KEYS = {
+            PARTNERS: 'aiInAction_partners',
+            EVENTS: 'aiInAction_events',
+            CONTACTS: 'aiInAction_contacts'
+        };
+
+        // Default Data
+        const DEFAULT_DATA = {
+            partners: [
+                "Whatcom Community College",
+                "Las Positas College",
+                "St Petersburg Community College",
+                "Moraine Valley Community College",
+                "Brookdale Community College",
+                "Anne Arundel Community College",
+                "Sinclair Community College",
+                "Fayetteville Technical College",
+                "El Paso Community College",
+                "Honolulu Community College",
+                "Miami Dade Community College",
+                "Pikes Peak State College"
+            ],
+            events: [
+                {
+                    date: "Summer 2026 - Virtual Workshops",
+                    title: "AI Faculty Development Workshop Series",
+                    description: "Five virtual workshops covering fundamental AI concepts, teaching methodologies, and curriculum development strategies. Open to community college faculty nationwide."
+                },
+                {
+                    date: "July 2026 - Annual Conference",
+                    title: "Cybersecurity Across Disciplines (CyAD) Conference",
+                    description: "Annual gathering of faculty to share experiences, present developed content, and network with peers from across the nation. Special AI in Action track included."
+                },
+                {
+                    date: "Fall 2026 - Regional Events",
+                    title: "Local Faculty Development Events",
+                    description: "Regional workshops hosted at partner community colleges across 12 different regions of the country."
+                },
+                {
+                    date: "Monthly - Ongoing",
+                    title: "Virtual Meetings and Webinars",
+                    description: "Regular virtual meetings to foster communication and idea exchange among members of the AI community of practice."
+                },
+                {
+                    date: "Ongoing",
+                    title: "Mentorship Program",
+                    description: "Continuous mentorship pairing experienced AI educators with community college faculty for guidance and support."
+                }
+            ],
+            contacts: [
+                {
+                    title: "Join the Academy",
+                    description: "Community college faculty interested in participating in our workshops and training programs.",
+                    email: "contact@aiinaction.edu"
+                },
+                {
+                    title: "Partnership Opportunities",
+                    description: "Institutions interested in becoming partner colleges or collaborating on AI initiatives.",
+                    email: "partnerships@aiinaction.edu"
+                },
+                {
+                    title: "General Inquiries",
+                    description: "Questions about the project, resources, or how to get involved.",
+                    email: "info@aiinaction.edu"
+                },
+                {
+                    title: "Technical Support",
+                    description: "Assistance with accessing resources or using the platform.",
+                    email: "support@aiinaction.edu"
+                }
+            ]
+        };
+
+        // Initialize data on page load
+        function initializeData() {
+            if (!localStorage.getItem(STORAGE_KEYS.PARTNERS)) {
+                localStorage.setItem(STORAGE_KEYS.PARTNERS, JSON.stringify(DEFAULT_DATA.partners));
+            }
+            if (!localStorage.getItem(STORAGE_KEYS.EVENTS)) {
+                localStorage.setItem(STORAGE_KEYS.EVENTS, JSON.stringify(DEFAULT_DATA.events));
+            }
+            if (!localStorage.getItem(STORAGE_KEYS.CONTACTS)) {
+                localStorage.setItem(STORAGE_KEYS.CONTACTS, JSON.stringify(DEFAULT_DATA.contacts));
+            }
+        }
+
+        // Get data from localStorage
+        function getData(key) {
+            const data = localStorage.getItem(key);
+            return data ? JSON.parse(data) : [];
+        }
+
+        // Save data to localStorage
+        function saveData(key, data) {
+            localStorage.setItem(key, JSON.stringify(data));
+        }
+
+        // Toggle Admin Panel
+        function toggleAdmin() {
+            const panel = document.getElementById('adminPanel');
+            panel.classList.toggle('active');
+            if (panel.classList.contains('active')) {
+                loadAdminData();
+            }
+        }
+
+        // Load data into admin panel
+        function loadAdminData() {
+            loadPartnersList();
+            loadEventsList();
+            loadContactsList();
+        }
+
+        // Partners Management
+        function loadPartnersList() {
+            const partners = getData(STORAGE_KEYS.PARTNERS);
+            const list = document.getElementById('partnersList');
+            list.innerHTML = '';
+
+            partners.forEach((partner, index) => {
+                const li = document.createElement('li');
+                li.className = 'admin-list-item';
+                li.innerHTML = `
+                    <span>${partner}</span>
+                    <div>
+                        <button class="btn-delete" onclick="deletePartner(${index})">Delete</button>
+                    </div>
+                `;
+                list.appendChild(li);
+            });
+
+            renderPartners();
+        }
+
+        function addPartner() {
+            const input = document.getElementById('partnerName');
+            const name = input.value.trim();
+
+            if (!name) {
+                alert('Please enter an institution name');
+                return;
+            }
+
+            const partners = getData(STORAGE_KEYS.PARTNERS);
+            partners.push(name);
+            saveData(STORAGE_KEYS.PARTNERS, partners);
+
+            input.value = '';
+            loadPartnersList();
+            showNotification('Partner institution added successfully!');
+        }
+
+        function deletePartner(index) {
+            if (!confirm('Are you sure you want to delete this partner?')) return;
+
+            const partners = getData(STORAGE_KEYS.PARTNERS);
+            partners.splice(index, 1);
+            saveData(STORAGE_KEYS.PARTNERS, partners);
+
+            loadPartnersList();
+            showNotification('Partner institution deleted!');
+        }
+
+        function renderPartners() {
+            const partners = getData(STORAGE_KEYS.PARTNERS);
+            const grid = document.getElementById('partnersGrid');
+            grid.innerHTML = '';
+
+            partners.forEach(partner => {
+                const div = document.createElement('div');
+                div.className = 'partner-item';
+                div.textContent = partner;
+                grid.appendChild(div);
+            });
+        }
+
+        // Events Management
+        function loadEventsList() {
+            const events = getData(STORAGE_KEYS.EVENTS);
+            const list = document.getElementById('eventsList');
+            list.innerHTML = '';
+
+            events.forEach((event, index) => {
+                const li = document.createElement('li');
+                li.className = 'admin-list-item';
+                li.innerHTML = `
+                    <div>
+                        <strong>${event.date}</strong> - ${event.title}
+                    </div>
+                    <div>
+                        <button class="btn-delete" onclick="deleteEvent(${index})">Delete</button>
+                    </div>
+                `;
+                list.appendChild(li);
+            });
+
+            renderEvents();
+        }
+
+        function addEvent() {
+            const date = document.getElementById('eventDate').value.trim();
+            const title = document.getElementById('eventTitle').value.trim();
+            const description = document.getElementById('eventDescription').value.trim();
+
+            if (!date || !title || !description) {
+                alert('Please fill in all event fields');
+                return;
+            }
+
+            const events = getData(STORAGE_KEYS.EVENTS);
+            events.push({ date, title, description });
+            saveData(STORAGE_KEYS.EVENTS, events);
+
+            document.getElementById('eventDate').value = '';
+            document.getElementById('eventTitle').value = '';
+            document.getElementById('eventDescription').value = '';
+
+            loadEventsList();
+            showNotification('Event added successfully!');
+        }
+
+        function deleteEvent(index) {
+            if (!confirm('Are you sure you want to delete this event?')) return;
+
+            const events = getData(STORAGE_KEYS.EVENTS);
+            events.splice(index, 1);
+            saveData(STORAGE_KEYS.EVENTS, events);
+
+            loadEventsList();
+            showNotification('Event deleted!');
+        }
+
+        function renderEvents() {
+            const events = getData(STORAGE_KEYS.EVENTS);
+            const container = document.getElementById('calendarContainer');
+            container.innerHTML = '';
+
+            events.forEach(event => {
+                const div = document.createElement('div');
+                div.className = 'event-item';
+                div.innerHTML = `
+                    <div class="event-date">${event.date}</div>
+                    <h4>${event.title}</h4>
+                    <p>${event.description}</p>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        // Contacts Management
+        function loadContactsList() {
+            const contacts = getData(STORAGE_KEYS.CONTACTS);
+            const list = document.getElementById('contactsList');
+            list.innerHTML = '';
+
+            contacts.forEach((contact, index) => {
+                const li = document.createElement('li');
+                li.className = 'admin-list-item';
+                li.innerHTML = `
+                    <div>
+                        <strong>${contact.title}</strong> - ${contact.email}
+                    </div>
+                    <div>
+                        <button class="btn-delete" onclick="deleteContact(${index})">Delete</button>
+                    </div>
+                `;
+                list.appendChild(li);
+            });
+
+            renderContacts();
+        }
+
+        function addContact() {
+            const title = document.getElementById('contactTitle').value.trim();
+            const description = document.getElementById('contactDescription').value.trim();
+            const email = document.getElementById('contactEmail').value.trim();
+
+            if (!title || !description || !email) {
+                alert('Please fill in all contact fields');
+                return;
+            }
+
+            const contacts = getData(STORAGE_KEYS.CONTACTS);
+            contacts.push({ title, description, email });
+            saveData(STORAGE_KEYS.CONTACTS, contacts);
+
+            document.getElementById('contactTitle').value = '';
+            document.getElementById('contactDescription').value = '';
+            document.getElementById('contactEmail').value = '';
+
+            loadContactsList();
+            showNotification('Contact added successfully!');
+        }
+
+        function deleteContact(index) {
+            if (!confirm('Are you sure you want to delete this contact?')) return;
+
+            const contacts = getData(STORAGE_KEYS.CONTACTS);
+            contacts.splice(index, 1);
+            saveData(STORAGE_KEYS.CONTACTS, contacts);
+
+            loadContactsList();
+            showNotification('Contact deleted!');
+        }
+
+        function renderContacts() {
+            const contacts = getData(STORAGE_KEYS.CONTACTS);
+            const grid = document.getElementById('contactsGrid');
+            grid.innerHTML = '';
+
+            contacts.forEach(contact => {
+                const div = document.createElement('div');
+                div.className = 'goal-card';
+                div.innerHTML = `
+                    <h4>${contact.title}</h4>
+                    <p>${contact.description}</p>
+                    <a href="mailto:${contact.email}" class="download-btn">${contact.email.includes('@') ? 'Contact Us' : contact.email}</a>
+                `;
+                grid.appendChild(div);
+            });
+        }
+
+        // Export/Import/Reset Functions
+        function exportData() {
+            const data = {
+                partners: getData(STORAGE_KEYS.PARTNERS),
+                events: getData(STORAGE_KEYS.EVENTS),
+                contacts: getData(STORAGE_KEYS.CONTACTS)
+            };
+
+            const dataStr = JSON.stringify(data, null, 2);
+            const dataBlob = new Blob([dataStr], { type: 'application/json' });
+            const url = URL.createObjectURL(dataBlob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = 'ai-in-action-data-backup.json';
+            link.click();
+
+            showNotification('Data exported successfully!');
+        }
+
+        function importData() {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = 'application/json';
+            input.onchange = function(e) {
+                const file = e.target.files[0];
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    try {
+                        const data = JSON.parse(event.target.result);
+                        if (data.partners) saveData(STORAGE_KEYS.PARTNERS, data.partners);
+                        if (data.events) saveData(STORAGE_KEYS.EVENTS, data.events);
+                        if (data.contacts) saveData(STORAGE_KEYS.CONTACTS, data.contacts);
+
+                        loadAdminData();
+                        showNotification('Data imported successfully!');
+                    } catch (error) {
+                        alert('Error importing data. Please check the file format.');
+                    }
+                };
+                reader.readAsText(file);
+            };
+            input.click();
+        }
+
+        function resetData() {
+            if (!confirm('Are you sure you want to reset all data to default? This cannot be undone!')) return;
+
+            saveData(STORAGE_KEYS.PARTNERS, DEFAULT_DATA.partners);
+            saveData(STORAGE_KEYS.EVENTS, DEFAULT_DATA.events);
+            saveData(STORAGE_KEYS.CONTACTS, DEFAULT_DATA.contacts);
+
+            loadAdminData();
+            showNotification('Data reset to default!');
+        }
+
+        // Message Board Functionality
+        document.getElementById('messageForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const authorName = document.getElementById('authorName').value;
+            const institution = document.getElementById('institution').value;
+            const messageText = document.getElementById('messageText').value;
+
+            const messageItem = document.createElement('div');
+            messageItem.className = 'message-item';
+
+            const currentDate = new Date().toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+
+            const authorDisplay = institution ? `${authorName} - ${institution}` : authorName;
+
+            messageItem.innerHTML = `
+                <div class="message-header">
+                    <span class="message-author">${authorDisplay}</span>
+                    <span class="message-date">${currentDate}</span>
+                </div>
+                <p>${messageText}</p>
+            `;
+
+            const messagesContainer = document.getElementById('messagesContainer');
+            const firstMessage = messagesContainer.querySelector('.message-item');
+            if (firstMessage) {
+                messagesContainer.insertBefore(messageItem, firstMessage);
+            } else {
+                messagesContainer.appendChild(messageItem);
+            }
+
+            document.getElementById('messageForm').reset();
+            showNotification('Message posted successfully!');
+            messageItem.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        });
+
+        // Notification Function
+        function showNotification(message) {
+            const notification = document.getElementById('notification');
+            notification.textContent = message;
+            notification.classList.add('show');
+
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+
+        // Smooth scroll for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                const href = this.getAttribute('href');
+                if (href !== '#' && !href.includes('onclick')) {
+                    e.preventDefault();
+                    const target = document.querySelector(href);
+                    if (target) {
+                        target.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                }
+            });
+        });
+
+        // Initialize on page load
+        window.addEventListener('load', function() {
+            initializeData();
+            renderPartners();
+            renderEvents();
+            renderContacts();
+            showNotification('Welcome to AI in Action!');
+        });
+    </script>
+</body>
+</html>
