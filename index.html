@@ -749,6 +749,26 @@
                 <ul class="admin-list" id="contactsList"></ul>
             </div>
 
+            <!-- Rationale Text Management -->
+            <div class="admin-section">
+                <h3>📝 Edit Rationale for AI Literacy</h3>
+                <p style="color: var(--text-light); margin-bottom: 1rem; font-size: 0.9rem;">Edit the three-paragraph rationale displayed in the Rationale &amp; Mission section. Use blank lines between paragraphs.</p>
+                <div class="admin-form">
+                    <textarea id="rationaleEditor" rows="14" placeholder="Enter rationale text here..."></textarea>
+                    <button class="admin-btn" onclick="saveRationale()">💾 Save Rationale</button>
+                </div>
+            </div>
+
+            <!-- Mission Statement Management -->
+            <div class="admin-section">
+                <h3>🎯 Edit Mission Statement</h3>
+                <p style="color: var(--text-light); margin-bottom: 1rem; font-size: 0.9rem;">Enter the mission statement for the initiative. Plain text is fine; line breaks will be preserved.</p>
+                <div class="admin-form">
+                    <textarea id="missionEditor" rows="6" placeholder="Enter mission statement here..."></textarea>
+                    <button class="admin-btn" onclick="saveMission()">💾 Save Mission Statement</button>
+                </div>
+            </div>
+
             <!-- Export/Import Data -->
             <div class="admin-section">
                 <h3>💾 Backup & Restore</h3>
@@ -768,6 +788,7 @@
                 <ul>
                     <li><a href="#home">Home</a></li>
                     <li><a href="#about">About</a></li>
+                    <li><a href="#rationale">Rationale & Mission</a></li>
                     <li><a href="#goals">Goals & Objectives</a></li>
                     <li><a href="#calendar">Calendar</a></li>
                     <li><a href="#resources">Resources</a></li>
@@ -821,6 +842,27 @@
             <h3>Partner Institutions</h3>
             <div class="partners-grid" id="partnersGrid">
                 <!-- Partners will be loaded dynamically -->
+            </div>
+        </section>
+
+        <!-- Rationale & Mission Section -->
+        <section id="rationale">
+            <h2>Rationale &amp; Mission</h2>
+
+            <h3>Rationale for the Advancement of AI Literacy in Community Colleges</h3>
+            <div id="rationaleText">
+                <p>The rapid integration of Artificial Intelligence into the global economy is not a fleeting trend; it is a fundamental shift in how work is performed, and it is here to stay. For the community college system—an institution historically tasked with serving as the backbone of the American workforce—this transformation poses an immediate challenge. As AI automates routine tasks and disrupts traditional roles, the professions that community college students typically fill are among the most vulnerable to displacement. Without a concerted effort to bridge the AI literacy gap, we risk a "negative-sum" transition where graduates enter a labor market with skills that are already obsolete, leading to localized economic stagnation and a workforce ill-equipped for the demands of modern industry.</p>
+
+                <p>While the displacement of some roles is inevitable, the future labor market will be defined by the creation of new, high-value positions that require workers to leverage AI in their daily operations. The value of a community college education in this new era will be measured by its ability to produce "AI-augmented" professionals who can navigate these tools with precision. Because community colleges were designed to be nimble and responsive to workforce transitions, they are the most critical link in ensuring the local workforce remains competitive. If faculty fail to integrate these competencies now, the gap between institutional instruction and industry requirements will widen, devaluing the community college degree and hampering the economic mobility of its graduates.</p>
+
+                <p>Ultimately, academia carries a profound ethical and social responsibility to prepare the next generation for an AI-driven world. Education must go beyond simple technical proficiency; it must provide a framework for the efficient and ethical implementation of AI, ensuring students understand both the capabilities and the moral implications of the technology they use. By empowering community college faculty—the primary mentors of tomorrow's workforce—to become AI-literate leaders, we ensure that these vital institutions continue to fulfill their mission. Failing to do so does not just hurt the individual student; it undermines the future of the American workforce and the stability of the communities that rely on these colleges for economic survival.</p>
+            </div>
+
+            <div class="grant-info" style="margin-top: 2.5rem;">
+                <h3>🎯 Mission Statement</h3>
+                <div id="missionText">
+                    <p><em>Mission statement content is managed by the site administrator. Please check back for updates.</em></p>
+                </div>
             </div>
         </section>
 
@@ -1067,6 +1109,7 @@
             <div class="footer-section">
                 <h3>Quick Links</h3>
                 <a href="#about">About the Project</a>
+                <a href="#rationale">Rationale &amp; Mission</a>
                 <a href="#goals">Goals & Objectives</a>
                 <a href="#calendar">Calendar</a>
                 <a href="#resources">Resources</a>
@@ -1113,7 +1156,9 @@
         const STORAGE_KEYS = {
             PARTNERS: 'aiInAction_partners',
             EVENTS: 'aiInAction_events',
-            CONTACTS: 'aiInAction_contacts'
+            CONTACTS: 'aiInAction_contacts',
+            RATIONALE: 'aiInAction_rationale',
+            MISSION: 'aiInAction_mission'
         };
 
         // Default Data
@@ -1180,7 +1225,13 @@
                     description: "Assistance with accessing resources or using the platform.",
                     email: "support@aiinaction.edu"
                 }
-            ]
+            ],
+            rationale: `The rapid integration of Artificial Intelligence into the global economy is not a fleeting trend; it is a fundamental shift in how work is performed, and it is here to stay. For the community college system—an institution historically tasked with serving as the backbone of the American workforce—this transformation poses an immediate challenge. As AI automates routine tasks and disrupts traditional roles, the professions that community college students typically fill are among the most vulnerable to displacement. Without a concerted effort to bridge the AI literacy gap, we risk a "negative-sum" transition where graduates enter a labor market with skills that are already obsolete, leading to localized economic stagnation and a workforce ill-equipped for the demands of modern industry.
+
+While the displacement of some roles is inevitable, the future labor market will be defined by the creation of new, high-value positions that require workers to leverage AI in their daily operations. The value of a community college education in this new era will be measured by its ability to produce "AI-augmented" professionals who can navigate these tools with precision. Because community colleges were designed to be nimble and responsive to workforce transitions, they are the most critical link in ensuring the local workforce remains competitive. If faculty fail to integrate these competencies now, the gap between institutional instruction and industry requirements will widen, devaluing the community college degree and hampering the economic mobility of its graduates.
+
+Ultimately, academia carries a profound ethical and social responsibility to prepare the next generation for an AI-driven world. Education must go beyond simple technical proficiency; it must provide a framework for the efficient and ethical implementation of AI, ensuring students understand both the capabilities and the moral implications of the technology they use. By empowering community college faculty—the primary mentors of tomorrow's workforce—to become AI-literate leaders, we ensure that these vital institutions continue to fulfill their mission. Failing to do so does not just hurt the individual student; it undermines the future of the American workforce and the stability of the communities that rely on these colleges for economic survival.`,
+            mission: `The mission of AI in Action is to empower community college faculty across all disciplines to become AI-literate educators and workforce leaders—equipping them with the knowledge, tools, and confidence to integrate artificial intelligence into their teaching practice. By doing so, we ensure that community college graduates enter a competitive labor market as AI-augmented professionals capable of driving innovation, economic mobility, and community prosperity in an AI-driven world.`
         };
 
         // Initialize data on page load
@@ -1193,6 +1244,13 @@
             }
             if (!localStorage.getItem(STORAGE_KEYS.CONTACTS)) {
                 localStorage.setItem(STORAGE_KEYS.CONTACTS, JSON.stringify(DEFAULT_DATA.contacts));
+            }
+            // Rationale and Mission use plain string storage (not JSON arrays)
+            if (!localStorage.getItem(STORAGE_KEYS.RATIONALE)) {
+                localStorage.setItem(STORAGE_KEYS.RATIONALE, DEFAULT_DATA.rationale);
+            }
+            if (!localStorage.getItem(STORAGE_KEYS.MISSION)) {
+                localStorage.setItem(STORAGE_KEYS.MISSION, DEFAULT_DATA.mission);
             }
         }
 
@@ -1221,6 +1279,46 @@
             loadPartnersList();
             loadEventsList();
             loadContactsList();
+            // Populate rationale and mission editors
+            document.getElementById('rationaleEditor').value =
+                localStorage.getItem(STORAGE_KEYS.RATIONALE) || DEFAULT_DATA.rationale;
+            document.getElementById('missionEditor').value =
+                localStorage.getItem(STORAGE_KEYS.MISSION) || DEFAULT_DATA.mission;
+        }
+
+        // Rationale & Mission Management
+        function saveRationale() {
+            const text = document.getElementById('rationaleEditor').value.trim();
+            if (!text) { alert('Rationale text cannot be empty.'); return; }
+            localStorage.setItem(STORAGE_KEYS.RATIONALE, text);
+            renderRationaleAndMission();
+            showNotification('Rationale saved successfully!');
+        }
+
+        function saveMission() {
+            const text = document.getElementById('missionEditor').value.trim();
+            if (!text) { alert('Mission statement cannot be empty.'); return; }
+            localStorage.setItem(STORAGE_KEYS.MISSION, text);
+            renderRationaleAndMission();
+            showNotification('Mission statement saved successfully!');
+        }
+
+        function renderRationaleAndMission() {
+            // Render Rationale — split on double newline into paragraphs
+            const rationaleRaw = localStorage.getItem(STORAGE_KEYS.RATIONALE) || DEFAULT_DATA.rationale;
+            const rationaleContainer = document.getElementById('rationaleText');
+            rationaleContainer.innerHTML = rationaleRaw
+                .split(/\n\s*\n/)
+                .map(p => `<p>${p.trim().replace(/\n/g, ' ')}</p>`)
+                .join('');
+
+            // Render Mission
+            const missionRaw = localStorage.getItem(STORAGE_KEYS.MISSION) || DEFAULT_DATA.mission;
+            const missionContainer = document.getElementById('missionText');
+            missionContainer.innerHTML = missionRaw
+                .split(/\n\s*\n/)
+                .map(p => `<p>${p.trim().replace(/\n/g, ' ')}</p>`)
+                .join('');
         }
 
         // Partners Management
@@ -1437,7 +1535,9 @@
             const data = {
                 partners: getData(STORAGE_KEYS.PARTNERS),
                 events: getData(STORAGE_KEYS.EVENTS),
-                contacts: getData(STORAGE_KEYS.CONTACTS)
+                contacts: getData(STORAGE_KEYS.CONTACTS),
+                rationale: localStorage.getItem(STORAGE_KEYS.RATIONALE) || DEFAULT_DATA.rationale,
+                mission: localStorage.getItem(STORAGE_KEYS.MISSION) || DEFAULT_DATA.mission
             };
 
             const dataStr = JSON.stringify(data, null, 2);
@@ -1464,6 +1564,8 @@
                         if (data.partners) saveData(STORAGE_KEYS.PARTNERS, data.partners);
                         if (data.events) saveData(STORAGE_KEYS.EVENTS, data.events);
                         if (data.contacts) saveData(STORAGE_KEYS.CONTACTS, data.contacts);
+                        if (data.rationale) localStorage.setItem(STORAGE_KEYS.RATIONALE, data.rationale);
+                        if (data.mission) localStorage.setItem(STORAGE_KEYS.MISSION, data.mission);
 
                         loadAdminData();
                         showNotification('Data imported successfully!');
@@ -1482,6 +1584,8 @@
             saveData(STORAGE_KEYS.PARTNERS, DEFAULT_DATA.partners);
             saveData(STORAGE_KEYS.EVENTS, DEFAULT_DATA.events);
             saveData(STORAGE_KEYS.CONTACTS, DEFAULT_DATA.contacts);
+            localStorage.setItem(STORAGE_KEYS.RATIONALE, DEFAULT_DATA.rationale);
+            localStorage.setItem(STORAGE_KEYS.MISSION, DEFAULT_DATA.mission);
 
             loadAdminData();
             showNotification('Data reset to default!');
@@ -1561,6 +1665,7 @@
             renderPartners();
             renderEvents();
             renderContacts();
+            renderRationaleAndMission();
             showNotification('Welcome to AI in Action!');
         });
     </script>
