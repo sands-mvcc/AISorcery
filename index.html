@@ -672,6 +672,103 @@
             scroll-behavior: smooth;
         }
 
+        /* Header Logo */
+        .header-logo {
+            display: block;
+            width: 100%;
+            max-width: 860px;
+            height: auto;
+            margin: 0 auto 0.75rem;
+            border-radius: 8px;
+            transition: opacity 0.3s;
+        }
+
+        .header-logo:hover {
+            opacity: 0.9;
+        }
+
+        /* Empowerment Poster */
+        .poster-showcase {
+            margin-top: 2rem;
+            background: linear-gradient(135deg, #0f172a, #1e3a8a);
+            border-radius: 12px;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .poster-showcase h3 {
+            color: #60a5fa;
+            margin-bottom: 0.75rem;
+        }
+
+        .poster-showcase > p {
+            color: #cbd5e1;
+            margin-bottom: 1.25rem;
+            font-size: 0.95rem;
+        }
+
+        .empowerment-poster {
+            width: 100%;
+            max-width: 900px;
+            height: auto;
+            border-radius: 10px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+            display: block;
+            margin: 0 auto;
+        }
+
+        .empowerment-poster:hover {
+            transform: scale(1.01);
+            box-shadow: 0 12px 40px rgba(96,165,250,0.35);
+        }
+
+        .poster-caption {
+            color: #94a3b8 !important;
+            font-size: 0.85rem !important;
+            font-style: italic;
+            margin-top: 0.75rem !important;
+        }
+
+        /* Book Showcase */
+        .book-showcase {
+            display: flex;
+            gap: 2rem;
+            align-items: flex-start;
+            margin-top: 1rem;
+        }
+
+        .book-cover-img {
+            width: 200px;
+            min-width: 160px;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.25);
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .book-cover-img:hover {
+            transform: translateY(-4px) rotate(1deg);
+            box-shadow: 0 12px 30px rgba(0,0,0,0.35);
+        }
+
+        .book-details {
+            flex: 1;
+        }
+
+        @media (max-width: 600px) {
+            .book-showcase {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .book-cover-img {
+                width: 160px;
+            }
+        }
+
         /* Notification */
         .notification {
             position: fixed;
@@ -782,8 +879,9 @@
     <!-- Header -->
     <header>
         <div class="header-content">
-            <div class="site-title">AI in Action</div>
-            <div class="site-subtitle">Transforming Teaching and Learning in the Community College</div>
+            <a href="#home">
+                <img src="AISorcery_Logo.png" alt="AI Sorcery — AI in Action: Transforming Teaching and Learning — Master the Digital Magic" class="header-logo">
+            </a>
             <nav>
                 <ul>
                     <li><a href="#home">Home</a></li>
@@ -925,6 +1023,17 @@
                     <li><strong>Content Creation:</strong> Faculty will collaborate to create new teaching and learning materials that can be utilized in their own classrooms and programs.</li>
                     <li><strong>Professional Development:</strong> The camps will provide opportunities for faculty to enhance their pedagogical skills and stay current with advancements in AI.</li>
                 </ul>
+            </div>
+
+            <div class="poster-showcase">
+                <h3>Faculty AI Empowerment Overview</h3>
+                <p>The poster below illustrates the four core faculty benefit areas driving our initiative — from streamlined planning and personalized instruction to enriched student engagement and scalable assessment.</p>
+                <a href="AiSorceryEmplowerment_Poster.png" target="_blank">
+                    <img src="AiSorceryEmplowerment_Poster.png"
+                         alt="Faculty AI Empowerment: Enhancing Teaching and Learning in the Community College — showing four benefit areas: Streamlined Planning, Personalized Instruction, Enriched Engagement, and Scalable Assessment & Feedback"
+                         class="empowerment-poster">
+                </a>
+                <p class="poster-caption">Click the image to view full size. Faculty AI Empowerment: Enhancing Teaching and Learning in the Community College — A Guide for College Faculty.</p>
             </div>
         </section>
 
@@ -1078,9 +1187,18 @@
 
             <div class="grant-info" style="margin-top: 2rem;">
                 <h3>📚 Featured Textbook</h3>
-                <p><strong>Title:</strong> [Add Your Textbook Title Here]</p>
-                <p><strong>Description:</strong> A comprehensive guide to integrating AI in community college education across all disciplines.</p>
-                <a href="#" onclick="alert('Add your textbook purchase link here'); return false;" style="display: inline-block; margin-top: 1rem; padding: 0.75rem 1.5rem; background-color: var(--primary-color); color: white; text-decoration: none; border-radius: 5px;">Purchase Textbook</a>
+                <div class="book-showcase">
+                    <a href="AiSorcery_Book_Cover.png" target="_blank">
+                        <img src="AiSorcery_Book_Cover.png"
+                             alt="AI in Action: Transforming Teaching and Learning — AI Sorcery book cover featuring the AI wizard mascot"
+                             class="book-cover-img">
+                    </a>
+                    <div class="book-details">
+                        <p><strong>Title:</strong> AI in Action: Transforming Teaching and Learning in the Community College</p>
+                        <p style="margin-top:0.75rem;"><strong>Description:</strong> A comprehensive open educational resource (OER) guide to integrating AI in community college education across all disciplines. Developed through the NSF ATE initiative to empower faculty nationwide.</p>
+                        <a href="#" onclick="alert('Add your textbook link here'); return false;" style="display: inline-block; margin-top: 1rem; padding: 0.75rem 1.5rem; background-color: var(--primary-color); color: white; text-decoration: none; border-radius: 5px; font-weight:bold;">📖 Access Textbook (OER)</a>
+                    </div>
+                </div>
             </div>
         </section>
 
