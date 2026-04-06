@@ -280,6 +280,22 @@
             box-shadow: 0 10px 20px rgba(0,0,0,0.2);
         }
 
+        .hero-image {
+            display: block;
+            width: 100%;
+            max-width: 860px;
+            height: auto;
+            margin: 2.5rem auto 0;
+            border-radius: 12px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.35);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .hero-image:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 14px 40px rgba(0,0,0,0.45);
+        }
+
         /* Main Content */
         .container {
             max-width: 1200px;
@@ -903,6 +919,7 @@
         <h1>Welcome to AI in Action</h1>
         <p>A national initiative to prepare community college faculty and students to leverage artificial intelligence for transformative teaching and learning across all disciplines.</p>
         <a href="#about" class="cta-button">Learn More</a>
+        <img src="overview_ai.png" alt="AI in Action — Overview of transformative AI teaching and learning in the community college" class="hero-image">
     </section>
 
     <!-- Main Content -->
