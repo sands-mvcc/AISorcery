@@ -1,4 +1,5 @@
 
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -601,15 +602,176 @@
 
         .partner-item {
             background: white;
-            padding: 1rem;
-            border-radius: 5px;
+            padding: 1rem 1rem 0.8rem;
+            border-radius: 8px;
             border: 2px solid #e2e8f0;
             text-align: center;
-            transition: border-color 0.3s;
+            transition: all 0.25s;
+            cursor: pointer;
+            position: relative;
         }
 
         .partner-item:hover {
             border-color: var(--secondary-color);
+            background: linear-gradient(135deg, #f0f9ff, #e0f2fe);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 18px rgba(59,130,246,0.15);
+        }
+
+        .partner-name {
+            font-weight: 600;
+            color: var(--text-dark);
+            font-size: 0.95rem;
+            margin-bottom: 0.3rem;
+        }
+
+        .partner-contact-hint {
+            font-size: 0.78rem;
+            color: var(--text-light);
+            margin-bottom: 0.25rem;
+        }
+
+        .partner-click-hint {
+            font-size: 0.72rem;
+            color: var(--secondary-color);
+            font-weight: 600;
+            letter-spacing: 0.02em;
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+
+        .partner-item:hover .partner-click-hint {
+            opacity: 1;
+        }
+
+        /* Partner Detail Modal */
+        .partner-modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.6);
+            z-index: 8000;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
+
+        .partner-modal-overlay.active {
+            display: flex;
+        }
+
+        .partner-modal {
+            background: white;
+            border-radius: 12px;
+            max-width: 620px;
+            width: 100%;
+            max-height: 88vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.35);
+            animation: modalSlideIn 0.28s ease-out;
+        }
+
+        @keyframes modalSlideIn {
+            from { transform: translateY(-24px); opacity: 0; }
+            to   { transform: translateY(0);     opacity: 1; }
+        }
+
+        .partner-modal-header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 1.4rem 1.8rem;
+            border-radius: 12px 12px 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 1rem;
+        }
+
+        .partner-modal-header h3 {
+            color: white;
+            font-size: 1.25rem;
+            margin: 0;
+            line-height: 1.3;
+        }
+
+        .partner-modal-close {
+            background: rgba(255,255,255,0.2);
+            border: none;
+            color: white;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            transition: background 0.2s;
+        }
+
+        .partner-modal-close:hover {
+            background: rgba(255,255,255,0.38);
+        }
+
+        .partner-modal-body {
+            padding: 1.6rem 1.8rem 2rem;
+        }
+
+        .partner-detail-row {
+            display: flex;
+            gap: 0.75rem;
+            margin-bottom: 1.1rem;
+            align-items: flex-start;
+        }
+
+        .partner-detail-icon {
+            font-size: 1.25rem;
+            flex-shrink: 0;
+            margin-top: 0.05rem;
+        }
+
+        .partner-detail-content strong {
+            display: block;
+            color: var(--primary-color);
+            font-size: 0.78rem;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            margin-bottom: 0.2rem;
+        }
+
+        .partner-detail-content p {
+            color: var(--text-dark);
+            margin: 0;
+            font-size: 0.95rem;
+            line-height: 1.55;
+        }
+
+        .partner-contact-badge {
+            background: linear-gradient(135deg, #e0f2fe, #dbeafe);
+            border-left: 4px solid var(--secondary-color);
+            border-radius: 8px;
+            padding: 1rem 1.25rem;
+            margin-top: 1.4rem;
+        }
+
+        .partner-contact-badge strong {
+            color: var(--primary-color);
+            display: block;
+            margin-bottom: 0.3rem;
+            font-size: 0.78rem;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+        }
+
+        .partner-contact-badge p {
+            margin: 0;
+            font-size: 1rem;
+            color: var(--text-dark);
+            font-weight: 600;
         }
 
         /* Footer */
@@ -1289,6 +1451,17 @@
         </div>
     </footer>
 
+    <!-- Partner Detail Modal -->
+    <div class="partner-modal-overlay" id="partnerModalOverlay" onclick="closePartnerModal(event)">
+        <div class="partner-modal" id="partnerModal">
+            <div class="partner-modal-header">
+                <h3 id="partnerModalTitle"></h3>
+                <button class="partner-modal-close" onclick="closePartnerModal()">✕</button>
+            </div>
+            <div class="partner-modal-body" id="partnerModalBody"></div>
+        </div>
+    </div>
+
     <!-- Notification -->
     <div id="notification" class="notification"></div>
 
@@ -1311,7 +1484,7 @@
                 "St Petersburg Community College",
                 "Moraine Valley Community College",
                 "Brookdale Community College",
-                "Anne Arundel Community College",
+                "Northern Virginia Community College",
                 "Sinclair Community College",
                 "Fayetteville Technical College",
                 "El Paso Community College",
@@ -1521,9 +1694,68 @@ Ultimately, academia carries a profound ethical and social responsibility to pre
             partners.forEach(partner => {
                 const div = document.createElement('div');
                 div.className = 'partner-item';
-                div.textContent = partner;
+                const details = PARTNER_DETAILS[partner];
+                if (details) {
+                    div.setAttribute('onclick', `openPartnerModal(${JSON.stringify(partner)})`);
+                    div.setAttribute('title', 'Click to learn more');
+                    div.innerHTML = `
+                        <div class="partner-name">${partner}</div>
+                        <div class="partner-contact-hint">${details.contact}</div>
+                        <div class="partner-click-hint">View Details ›</div>
+                    `;
+                } else {
+                    div.textContent = partner;
+                }
                 grid.appendChild(div);
             });
+        }
+
+        function openPartnerModal(partnerName) {
+            const d = PARTNER_DETAILS[partnerName];
+            if (!d) return;
+            document.getElementById('partnerModalTitle').textContent = partnerName;
+            document.getElementById('partnerModalBody').innerHTML = `
+                <div class="partner-detail-row">
+                    <span class="partner-detail-icon">📍</span>
+                    <div class="partner-detail-content">
+                        <strong>Location</strong>
+                        <p>${d.location}</p>
+                    </div>
+                </div>
+                <div class="partner-detail-row">
+                    <span class="partner-detail-icon">🎓</span>
+                    <div class="partner-detail-content">
+                        <strong>Institution Size</strong>
+                        <p>${d.size}</p>
+                    </div>
+                </div>
+                <div class="partner-detail-row">
+                    <span class="partner-detail-icon">🤝</span>
+                    <div class="partner-detail-content">
+                        <strong>Community Served</strong>
+                        <p>${d.community}</p>
+                    </div>
+                </div>
+                <div class="partner-detail-row">
+                    <span class="partner-detail-icon">🤖</span>
+                    <div class="partner-detail-content">
+                        <strong>AI Initiatives</strong>
+                        <p>${d.aiInitiatives}</p>
+                    </div>
+                </div>
+                <div class="partner-contact-badge">
+                    <strong>Project Contact</strong>
+                    <p>${d.contact}</p>
+                </div>
+            `;
+            document.getElementById('partnerModalOverlay').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closePartnerModal(event) {
+            if (event && event.target !== document.getElementById('partnerModalOverlay')) return;
+            document.getElementById('partnerModalOverlay').classList.remove('active');
+            document.body.style.overflow = '';
         }
 
         // Events Management
@@ -1800,6 +2032,102 @@ Ultimately, academia carries a profound ethical and social responsibility to pre
                 }
             });
         });
+
+        // Close partner modal on ESC key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                document.getElementById('partnerModalOverlay').classList.remove('active');
+                document.body.style.overflow = '';
+            }
+        });
+
+        // Partner Institution Details
+        const PARTNER_DETAILS = {
+            "Whatcom Community College": {
+                location: "Bellingham, Washington (Pacific Northwest)",
+                size: "Approximately 7,000 students",
+                community: "Northwest Washington — Whatcom County and surrounding region, including Indigenous tribal nations and rural communities.",
+                aiInitiatives: "Integrating AI literacy across CTE and workforce programs; expanding Computer Information Systems curriculum with AI and machine learning components; focusing on AI applications in healthcare and the trades; active NSF ATE AI in Action participant.",
+                contact: "Michelle Robinson"
+            },
+            "Las Positas College": {
+                location: "Livermore, California (San Francisco Bay Area — Tri-Valley)",
+                size: "Approximately 9,000 students",
+                community: "Tri-Valley region (Livermore, Pleasanton, Dublin); workforce adjacent to Lawrence Livermore National Laboratory and the Bay Area tech sector.",
+                aiInitiatives: "AI and machine learning coursework integrated into STEM programs; partnerships with Bay Area technology industry; AI-enhanced instructional design; workforce development aligned with Silicon Valley AI demands; NSF ATE AI in Action participant.",
+                contact: "Jeff Weichert"
+            },
+            "St Petersburg Community College": {
+                location: "St. Petersburg, Florida (Tampa Bay Area — multiple campuses)",
+                size: "Approximately 35,000 students",
+                community: "Pinellas County, FL; diverse urban, suburban, and coastal populations; one of Florida's most populous counties.",
+                aiInitiatives: "AI integration across healthcare technology, IT, and business programs; bachelor's degree programs in technology education; digital transformation and AI literacy initiatives; partnerships with Tampa Bay healthcare and tech employers; NSF ATE AI in Action participant.",
+                contact: "Laura Malave"
+            },
+            "Moraine Valley Community College": {
+                location: "Palos Hills, Illinois (Southwest Suburban Chicago)",
+                size: "Approximately 12,000–14,000 students",
+                community: "40 southwest suburban Chicago communities; diverse working-class and professional populations across the greater Chicago metropolitan area.",
+                aiInitiatives: "Host institution for the NSF ATE AI in Action grant (Award #2500821); leading national AI curriculum development; partnering with NCyTE to build a National AI Teachers Academy; training 100+ faculty annually; flagship initiative bridging cybersecurity and artificial intelligence.",
+                contact: "Kristine Christensen"
+            },
+            "Brookdale Community College": {
+                location: "Lincroft, New Jersey (Monmouth County)",
+                size: "Approximately 13,000–15,000 students",
+                community: "Monmouth County, NJ; coastal New Jersey communities; suburban professionals and returning adult learners.",
+                aiInitiatives: "Nationally recognized AI and robotics education programs; AI integration in computer science, cybersecurity, and business curricula; faculty-led AI instructional design and research; active NSF ATE AI in Action partner.",
+                contact: "Michael Qaissaunee"
+            },
+            "Northern Virginia Community College": {
+                location: "Annandale, Virginia (main campus) — six campuses across Northern Virginia",
+                size: "Approximately 70,000–75,000 students — one of the largest community colleges in the United States",
+                community: "Northern Virginia region including Fairfax, Prince William, and Loudoun counties, and the City of Alexandria; proximity to federal government agencies, defense contractors, and the technology corridor.",
+                aiInitiatives: "Robust IT, cybersecurity, and data science programs with embedded AI competencies; workforce AI training for federal and defense sector employees; partnerships with AWS, Microsoft, and Northern Virginia tech companies; AI curriculum aligned with CompTIA AI+ and emerging credentials; NSF ATE AI in Action partner.",
+                contact: "Fernando Seminario"
+            },
+            "Sinclair Community College": {
+                location: "Dayton, Ohio (main campus and regional learning centers)",
+                size: "Approximately 17,000–20,000 students",
+                community: "Greater Dayton metropolitan area; significant military-affiliated population (Wright-Patterson Air Force Base); diverse urban and suburban workforce.",
+                aiInitiatives: "AI integration in advanced manufacturing, aerospace, and defense technology programs; AI-enhanced simulation labs for industrial automation; partnerships with defense and aerospace employers; AI tools embedded in healthcare technology and engineering programs; NSF ATE AI in Action participant.",
+                contact: "Kyle Jones"
+            },
+            "Fayetteville Technical College": {
+                location: "Fayetteville, North Carolina",
+                size: "Approximately 15,000–17,000 students",
+                community: "Cumberland County, NC; one of the largest military-adjacent communities in the nation (Fort Liberty, formerly Fort Bragg); serves active duty military, veterans, and their families alongside the civilian workforce.",
+                aiInitiatives: "AI and technology training tailored to military transition workforce; cybersecurity and AI convergence programs; STEM integration in healthcare, manufacturing, and public safety; veteran-focused AI literacy pathways; NSF ATE AI in Action partner.",
+                contact: "Christina Royal"
+            },
+            "El Paso Community College": {
+                location: "El Paso, Texas (five campuses across El Paso County)",
+                size: "Approximately 27,000–30,000 students",
+                community: "El Paso County, TX; US–Mexico border region; predominantly Hispanic/Latino community; bilingual and bicultural workforce.",
+                aiInitiatives: "AI integration in border-region workforce programs including healthcare, manufacturing, and logistics; bilingual AI literacy initiatives; partnerships with Fort Bliss and local industry; AI tools in STEM and CTE programs focused on underrepresented communities; NSF ATE AI in Action partner.",
+                contact: "Christian Servin"
+            },
+            "Honolulu Community College": {
+                location: "Honolulu, Hawaii (Oahu)",
+                size: "Approximately 3,500–4,500 students",
+                community: "Oahu, Hawaii; serves Native Hawaiian, Pacific Islander, Asian, and multicultural communities; unique Pacific island context for workforce development.",
+                aiInitiatives: "AI integration in trades, technology, and maritime programs; AI tools adapted for Pacific-region workforce needs including tourism, defense, and maritime industries; culturally responsive AI literacy programs; NSF ATE AI in Action partner.",
+                contact: "Debasis Bhattacharya"
+            },
+            "Miami Dade Community College": {
+                location: "Miami, Florida (eight campuses across Miami-Dade County)",
+                size: "Approximately 100,000+ students — one of the largest colleges in the United States",
+                community: "Miami-Dade County; one of the most diverse jurisdictions in the US with a majority Hispanic/Latino population; gateway institution to Latin America and the Caribbean.",
+                aiInitiatives: "Established AI Center of Excellence; bachelor's degree programs in AI and computer science; partnerships with Microsoft, Google, and Amazon; AI literacy embedded across all disciplines; leading national model for AI education in diverse, urban community colleges; NSF ATE AI in Action partner.",
+                contact: "Dr. Diego Tibaquirá"
+            },
+            "Pikes Peak State College": {
+                location: "Colorado Springs, Colorado (multiple campuses)",
+                size: "Approximately 16,000–18,000 students",
+                community: "El Paso County, CO; large military community (Fort Carson, Peterson Space Force Base, NORAD/NORTHCOM, Schriever SFB); serves military personnel, veterans, defense contractors, and the civilian workforce.",
+                aiInitiatives: "AI and cybersecurity programs serving the defense and space technology sector; workforce AI training for military transition; AI integration in STEM and CTE programs; strong partnerships with DoD and Colorado Springs tech community; NSF ATE AI in Action partner.",
+                contact: "Mike Krawow"
+            }
+        };
 
         // Initialize on page load
         window.addEventListener('load', function() {
