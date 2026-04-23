@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AI in Action: Transforming Teaching and Learning in the Community College</title>
     <style>
+        /* Fonts inherited from lesson07.html for course sidebar */
+        @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Inter+Tight:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
         * {
             margin: 0;
             padding: 0;
@@ -23,171 +24,258 @@
             --text-light: #64748b;
             --success-color: #10b981;
             --warning-color: #f59e0b;
-            --danger-color: #ef4444;
+
+            /* === TOKENS INHERITED FROM lesson07.html === */
+            --ink: #0a0a0a;
+            --ink-soft: #2a2a2a;
+            --paper: #ffffff;
+            --paper-warm: #fafaf7;
+            --rule: #e5e5e0;
+            --forest: #0f3d2e;
+            --forest-deep: #072318;
+            --moss: #1d6b4f;
+            --sage: #e8f0ea;
+            --sage-deep: #c9ddd0;
+            --lime: #8cc152;
+            --serif: 'Cormorant Garamond', 'EB Garamond', Georgia, serif;
+            --sans: 'Inter Tight', 'Helvetica Neue', Arial, sans-serif;
+            --mono: 'JetBrains Mono', 'Courier New', monospace;
+
+            /* Sidebar layout tokens */
+            --sidebar-width: 280px;
         }
+
+        /* ============================================
+           COURSE SIDEBAR — inherits lesson07 palette
+           ============================================ */
+        .course-sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: var(--sidebar-width);
+            height: 100vh;
+            background: var(--paper);
+            border-right: 1px solid var(--ink);
+            padding: 1.75rem 1.5rem 2rem;
+            overflow-y: auto;
+            z-index: 1500;
+            font-family: var(--sans);
+            color: var(--ink);
+            transition: transform 0.3s ease;
+        }
+
+        .course-sidebar::-webkit-scrollbar { width: 6px; }
+        .course-sidebar::-webkit-scrollbar-track { background: var(--paper-warm); }
+        .course-sidebar::-webkit-scrollbar-thumb { background: var(--sage-deep); border-radius: 3px; }
+
+        .course-sidebar .edition {
+            font-family: var(--mono);
+            font-size: 0.65rem;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: var(--forest);
+            font-weight: 600;
+            padding-bottom: 0.75rem;
+            border-bottom: 1px solid var(--rule);
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .course-sidebar .course-title {
+            font-family: var(--serif);
+            font-weight: 500;
+            font-size: 1.55rem;
+            line-height: 1.1;
+            letter-spacing: -0.015em;
+            color: var(--ink);
+            margin-bottom: 0.5rem;
+        }
+
+        .course-sidebar .course-title em {
+            font-style: italic;
+            color: var(--forest);
+            font-weight: 400;
+        }
+
+        .course-sidebar .course-desc {
+            font-family: var(--serif);
+            font-style: italic;
+            font-size: 0.92rem;
+            line-height: 1.45;
+            color: var(--ink-soft);
+            padding-bottom: 1.25rem;
+            border-bottom: 3px double var(--ink);
+            margin-bottom: 1.25rem;
+        }
+
+        .course-sidebar .lessons-label {
+            font-family: var(--mono);
+            font-size: 0.65rem;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: var(--moss);
+            font-weight: 500;
+            margin-bottom: 0.75rem;
+            display: block;
+        }
+
+        .course-sidebar ol.lesson-list {
+            list-style: none;
+            counter-reset: lesson;
+            padding: 0;
+            margin: 0;
+        }
+
+        .course-sidebar .lesson-item {
+            counter-increment: lesson;
+            border-bottom: 1px solid var(--rule);
+        }
+
+        .course-sidebar .lesson-item:last-child { border-bottom: none; }
+
+        .course-sidebar .lesson-link,
+        .course-sidebar .lesson-placeholder {
+            display: grid;
+            grid-template-columns: 2rem 1fr auto;
+            gap: 0.5rem;
+            align-items: baseline;
+            padding: 0.7rem 0.25rem;
+            text-decoration: none;
+            color: var(--ink-soft);
+            font-size: 0.88rem;
+            line-height: 1.35;
+            transition: background 0.2s ease, color 0.2s ease, padding-left 0.2s ease;
+            border-left: 3px solid transparent;
+        }
+
+        .course-sidebar .lesson-link::before,
+        .course-sidebar .lesson-placeholder::before {
+            content: counter(lesson, decimal-leading-zero);
+            font-family: var(--mono);
+            font-size: 0.72rem;
+            color: var(--forest);
+            font-weight: 500;
+            letter-spacing: 0.04em;
+        }
+
+        .course-sidebar .lesson-link:hover {
+            background: var(--sage);
+            color: var(--ink);
+            padding-left: 0.6rem;
+            border-left-color: var(--moss);
+        }
+
+        .course-sidebar .lesson-link.active {
+            background: var(--forest);
+            color: var(--paper);
+            padding-left: 0.6rem;
+            border-left-color: var(--lime);
+            font-weight: 500;
+        }
+
+        .course-sidebar .lesson-link.active::before { color: var(--lime); }
+
+        .course-sidebar .lesson-placeholder {
+            opacity: 0.5;
+            cursor: not-allowed;
+            color: var(--ink-soft);
+        }
+
+        .course-sidebar .coming-soon {
+            font-family: var(--mono);
+            font-size: 0.58rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--moss);
+            background: var(--sage);
+            padding: 2px 6px;
+            border-radius: 2px;
+            align-self: center;
+            font-weight: 500;
+            white-space: nowrap;
+        }
+
+        .course-sidebar .lesson-link .coming-soon {
+            visibility: hidden;
+        }
+
+        /* Sidebar footer tag */
+        .course-sidebar .sidebar-foot {
+            margin-top: 1.5rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--rule);
+            font-family: var(--mono);
+            font-size: 0.62rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--ink-soft);
+            line-height: 1.5;
+        }
+
+        .course-sidebar .sidebar-foot strong {
+            color: var(--forest);
+            display: block;
+            margin-top: 2px;
+        }
+
+        /* Mobile toggle button */
+        .sidebar-toggle {
+            display: none;
+            position: fixed;
+            top: 1rem;
+            left: 1rem;
+            z-index: 2500;
+            background: var(--forest);
+            color: var(--paper);
+            border: none;
+            width: 44px;
+            height: 44px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-family: var(--mono);
+            font-size: 1.1rem;
+            font-weight: 600;
+            box-shadow: 0 2px 8px rgba(10,10,10,0.2);
+            align-items: center;
+            justify-content: center;
+        }
+
+        .sidebar-toggle:hover { background: var(--forest-deep); }
+
+        .sidebar-toggle .bar {
+            display: block;
+            width: 20px;
+            height: 2px;
+            background: var(--paper);
+            margin: 4px auto;
+            transition: transform 0.25s ease, opacity 0.25s ease;
+        }
+
+        .sidebar-toggle.open .bar:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+        .sidebar-toggle.open .bar:nth-child(2) { opacity: 0; }
+        .sidebar-toggle.open .bar:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+
+        .sidebar-backdrop {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(10, 10, 10, 0.4);
+            z-index: 1400;
+        }
+
+        .sidebar-backdrop.show { display: block; }
+
+        /* Push main site content right of sidebar on desktop */
+        body {
+            padding-left: var(--sidebar-width);
+        }
+        /* end sidebar styles */
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             line-height: 1.6;
             color: var(--text-dark);
             background-color: var(--light-bg);
-        }
-
-        /* Admin Button */
-        .admin-toggle {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background: var(--primary-color);
-            color: white;
-            border: none;
-            padding: 1rem 1.5rem;
-            border-radius: 50px;
-            cursor: pointer;
-            font-weight: bold;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-            z-index: 9999;
-            transition: all 0.3s;
-        }
-
-        .admin-toggle:hover {
-            background: var(--secondary-color);
-            transform: translateY(-2px);
-        }
-
-        /* Admin Panel */
-        .admin-panel {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.8);
-            z-index: 10000;
-            overflow-y: auto;
-        }
-
-        .admin-panel.active {
-            display: block;
-        }
-
-        .admin-content {
-            max-width: 900px;
-            margin: 2rem auto;
-            background: white;
-            border-radius: 10px;
-            padding: 2rem;
-        }
-
-        .admin-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 2rem;
-            padding-bottom: 1rem;
-            border-bottom: 2px solid var(--accent-color);
-        }
-
-        .admin-close {
-            background: var(--danger-color);
-            color: white;
-            border: none;
-            padding: 0.5rem 1rem;
-            border-radius: 5px;
-            cursor: pointer;
-            font-weight: bold;
-        }
-
-        .admin-section {
-            margin-bottom: 2rem;
-            padding: 1.5rem;
-            background: var(--light-bg);
-            border-radius: 8px;
-        }
-
-        .admin-section h3 {
-            color: var(--primary-color);
-            margin-bottom: 1rem;
-        }
-
-        .admin-form {
-            display: grid;
-            gap: 1rem;
-            margin-bottom: 1rem;
-        }
-
-        .admin-form input,
-        .admin-form textarea {
-            width: 100%;
-            padding: 0.75rem;
-            border: 2px solid #e2e8f0;
-            border-radius: 5px;
-            font-size: 1rem;
-        }
-
-        .admin-form input:focus,
-        .admin-form textarea:focus {
-            outline: none;
-            border-color: var(--secondary-color);
-        }
-
-        .admin-btn {
-            background: var(--success-color);
-            color: white;
-            border: none;
-            padding: 0.75rem 1.5rem;
-            border-radius: 5px;
-            cursor: pointer;
-            font-weight: bold;
-            transition: background 0.3s;
-        }
-
-        .admin-btn:hover {
-            background: #059669;
-        }
-
-        .admin-btn-danger {
-            background: var(--danger-color);
-        }
-
-        .admin-btn-danger:hover {
-            background: #dc2626;
-        }
-
-        .admin-list {
-            list-style: none;
-            margin-top: 1rem;
-        }
-
-        .admin-list-item {
-            background: white;
-            padding: 1rem;
-            margin-bottom: 0.5rem;
-            border-radius: 5px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border: 1px solid #e2e8f0;
-        }
-
-        .admin-list-item button {
-            margin-left: 0.5rem;
-            padding: 0.5rem 1rem;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-weight: bold;
-        }
-
-        .btn-edit {
-            background: var(--secondary-color);
-            color: white;
-        }
-
-        .btn-delete {
-            background: var(--danger-color);
-            color: white;
         }
 
         /* Header and Navigation */
@@ -280,22 +368,6 @@
         .cta-button:hover {
             transform: translateY(-2px);
             box-shadow: 0 10px 20px rgba(0,0,0,0.2);
-        }
-
-        .hero-image {
-            display: block;
-            width: 100%;
-            max-width: 860px;
-            height: auto;
-            margin: 2.5rem auto 0;
-            border-radius: 12px;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.35);
-            transition: transform 0.3s, box-shadow 0.3s;
-        }
-
-        .hero-image:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 14px 40px rgba(0,0,0,0.45);
         }
 
         /* Main Content */
@@ -602,176 +674,15 @@
 
         .partner-item {
             background: white;
-            padding: 1rem 1rem 0.8rem;
-            border-radius: 8px;
+            padding: 1rem;
+            border-radius: 5px;
             border: 2px solid #e2e8f0;
             text-align: center;
-            transition: all 0.25s;
-            cursor: pointer;
-            position: relative;
+            transition: border-color 0.3s;
         }
 
         .partner-item:hover {
             border-color: var(--secondary-color);
-            background: linear-gradient(135deg, #f0f9ff, #e0f2fe);
-            transform: translateY(-3px);
-            box-shadow: 0 6px 18px rgba(59,130,246,0.15);
-        }
-
-        .partner-name {
-            font-weight: 600;
-            color: var(--text-dark);
-            font-size: 0.95rem;
-            margin-bottom: 0.3rem;
-        }
-
-        .partner-contact-hint {
-            font-size: 0.78rem;
-            color: var(--text-light);
-            margin-bottom: 0.25rem;
-        }
-
-        .partner-click-hint {
-            font-size: 0.72rem;
-            color: var(--secondary-color);
-            font-weight: 600;
-            letter-spacing: 0.02em;
-            opacity: 0;
-            transition: opacity 0.2s;
-        }
-
-        .partner-item:hover .partner-click-hint {
-            opacity: 1;
-        }
-
-        /* Partner Detail Modal */
-        .partner-modal-overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.6);
-            z-index: 8000;
-            align-items: center;
-            justify-content: center;
-            padding: 1rem;
-        }
-
-        .partner-modal-overlay.active {
-            display: flex;
-        }
-
-        .partner-modal {
-            background: white;
-            border-radius: 12px;
-            max-width: 620px;
-            width: 100%;
-            max-height: 88vh;
-            overflow-y: auto;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.35);
-            animation: modalSlideIn 0.28s ease-out;
-        }
-
-        @keyframes modalSlideIn {
-            from { transform: translateY(-24px); opacity: 0; }
-            to   { transform: translateY(0);     opacity: 1; }
-        }
-
-        .partner-modal-header {
-            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-            color: white;
-            padding: 1.4rem 1.8rem;
-            border-radius: 12px 12px 0 0;
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            gap: 1rem;
-        }
-
-        .partner-modal-header h3 {
-            color: white;
-            font-size: 1.25rem;
-            margin: 0;
-            line-height: 1.3;
-        }
-
-        .partner-modal-close {
-            background: rgba(255,255,255,0.2);
-            border: none;
-            color: white;
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            cursor: pointer;
-            font-size: 1rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-            transition: background 0.2s;
-        }
-
-        .partner-modal-close:hover {
-            background: rgba(255,255,255,0.38);
-        }
-
-        .partner-modal-body {
-            padding: 1.6rem 1.8rem 2rem;
-        }
-
-        .partner-detail-row {
-            display: flex;
-            gap: 0.75rem;
-            margin-bottom: 1.1rem;
-            align-items: flex-start;
-        }
-
-        .partner-detail-icon {
-            font-size: 1.25rem;
-            flex-shrink: 0;
-            margin-top: 0.05rem;
-        }
-
-        .partner-detail-content strong {
-            display: block;
-            color: var(--primary-color);
-            font-size: 0.78rem;
-            text-transform: uppercase;
-            letter-spacing: 0.06em;
-            margin-bottom: 0.2rem;
-        }
-
-        .partner-detail-content p {
-            color: var(--text-dark);
-            margin: 0;
-            font-size: 0.95rem;
-            line-height: 1.55;
-        }
-
-        .partner-contact-badge {
-            background: linear-gradient(135deg, #e0f2fe, #dbeafe);
-            border-left: 4px solid var(--secondary-color);
-            border-radius: 8px;
-            padding: 1rem 1.25rem;
-            margin-top: 1.4rem;
-        }
-
-        .partner-contact-badge strong {
-            color: var(--primary-color);
-            display: block;
-            margin-bottom: 0.3rem;
-            font-size: 0.78rem;
-            text-transform: uppercase;
-            letter-spacing: 0.06em;
-        }
-
-        .partner-contact-badge p {
-            margin: 0;
-            font-size: 1rem;
-            color: var(--text-dark);
-            font-weight: 600;
         }
 
         /* Footer */
@@ -840,112 +751,25 @@
                 gap: 1rem;
             }
 
-            .admin-content {
-                margin: 1rem;
-                padding: 1rem;
+            /* Collapsible sidebar on mobile */
+            body { padding-left: 0; }
+
+            .course-sidebar {
+                transform: translateX(-100%);
+                box-shadow: 4px 0 20px rgba(10, 10, 10, 0.15);
             }
+
+            .course-sidebar.open { transform: translateX(0); }
+
+            .sidebar-toggle { display: flex; flex-direction: column; }
+
+            /* Offset sticky header so hamburger doesn't overlap */
+            header { padding-left: 3.5rem; }
         }
 
         /* Smooth Scrolling */
         html {
             scroll-behavior: smooth;
-        }
-
-        /* Header Logo */
-        .header-logo {
-            display: block;
-            width: 100%;
-            max-width: 860px;
-            height: auto;
-            margin: 0 auto 0.75rem;
-            border-radius: 8px;
-            transition: opacity 0.3s;
-        }
-
-        .header-logo:hover {
-            opacity: 0.9;
-        }
-
-        /* Empowerment Poster */
-        .poster-showcase {
-            margin-top: 2rem;
-            background: linear-gradient(135deg, #0f172a, #1e3a8a);
-            border-radius: 12px;
-            padding: 2rem;
-            text-align: center;
-        }
-
-        .poster-showcase h3 {
-            color: #60a5fa;
-            margin-bottom: 0.75rem;
-        }
-
-        .poster-showcase > p {
-            color: #cbd5e1;
-            margin-bottom: 1.25rem;
-            font-size: 0.95rem;
-        }
-
-        .empowerment-poster {
-            width: 100%;
-            max-width: 900px;
-            height: auto;
-            border-radius: 10px;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.5);
-            cursor: pointer;
-            transition: transform 0.3s, box-shadow 0.3s;
-            display: block;
-            margin: 0 auto;
-        }
-
-        .empowerment-poster:hover {
-            transform: scale(1.01);
-            box-shadow: 0 12px 40px rgba(96,165,250,0.35);
-        }
-
-        .poster-caption {
-            color: #94a3b8 !important;
-            font-size: 0.85rem !important;
-            font-style: italic;
-            margin-top: 0.75rem !important;
-        }
-
-        /* Book Showcase */
-        .book-showcase {
-            display: flex;
-            gap: 2rem;
-            align-items: flex-start;
-            margin-top: 1rem;
-        }
-
-        .book-cover-img {
-            width: 200px;
-            min-width: 160px;
-            height: auto;
-            border-radius: 8px;
-            box-shadow: 0 6px 20px rgba(0,0,0,0.25);
-            cursor: pointer;
-            transition: transform 0.3s, box-shadow 0.3s;
-        }
-
-        .book-cover-img:hover {
-            transform: translateY(-4px) rotate(1deg);
-            box-shadow: 0 12px 30px rgba(0,0,0,0.35);
-        }
-
-        .book-details {
-            flex: 1;
-        }
-
-        @media (max-width: 600px) {
-            .book-showcase {
-                flex-direction: column;
-                align-items: center;
-            }
-
-            .book-cover-img {
-                width: 160px;
-            }
         }
 
         /* Notification */
@@ -980,92 +804,111 @@
     </style>
 </head>
 <body>
-    <!-- Admin Toggle Button -->
-    <button class="admin-toggle" onclick="toggleAdmin()">🔐 Admin Panel</button>
+    <!-- Mobile sidebar toggle -->
+    <button class="sidebar-toggle" id="sidebarToggle" aria-label="Toggle course navigation" aria-controls="courseSidebar" aria-expanded="false">
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+    </button>
+    <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
 
-    <!-- Admin Panel -->
-    <div class="admin-panel" id="adminPanel">
-        <div class="admin-content">
-            <div class="admin-header">
-                <h2>Website Admin Panel</h2>
-                <button class="admin-close" onclick="toggleAdmin()">Close</button>
-            </div>
+    <!-- Course Sidebar -->
+    <aside class="course-sidebar" id="courseSidebar" aria-label="Course navigation">
+        <span class="edition">AI in Action · Faculty Series</span>
+        <div class="course-title">The AI-in-Education <em>Course</em></div>
+        <p class="course-desc">Self-paced lessons for educators integrating AI into instruction. Complete lessons in order; each builds on prior concepts.</p>
 
-            <!-- Partner Institutions Management -->
-            <div class="admin-section">
-                <h3>📍 Manage Partner Institutions</h3>
-                <div class="admin-form">
-                    <input type="text" id="partnerName" placeholder="Institution Name (e.g., Whatcom Community College)">
-                    <button class="admin-btn" onclick="addPartner()">Add Partner Institution</button>
-                </div>
-                <ul class="admin-list" id="partnersList"></ul>
-            </div>
+        <span class="lessons-label">§ Twelve Lessons</span>
+        <ol class="lesson-list">
+            <li class="lesson-item">
+                <span class="lesson-placeholder" aria-disabled="true">
+                    <span>Introduction to LLMs</span>
+                    <span class="coming-soon">Soon</span>
+                </span>
+            </li>
+            <li class="lesson-item">
+                <span class="lesson-placeholder" aria-disabled="true">
+                    <span>Using LLMs</span>
+                    <span class="coming-soon">Soon</span>
+                </span>
+            </li>
+            <li class="lesson-item">
+                <span class="lesson-placeholder" aria-disabled="true">
+                    <span>Creating a GitHub Account</span>
+                    <span class="coming-soon">Soon</span>
+                </span>
+            </li>
+            <li class="lesson-item">
+                <span class="lesson-placeholder" aria-disabled="true">
+                    <span>Using GitHub</span>
+                    <span class="coming-soon">Soon</span>
+                </span>
+            </li>
+            <li class="lesson-item">
+                <span class="lesson-placeholder" aria-disabled="true">
+                    <span>Using iFrames for Publishing Content in an LMS</span>
+                    <span class="coming-soon">Soon</span>
+                </span>
+            </li>
+            <li class="lesson-item">
+                <span class="lesson-placeholder" aria-disabled="true">
+                    <span>Fundamentals of Prompt Engineering</span>
+                    <span class="coming-soon">Soon</span>
+                </span>
+            </li>
+            <li class="lesson-item">
+                <a class="lesson-link" href="lesson07.html">
+                    <span>Personas &amp; Skills as Force Multipliers in Prompt Engineering</span>
+                    <span class="coming-soon">Soon</span>
+                </a>
+            </li>
+            <li class="lesson-item">
+                <span class="lesson-placeholder" aria-disabled="true">
+                    <span>Creating Instructional Graphics with AI</span>
+                    <span class="coming-soon">Soon</span>
+                </span>
+            </li>
+            <li class="lesson-item">
+                <span class="lesson-placeholder" aria-disabled="true">
+                    <span>Creating Instructional Animations Using AI</span>
+                    <span class="coming-soon">Soon</span>
+                </span>
+            </li>
+            <li class="lesson-item">
+                <span class="lesson-placeholder" aria-disabled="true">
+                    <span>Creating Instructional Videos Using AI</span>
+                    <span class="coming-soon">Soon</span>
+                </span>
+            </li>
+            <li class="lesson-item">
+                <span class="lesson-placeholder" aria-disabled="true">
+                    <span>Creating Rubrics and Grading Tools Using AI</span>
+                    <span class="coming-soon">Soon</span>
+                </span>
+            </li>
+            <li class="lesson-item">
+                <span class="lesson-placeholder" aria-disabled="true">
+                    <span>Using AI in Student Assessment</span>
+                    <span class="coming-soon">Soon</span>
+                </span>
+            </li>
+        </ol>
 
-            <!-- Calendar Events Management -->
-            <div class="admin-section">
-                <h3>📅 Manage Calendar Events</h3>
-                <div class="admin-form">
-                    <input type="text" id="eventDate" placeholder="Date (e.g., Summer 2026 or July 15, 2026)">
-                    <input type="text" id="eventTitle" placeholder="Event Title">
-                    <textarea id="eventDescription" placeholder="Event Description" rows="3"></textarea>
-                    <button class="admin-btn" onclick="addEvent()">Add Event</button>
-                </div>
-                <ul class="admin-list" id="eventsList"></ul>
-            </div>
-
-            <!-- Contact Information Management -->
-            <div class="admin-section">
-                <h3>📧 Manage Contact Information</h3>
-                <div class="admin-form">
-                    <input type="text" id="contactTitle" placeholder="Contact Title (e.g., General Inquiries)">
-                    <input type="text" id="contactDescription" placeholder="Description">
-                    <input type="email" id="contactEmail" placeholder="Email Address">
-                    <button class="admin-btn" onclick="addContact()">Add Contact</button>
-                </div>
-                <ul class="admin-list" id="contactsList"></ul>
-            </div>
-
-            <!-- Rationale Text Management -->
-            <div class="admin-section">
-                <h3>📝 Edit Rationale for AI Literacy</h3>
-                <p style="color: var(--text-light); margin-bottom: 1rem; font-size: 0.9rem;">Edit the three-paragraph rationale displayed in the Rationale &amp; Mission section. Use blank lines between paragraphs.</p>
-                <div class="admin-form">
-                    <textarea id="rationaleEditor" rows="14" placeholder="Enter rationale text here..."></textarea>
-                    <button class="admin-btn" onclick="saveRationale()">💾 Save Rationale</button>
-                </div>
-            </div>
-
-            <!-- Mission Statement Management -->
-            <div class="admin-section">
-                <h3>🎯 Edit Mission Statement</h3>
-                <p style="color: var(--text-light); margin-bottom: 1rem; font-size: 0.9rem;">Enter the mission statement for the initiative. Plain text is fine; line breaks will be preserved.</p>
-                <div class="admin-form">
-                    <textarea id="missionEditor" rows="6" placeholder="Enter mission statement here..."></textarea>
-                    <button class="admin-btn" onclick="saveMission()">💾 Save Mission Statement</button>
-                </div>
-            </div>
-
-            <!-- Export/Import Data -->
-            <div class="admin-section">
-                <h3>💾 Backup & Restore</h3>
-                <button class="admin-btn" onclick="exportData()">Export All Data</button>
-                <button class="admin-btn" onclick="importData()">Import Data</button>
-                <button class="admin-btn admin-btn-danger" onclick="resetData()">Reset to Default</button>
-            </div>
+        <div class="sidebar-foot">
+            NSF ATE · Award #2500821
+            <strong>Moraine Valley CC</strong>
         </div>
-    </div>
+    </aside>
 
     <!-- Header -->
     <header>
         <div class="header-content">
-            <a href="#home">
-                <img src="AISorcery_Logo.png" alt="AI Sorcery — AI in Action: Transforming Teaching and Learning — Master the Digital Magic" class="header-logo">
-            </a>
+            <div class="site-title">AI in Action</div>
+            <div class="site-subtitle">Transforming Teaching and Learning in the Community College</div>
             <nav>
                 <ul>
                     <li><a href="#home">Home</a></li>
                     <li><a href="#about">About</a></li>
-                    <li><a href="#rationale">Rationale & Mission</a></li>
                     <li><a href="#goals">Goals & Objectives</a></li>
                     <li><a href="#calendar">Calendar</a></li>
                     <li><a href="#resources">Resources</a></li>
@@ -1082,7 +925,6 @@
         <h1>Welcome to AI in Action</h1>
         <p>A national initiative to prepare community college faculty and students to leverage artificial intelligence for transformative teaching and learning across all disciplines.</p>
         <a href="#about" class="cta-button">Learn More</a>
-        <img src="overview_ai.png" alt="AI in Action — Overview of transformative AI teaching and learning in the community college" class="hero-image">
     </section>
 
     <!-- Main Content -->
@@ -1118,29 +960,19 @@
             <p>Each summer, the academy will train over 100 faculty members. This will include five virtual workshops annually, and we will leverage the Cybersecurity Across Disciplines (CyAD) Conference to bring participants together each year. This will allow them to share their experiences and the content that they developed, sparking further innovation and collaboration.</p>
 
             <h3>Partner Institutions</h3>
-            <div class="partners-grid" id="partnersGrid">
-                <!-- Partners will be loaded dynamically -->
-            </div>
-        </section>
-
-        <!-- Rationale & Mission Section -->
-        <section id="rationale">
-            <h2>Rationale &amp; Mission</h2>
-
-            <h3>Rationale for the Advancement of AI Literacy in Community Colleges</h3>
-            <div id="rationaleText">
-                <p>The rapid integration of Artificial Intelligence into the global economy is not a fleeting trend; it is a fundamental shift in how work is performed, and it is here to stay. For the community college system—an institution historically tasked with serving as the backbone of the American workforce—this transformation poses an immediate challenge. As AI automates routine tasks and disrupts traditional roles, the professions that community college students typically fill are among the most vulnerable to displacement. Without a concerted effort to bridge the AI literacy gap, we risk a "negative-sum" transition where graduates enter a labor market with skills that are already obsolete, leading to localized economic stagnation and a workforce ill-equipped for the demands of modern industry.</p>
-
-                <p>While the displacement of some roles is inevitable, the future labor market will be defined by the creation of new, high-value positions that require workers to leverage AI in their daily operations. The value of a community college education in this new era will be measured by its ability to produce "AI-augmented" professionals who can navigate these tools with precision. Because community colleges were designed to be nimble and responsive to workforce transitions, they are the most critical link in ensuring the local workforce remains competitive. If faculty fail to integrate these competencies now, the gap between institutional instruction and industry requirements will widen, devaluing the community college degree and hampering the economic mobility of its graduates.</p>
-
-                <p>Ultimately, academia carries a profound ethical and social responsibility to prepare the next generation for an AI-driven world. Education must go beyond simple technical proficiency; it must provide a framework for the efficient and ethical implementation of AI, ensuring students understand both the capabilities and the moral implications of the technology they use. By empowering community college faculty—the primary mentors of tomorrow's workforce—to become AI-literate leaders, we ensure that these vital institutions continue to fulfill their mission. Failing to do so does not just hurt the individual student; it undermines the future of the American workforce and the stability of the communities that rely on these colleges for economic survival.</p>
-            </div>
-
-            <div class="grant-info" style="margin-top: 2.5rem;">
-                <h3>🎯 Mission Statement</h3>
-                <div id="missionText">
-                    <p><em>Mission statement content is managed by the site administrator. Please check back for updates.</em></p>
-                </div>
+            <div class="partners-grid">
+                <div class="partner-item">Whatcom Community College</div>
+                <div class="partner-item">Las Positas College</div>
+                <div class="partner-item">St Petersburg Community College</div>
+                <div class="partner-item">Moraine Valley Community College</div>
+                <div class="partner-item">Brookdale Community College</div>
+                <div class="partner-item">Anne Arundel Community College</div>
+                <div class="partner-item">Sinclair Community College</div>
+                <div class="partner-item">Fayetteville Technical College</div>
+                <div class="partner-item">El Paso Community College</div>
+                <div class="partner-item">Honolulu Community College</div>
+                <div class="partner-item">Miami Dade Community College</div>
+                <div class="partner-item">Pikes Peak State College</div>
             </div>
         </section>
 
@@ -1204,25 +1036,42 @@
                     <li><strong>Professional Development:</strong> The camps will provide opportunities for faculty to enhance their pedagogical skills and stay current with advancements in AI.</li>
                 </ul>
             </div>
-
-            <div class="poster-showcase">
-                <h3>Faculty AI Empowerment Overview</h3>
-                <p>The poster below illustrates the four core faculty benefit areas driving our initiative — from streamlined planning and personalized instruction to enriched student engagement and scalable assessment.</p>
-                <a href="AiSorceryEmplowerment_Poster.png" target="_blank">
-                    <img src="AiSorceryEmplowerment_Poster.png"
-                         alt="Faculty AI Empowerment: Enhancing Teaching and Learning in the Community College — showing four benefit areas: Streamlined Planning, Personalized Instruction, Enriched Engagement, and Scalable Assessment & Feedback"
-                         class="empowerment-poster">
-                </a>
-                <p class="poster-caption">Click the image to view full size. Faculty AI Empowerment: Enhancing Teaching and Learning in the Community College — A Guide for College Faculty.</p>
-            </div>
         </section>
 
         <!-- Calendar Section -->
         <section id="calendar">
             <h2>Calendar of Events</h2>
 
-            <div class="calendar-container" id="calendarContainer">
-                <!-- Events will be loaded dynamically -->
+            <div class="calendar-container">
+                <div class="event-item">
+                    <div class="event-date">Summer 2026 - Virtual Workshops</div>
+                    <h4>AI Faculty Development Workshop Series</h4>
+                    <p>Five virtual workshops covering fundamental AI concepts, teaching methodologies, and curriculum development strategies. Open to community college faculty nationwide.</p>
+                </div>
+
+                <div class="event-item">
+                    <div class="event-date">July 2026 - Annual Conference</div>
+                    <h4>Cybersecurity Across Disciplines (CyAD) Conference</h4>
+                    <p>Annual gathering of faculty to share experiences, present developed content, and network with peers from across the nation. Special AI in Action track included.</p>
+                </div>
+
+                <div class="event-item">
+                    <div class="event-date">Fall 2026 - Regional Events</div>
+                    <h4>Local Faculty Development Events</h4>
+                    <p>Regional workshops hosted at partner community colleges across 12 different regions of the country.</p>
+                </div>
+
+                <div class="event-item">
+                    <div class="event-date">Monthly - Ongoing</div>
+                    <h4>Virtual Meetings and Webinars</h4>
+                    <p>Regular virtual meetings to foster communication and idea exchange among members of the AI community of practice.</p>
+                </div>
+
+                <div class="event-item">
+                    <div class="event-date">Ongoing</div>
+                    <h4>Mentorship Program</h4>
+                    <p>Continuous mentorship pairing experienced AI educators with community college faculty for guidance and support.</p>
+                </div>
             </div>
 
             <p style="margin-top: 1rem; color: var(--text-light); font-style: italic;">
@@ -1236,53 +1085,47 @@
 
             <p>Access our comprehensive library of AI teaching materials, lesson plans, lab activities, and case studies. All materials are available under a Creative Commons license and specifically tailored to community college technical and career programs.</p>
 
-            <div class="grant-info" style="margin-bottom: 2rem;">
-                <h3>🎓 Cohort Member Resources</h3>
-                <p>Cohort members will receive a comprehensive suite of instructional and technical resources designed to build advanced competencies in artificial intelligence and its application in teaching and learning. This includes structured training on advanced AI concepts, practical skills development, and hands-on experiences with current tools and methodologies. Participants will be provided with paid subscriptions to leading AI platforms, enabling them to explore and integrate cutting-edge capabilities into their instructional practices. In addition, members will gain access to a curated collection of online resources, including training materials, guided tutorials, and participation in sponsored events such as conferences, summits, and specialized AI-focused communities and clubs.</p>
-                <p style="margin-top: 1rem;">To support sustained professional growth, the program will offer registration and travel funding to attend key events, along with ongoing professional development support tailored to individual and institutional needs. Participants will also benefit from local access to AI tools and infrastructure, ensuring they can apply what they learn within their own teaching environments. Central to the cohort experience is the opportunity to engage in a collaborative community of practice, where members can share strategies, develop innovative approaches, and collectively advance the effective use of AI to enhance teaching and learning outcomes.</p>
-            </div>
-
             <div class="resource-grid">
                 <div class="resource-card">
                     <div class="resource-icon">📚</div>
                     <h4>Instructional Materials</h4>
-                    <p>A comprehensive portal of modular, interactive training resources spanning network protocols (TCP, DNS, DHCP, IPv4/IPv6, SMTP, LDAP, and more), OT/ICS simulations, cybersecurity frameworks (IEC 62443, ISO 27001), and curriculum tools — all designed for immediate classroom deployment across technical and career programs.</p>
-                    <a href="https://sands-mvcc.github.io/MVCC/protocols.html" class="download-btn" target="_blank">Access Resources</a>
+                    <p>Modular AI curriculum, lesson plans, and teaching guides</p>
+                    <a href="https://sands-mvcc.github.io/MVCC/" class="download-btn" target="_blank">Access Resources</a>
                 </div>
 
                 <div class="resource-card">
                     <div class="resource-icon">🔬</div>
-                    <h4>Example Lab Activities</h4>
-                    <p>Explore a sample interactive electronics lab featuring an up/down counter simulator where students manipulate clock inputs, count direction, and preset values in real time. This model illustrates the hands-on, visually driven lab format used throughout the curriculum — applicable to digital circuits, AI systems, and technical workforce training.</p>
-                    <a href="https://sands-mvcc.github.io/MVCC/updown.html" class="download-btn" target="_blank">View Labs</a>
+                    <h4>Lab Activities</h4>
+                    <p>Hands-on exercises and practical AI applications</p>
+                    <a href="https://sands-mvcc.github.io/MVCC/" class="download-btn" target="_blank">View Labs</a>
                 </div>
 
                 <div class="resource-card">
                     <div class="resource-icon">📊</div>
                     <h4>Case Studies</h4>
-                    <p>Scenario-based learning exercises built around fictitious but realistic defense contractors and industry organizations. Students apply CMMC 2.0 / NIST SP 800-171 audit procedures, complete interactive worksheets across all 14 control domains, calculate SPRS scores, and generate compliance findings — mirroring real-world DoD contractor cybersecurity assessments.</p>
-                    <a href="https://sands-mvcc.github.io/CMMC/casestudies.html" class="download-btn" target="_blank">Explore Cases</a>
+                    <p>Real-world examples and industry applications</p>
+                    <a href="https://sands-mvcc.github.io/CMMC/" class="download-btn" target="_blank">Explore Cases</a>
                 </div>
 
                 <div class="resource-card">
                     <div class="resource-icon">🎯</div>
                     <h4>Assessment Tools</h4>
-                    <p>An AI-powered CompTIA certification practice test generator covering ITF+, A+, Network+, Security+, Linux+, Server+, PenTest+, SecAI+, and Project+. Faculty and students select an exam, choose a domain, and generate 5–25 dynamically created questions aligned to official exam objectives — providing unlimited, on-demand formative assessment.</p>
-                    <a href="https://sands-mvcc.github.io/MVCC/comptia.html" class="download-btn" target="_blank">Sample Assessment Tool</a>
+                    <p>Evaluation instruments and rubrics</p>
+                    <a href="https://sands-mvcc.github.io/CMMC/" class="download-btn" target="_blank">Download Tools</a>
                 </div>
 
                 <div class="resource-card">
                     <div class="resource-icon">🤖</div>
                     <h4>AI Teaching Tools</h4>
-                    <p>Interactive mathematical reasoning tools that demonstrate core concepts underlying AI and computing — including modular arithmetic (the foundation of cryptographic algorithms like RSA), animated clock-based visualizations, and step-by-step operation simulators. Designed to help faculty connect mathematical theory to real-world AI and cybersecurity applications.</p>
-                    <a href="https://sands-mvcc.github.io/MVCC/modulusmath.html" class="download-btn" target="_blank">Sample Teaching Tool</a>
+                    <p>Custom AI Agents, Chatbots, and Neural Network examples</p>
+                    <a href="https://sands-mvcc.github.io/MVCC/" class="download-btn" target="_blank">Access Tools</a>
                 </div>
 
                 <div class="resource-card">
                     <div class="resource-icon">📖</div>
                     <h4>Best Practices</h4>
-                    <p>Interactive English Composition lessons developed as a model for cross-disciplinary AI-enhanced instructional design. These tools demonstrate how faculty in any discipline — from healthcare to business to technical programs — can build engaging, interactive learning experiences that integrate AI-assisted content delivery, student practice, and immediate feedback.</p>
-                    <a href="https://sands-mvcc.github.io/MVCC/sentenceanatomy.html" class="download-btn" target="_blank">Example</a>
+                    <p>Community-developed teaching strategies and methodologies</p>
+                    <a href="https://sands-mvcc.github.io/CMMC/" class="download-btn" target="_blank">Read More</a>
                 </div>
             </div>
 
@@ -1364,27 +1207,18 @@
                 <p>Stay updated on the latest AI in Action news, resources, and opportunities. Follow us on social media and explore our published work.</p>
 
                 <div class="social-links">
-                    <a href="https://www.linkedin.com/in/aisorcery/" class="social-btn" target="_blank">📱 LinkedIn</a>
+                    <a href="#" class="social-btn" onclick="alert('Add your LinkedIn URL here'); return false;">📱 LinkedIn</a>
                     <a href="#" class="social-btn" onclick="alert('Add your Twitter/X URL here'); return false;">🐦 Twitter/X</a>
-                    <a href="https://www.facebook.com/profile.php?id=61586796195062" class="social-btn">📘 Facebook</a>
+                    <a href="#" class="social-btn" onclick="alert('Add your Facebook URL here'); return false;">📘 Facebook</a>
                     <a href="#" class="social-btn" onclick="alert('Add your YouTube URL here'); return false;">🎥 YouTube</a>
                 </div>
             </div>
 
             <div class="grant-info" style="margin-top: 2rem;">
                 <h3>📚 Featured Textbook</h3>
-                <div class="book-showcase">
-                    <a href="AiSorcery_Book_Cover.png" target="_blank">
-                        <img src="AiSorcery_Book_Cover.png"
-                             alt="AI in Action: Transforming Teaching and Learning — AI Sorcery book cover featuring the AI wizard mascot"
-                             class="book-cover-img">
-                    </a>
-                    <div class="book-details">
-                        <p><strong>Title:</strong> AI in Action: Transforming Teaching and Learning in the Community College</p>
-                        <p style="margin-top:0.75rem;"><strong>Description:</strong> A comprehensive open educational resource (OER) guide to integrating AI in community college education across all disciplines. Developed through the NSF ATE initiative to empower faculty nationwide.</p>
-                        <a href="https://drive.google.com/file/d/1sEgUudvPTl11dlrBOUteVoN8_ivYdlN5/view?usp=sharing" target="_blank" rel="noopener noreferrer">📖 Access Textbook (OER)</a>
-                    </div>
-                </div>
+                <p><strong>Title:</strong> [Add Your Textbook Title Here]</p>
+                <p><strong>Description:</strong> A comprehensive guide to integrating AI in community college education across all disciplines.</p>
+                <a href="#" onclick="alert('Add your textbook purchase link here'); return false;" style="display: inline-block; margin-top: 1rem; padding: 0.75rem 1.5rem; background-color: var(--primary-color); color: white; text-decoration: none; border-radius: 5px;">Purchase Textbook</a>
             </div>
         </section>
 
@@ -1392,8 +1226,30 @@
         <section id="contact">
             <h2>Contact & Get Involved</h2>
 
-            <div class="goals-grid" id="contactsGrid">
-                <!-- Contacts will be loaded dynamically -->
+            <div class="goals-grid">
+                <div class="goal-card">
+                    <h4>Join the Academy</h4>
+                    <p>Community college faculty interested in participating in our workshops and training programs.</p>
+                    <a href="mailto:contact@aiinaction.edu" class="download-btn">Apply Now</a>
+                </div>
+
+                <div class="goal-card">
+                    <h4>Partnership Opportunities</h4>
+                    <p>Institutions interested in becoming partner colleges or collaborating on AI initiatives.</p>
+                    <a href="mailto:partnerships@aiinaction.edu" class="download-btn">Partner With Us</a>
+                </div>
+
+                <div class="goal-card">
+                    <h4>General Inquiries</h4>
+                    <p>Questions about the project, resources, or how to get involved.</p>
+                    <a href="mailto:info@aiinaction.edu" class="download-btn">Contact Us</a>
+                </div>
+
+                <div class="goal-card">
+                    <h4>Technical Support</h4>
+                    <p>Assistance with accessing resources or using the platform.</p>
+                    <a href="mailto:support@aiinaction.edu" class="download-btn">Get Help</a>
+                </div>
             </div>
 
             <div class="grant-info" style="margin-top: 2rem;">
@@ -1413,7 +1269,6 @@
             <div class="footer-section">
                 <h3>Quick Links</h3>
                 <a href="#about">About the Project</a>
-                <a href="#rationale">Rationale &amp; Mission</a>
                 <a href="#goals">Goals & Objectives</a>
                 <a href="#calendar">Calendar</a>
                 <a href="#resources">Resources</a>
@@ -1451,520 +1306,11 @@
         </div>
     </footer>
 
-    <!-- Partner Detail Modal -->
-    <div class="partner-modal-overlay" id="partnerModalOverlay" onclick="closePartnerModal(event)">
-        <div class="partner-modal" id="partnerModal">
-            <div class="partner-modal-header">
-                <h3 id="partnerModalTitle"></h3>
-                <button class="partner-modal-close" onclick="closePartnerModal()">✕</button>
-            </div>
-            <div class="partner-modal-body" id="partnerModalBody"></div>
-        </div>
-    </div>
-
     <!-- Notification -->
     <div id="notification" class="notification"></div>
 
     <!-- JavaScript -->
     <script>
-        // Data Storage using LocalStorage
-        const STORAGE_KEYS = {
-            PARTNERS: 'aiInAction_partners',
-            EVENTS: 'aiInAction_events',
-            CONTACTS: 'aiInAction_contacts',
-            RATIONALE: 'aiInAction_rationale',
-            MISSION: 'aiInAction_mission'
-        };
-
-        // Default Data
-        const DEFAULT_DATA = {
-            partners: [
-                "Whatcom Community College",
-                "Las Positas College",
-                "St Petersburg Community College",
-                "Moraine Valley Community College",
-                "Brookdale Community College",
-                "Northern Virginia Community College",
-                "Sinclair Community College",
-                "Fayetteville Technical College",
-                "El Paso Community College",
-                "Honolulu Community College",
-                "Miami Dade Community College",
-                "Pikes Peak State College"
-            ],
-            events: [
-                {
-                    date: "Summer 2026 - Virtual Workshops",
-                    title: "AI Faculty Development Workshop Series",
-                    description: "Five virtual workshops covering fundamental AI concepts, teaching methodologies, and curriculum development strategies. Open to community college faculty nationwide."
-                },
-                {
-                    date: "July 2026 - Annual Conference",
-                    title: "Cybersecurity Across Disciplines (CyAD) Conference",
-                    description: "Annual gathering of faculty to share experiences, present developed content, and network with peers from across the nation. Special AI in Action track included."
-                },
-                {
-                    date: "Fall 2026 - Regional Events",
-                    title: "Local Faculty Development Events",
-                    description: "Regional workshops hosted at partner community colleges across 12 different regions of the country."
-                },
-                {
-                    date: "Monthly - Ongoing",
-                    title: "Virtual Meetings and Webinars",
-                    description: "Regular virtual meetings to foster communication and idea exchange among members of the AI community of practice."
-                },
-                {
-                    date: "Ongoing",
-                    title: "Mentorship Program",
-                    description: "Continuous mentorship pairing experienced AI educators with community college faculty for guidance and support."
-                }
-            ],
-            contacts: [
-                {
-                    title: "Join the Academy",
-                    description: "Community college faculty interested in participating in our workshops and training programs.",
-                    email: "contact@aiinaction.edu"
-                },
-                {
-                    title: "Partnership Opportunities",
-                    description: "Institutions interested in becoming partner colleges or collaborating on AI initiatives.",
-                    email: "partnerships@aiinaction.edu"
-                },
-                {
-                    title: "General Inquiries",
-                    description: "Questions about the project, resources, or how to get involved.",
-                    email: "info@aiinaction.edu"
-                },
-                {
-                    title: "Technical Support",
-                    description: "Assistance with accessing resources or using the platform.",
-                    email: "support@aiinaction.edu"
-                }
-            ],
-            rationale: `The rapid integration of Artificial Intelligence into the global economy is not a fleeting trend; it is a fundamental shift in how work is performed, and it is here to stay. For the community college system—an institution historically tasked with serving as the backbone of the American workforce—this transformation poses an immediate challenge. As AI automates routine tasks and disrupts traditional roles, the professions that community college students typically fill are among the most vulnerable to displacement. Without a concerted effort to bridge the AI literacy gap, we risk a "negative-sum" transition where graduates enter a labor market with skills that are already obsolete, leading to localized economic stagnation and a workforce ill-equipped for the demands of modern industry.
-
-While the displacement of some roles is inevitable, the future labor market will be defined by the creation of new, high-value positions that require workers to leverage AI in their daily operations. The value of a community college education in this new era will be measured by its ability to produce "AI-augmented" professionals who can navigate these tools with precision. Because community colleges were designed to be nimble and responsive to workforce transitions, they are the most critical link in ensuring the local workforce remains competitive. If faculty fail to integrate these competencies now, the gap between institutional instruction and industry requirements will widen, devaluing the community college degree and hampering the economic mobility of its graduates.
-
-Ultimately, academia carries a profound ethical and social responsibility to prepare the next generation for an AI-driven world. Education must go beyond simple technical proficiency; it must provide a framework for the efficient and ethical implementation of AI, ensuring students understand both the capabilities and the moral implications of the technology they use. By empowering community college faculty—the primary mentors of tomorrow's workforce—to become AI-literate leaders, we ensure that these vital institutions continue to fulfill their mission. Failing to do so does not just hurt the individual student; it undermines the future of the American workforce and the stability of the communities that rely on these colleges for economic survival.`,
-            mission: `The mission of AI in Action is to empower community college faculty across all disciplines to become AI-literate educators and workforce leaders—equipping them with the knowledge, tools, and confidence to integrate artificial intelligence into their teaching practice. By doing so, we ensure that community college graduates enter a competitive labor market as AI-augmented professionals capable of driving innovation, economic mobility, and community prosperity in an AI-driven world.`
-        };
-
-        // Initialize data on page load
-        function initializeData() {
-            if (!localStorage.getItem(STORAGE_KEYS.PARTNERS)) {
-                localStorage.setItem(STORAGE_KEYS.PARTNERS, JSON.stringify(DEFAULT_DATA.partners));
-            }
-            if (!localStorage.getItem(STORAGE_KEYS.EVENTS)) {
-                localStorage.setItem(STORAGE_KEYS.EVENTS, JSON.stringify(DEFAULT_DATA.events));
-            }
-            if (!localStorage.getItem(STORAGE_KEYS.CONTACTS)) {
-                localStorage.setItem(STORAGE_KEYS.CONTACTS, JSON.stringify(DEFAULT_DATA.contacts));
-            }
-            // Rationale and Mission use plain string storage (not JSON arrays)
-            if (!localStorage.getItem(STORAGE_KEYS.RATIONALE)) {
-                localStorage.setItem(STORAGE_KEYS.RATIONALE, DEFAULT_DATA.rationale);
-            }
-            if (!localStorage.getItem(STORAGE_KEYS.MISSION)) {
-                localStorage.setItem(STORAGE_KEYS.MISSION, DEFAULT_DATA.mission);
-            }
-        }
-
-        // Get data from localStorage
-        function getData(key) {
-            const data = localStorage.getItem(key);
-            return data ? JSON.parse(data) : [];
-        }
-
-        // Save data to localStorage
-        function saveData(key, data) {
-            localStorage.setItem(key, JSON.stringify(data));
-        }
-
-        // Toggle Admin Panel
-        function toggleAdmin() {
-            const panel = document.getElementById('adminPanel');
-            panel.classList.toggle('active');
-            if (panel.classList.contains('active')) {
-                loadAdminData();
-            }
-        }
-
-        // Load data into admin panel
-        function loadAdminData() {
-            loadPartnersList();
-            loadEventsList();
-            loadContactsList();
-            // Populate rationale and mission editors
-            document.getElementById('rationaleEditor').value =
-                localStorage.getItem(STORAGE_KEYS.RATIONALE) || DEFAULT_DATA.rationale;
-            document.getElementById('missionEditor').value =
-                localStorage.getItem(STORAGE_KEYS.MISSION) || DEFAULT_DATA.mission;
-        }
-
-        // Rationale & Mission Management
-        function saveRationale() {
-            const text = document.getElementById('rationaleEditor').value.trim();
-            if (!text) { alert('Rationale text cannot be empty.'); return; }
-            localStorage.setItem(STORAGE_KEYS.RATIONALE, text);
-            renderRationaleAndMission();
-            showNotification('Rationale saved successfully!');
-        }
-
-        function saveMission() {
-            const text = document.getElementById('missionEditor').value.trim();
-            if (!text) { alert('Mission statement cannot be empty.'); return; }
-            localStorage.setItem(STORAGE_KEYS.MISSION, text);
-            renderRationaleAndMission();
-            showNotification('Mission statement saved successfully!');
-        }
-
-        function renderRationaleAndMission() {
-            // Render Rationale — split on double newline into paragraphs
-            const rationaleRaw = localStorage.getItem(STORAGE_KEYS.RATIONALE) || DEFAULT_DATA.rationale;
-            const rationaleContainer = document.getElementById('rationaleText');
-            rationaleContainer.innerHTML = rationaleRaw
-                .split(/\n\s*\n/)
-                .map(p => `<p>${p.trim().replace(/\n/g, ' ')}</p>`)
-                .join('');
-
-            // Render Mission
-            const missionRaw = localStorage.getItem(STORAGE_KEYS.MISSION) || DEFAULT_DATA.mission;
-            const missionContainer = document.getElementById('missionText');
-            missionContainer.innerHTML = missionRaw
-                .split(/\n\s*\n/)
-                .map(p => `<p>${p.trim().replace(/\n/g, ' ')}</p>`)
-                .join('');
-        }
-
-        // Partners Management
-        function loadPartnersList() {
-            const partners = getData(STORAGE_KEYS.PARTNERS);
-            const list = document.getElementById('partnersList');
-            list.innerHTML = '';
-
-            partners.forEach((partner, index) => {
-                const li = document.createElement('li');
-                li.className = 'admin-list-item';
-                li.innerHTML = `
-                    <span>${partner}</span>
-                    <div>
-                        <button class="btn-delete" onclick="deletePartner(${index})">Delete</button>
-                    </div>
-                `;
-                list.appendChild(li);
-            });
-
-            renderPartners();
-        }
-
-        function addPartner() {
-            const input = document.getElementById('partnerName');
-            const name = input.value.trim();
-
-            if (!name) {
-                alert('Please enter an institution name');
-                return;
-            }
-
-            const partners = getData(STORAGE_KEYS.PARTNERS);
-            partners.push(name);
-            saveData(STORAGE_KEYS.PARTNERS, partners);
-
-            input.value = '';
-            loadPartnersList();
-            showNotification('Partner institution added successfully!');
-        }
-
-        function deletePartner(index) {
-            if (!confirm('Are you sure you want to delete this partner?')) return;
-
-            const partners = getData(STORAGE_KEYS.PARTNERS);
-            partners.splice(index, 1);
-            saveData(STORAGE_KEYS.PARTNERS, partners);
-
-            loadPartnersList();
-            showNotification('Partner institution deleted!');
-        }
-
-        function renderPartners() {
-            const partners = getData(STORAGE_KEYS.PARTNERS);
-            const grid = document.getElementById('partnersGrid');
-            grid.innerHTML = '';
-
-            partners.forEach(partner => {
-                const div = document.createElement('div');
-                div.className = 'partner-item';
-                const details = PARTNER_DETAILS[partner];
-                if (details) {
-                    div.setAttribute('onclick', `openPartnerModal(${JSON.stringify(partner)})`);
-                    div.setAttribute('title', 'Click to learn more');
-                    div.innerHTML = `
-                        <div class="partner-name">${partner}</div>
-                        <div class="partner-contact-hint">${details.contact}</div>
-                        <div class="partner-click-hint">View Details ›</div>
-                    `;
-                } else {
-                    div.textContent = partner;
-                }
-                grid.appendChild(div);
-            });
-        }
-
-        function openPartnerModal(partnerName) {
-            const d = PARTNER_DETAILS[partnerName];
-            if (!d) return;
-            document.getElementById('partnerModalTitle').textContent = partnerName;
-            document.getElementById('partnerModalBody').innerHTML = `
-                <div class="partner-detail-row">
-                    <span class="partner-detail-icon">📍</span>
-                    <div class="partner-detail-content">
-                        <strong>Location</strong>
-                        <p>${d.location}</p>
-                    </div>
-                </div>
-                <div class="partner-detail-row">
-                    <span class="partner-detail-icon">🎓</span>
-                    <div class="partner-detail-content">
-                        <strong>Institution Size</strong>
-                        <p>${d.size}</p>
-                    </div>
-                </div>
-                <div class="partner-detail-row">
-                    <span class="partner-detail-icon">🤝</span>
-                    <div class="partner-detail-content">
-                        <strong>Community Served</strong>
-                        <p>${d.community}</p>
-                    </div>
-                </div>
-                <div class="partner-detail-row">
-                    <span class="partner-detail-icon">🤖</span>
-                    <div class="partner-detail-content">
-                        <strong>AI Initiatives</strong>
-                        <p>${d.aiInitiatives}</p>
-                    </div>
-                </div>
-                <div class="partner-contact-badge">
-                    <strong>Project Contact</strong>
-                    <p>${d.contact}</p>
-                </div>
-            `;
-            document.getElementById('partnerModalOverlay').classList.add('active');
-            document.body.style.overflow = 'hidden';
-        }
-
-        function closePartnerModal(event) {
-            if (event && event.target !== document.getElementById('partnerModalOverlay')) return;
-            document.getElementById('partnerModalOverlay').classList.remove('active');
-            document.body.style.overflow = '';
-        }
-
-        // Events Management
-        function loadEventsList() {
-            const events = getData(STORAGE_KEYS.EVENTS);
-            const list = document.getElementById('eventsList');
-            list.innerHTML = '';
-
-            events.forEach((event, index) => {
-                const li = document.createElement('li');
-                li.className = 'admin-list-item';
-                li.innerHTML = `
-                    <div>
-                        <strong>${event.date}</strong> - ${event.title}
-                    </div>
-                    <div>
-                        <button class="btn-delete" onclick="deleteEvent(${index})">Delete</button>
-                    </div>
-                `;
-                list.appendChild(li);
-            });
-
-            renderEvents();
-        }
-
-        function addEvent() {
-            const date = document.getElementById('eventDate').value.trim();
-            const title = document.getElementById('eventTitle').value.trim();
-            const description = document.getElementById('eventDescription').value.trim();
-
-            if (!date || !title || !description) {
-                alert('Please fill in all event fields');
-                return;
-            }
-
-            const events = getData(STORAGE_KEYS.EVENTS);
-            events.push({ date, title, description });
-            saveData(STORAGE_KEYS.EVENTS, events);
-
-            document.getElementById('eventDate').value = '';
-            document.getElementById('eventTitle').value = '';
-            document.getElementById('eventDescription').value = '';
-
-            loadEventsList();
-            showNotification('Event added successfully!');
-        }
-
-        function deleteEvent(index) {
-            if (!confirm('Are you sure you want to delete this event?')) return;
-
-            const events = getData(STORAGE_KEYS.EVENTS);
-            events.splice(index, 1);
-            saveData(STORAGE_KEYS.EVENTS, events);
-
-            loadEventsList();
-            showNotification('Event deleted!');
-        }
-
-        function renderEvents() {
-            const events = getData(STORAGE_KEYS.EVENTS);
-            const container = document.getElementById('calendarContainer');
-            container.innerHTML = '';
-
-            events.forEach(event => {
-                const div = document.createElement('div');
-                div.className = 'event-item';
-                div.innerHTML = `
-                    <div class="event-date">${event.date}</div>
-                    <h4>${event.title}</h4>
-                    <p>${event.description}</p>
-                `;
-                container.appendChild(div);
-            });
-        }
-
-        // Contacts Management
-        function loadContactsList() {
-            const contacts = getData(STORAGE_KEYS.CONTACTS);
-            const list = document.getElementById('contactsList');
-            list.innerHTML = '';
-
-            contacts.forEach((contact, index) => {
-                const li = document.createElement('li');
-                li.className = 'admin-list-item';
-                li.innerHTML = `
-                    <div>
-                        <strong>${contact.title}</strong> - ${contact.email}
-                    </div>
-                    <div>
-                        <button class="btn-delete" onclick="deleteContact(${index})">Delete</button>
-                    </div>
-                `;
-                list.appendChild(li);
-            });
-
-            renderContacts();
-        }
-
-        function addContact() {
-            const title = document.getElementById('contactTitle').value.trim();
-            const description = document.getElementById('contactDescription').value.trim();
-            const email = document.getElementById('contactEmail').value.trim();
-
-            if (!title || !description || !email) {
-                alert('Please fill in all contact fields');
-                return;
-            }
-
-            const contacts = getData(STORAGE_KEYS.CONTACTS);
-            contacts.push({ title, description, email });
-            saveData(STORAGE_KEYS.CONTACTS, contacts);
-
-            document.getElementById('contactTitle').value = '';
-            document.getElementById('contactDescription').value = '';
-            document.getElementById('contactEmail').value = '';
-
-            loadContactsList();
-            showNotification('Contact added successfully!');
-        }
-
-        function deleteContact(index) {
-            if (!confirm('Are you sure you want to delete this contact?')) return;
-
-            const contacts = getData(STORAGE_KEYS.CONTACTS);
-            contacts.splice(index, 1);
-            saveData(STORAGE_KEYS.CONTACTS, contacts);
-
-            loadContactsList();
-            showNotification('Contact deleted!');
-        }
-
-        function renderContacts() {
-            const contacts = getData(STORAGE_KEYS.CONTACTS);
-            const grid = document.getElementById('contactsGrid');
-            grid.innerHTML = '';
-
-            contacts.forEach(contact => {
-                const div = document.createElement('div');
-                div.className = 'goal-card';
-                div.innerHTML = `
-                    <h4>${contact.title}</h4>
-                    <p>${contact.description}</p>
-                    <a href="mailto:${contact.email}" class="download-btn">${contact.email.includes('@') ? 'Contact Us' : contact.email}</a>
-                `;
-                grid.appendChild(div);
-            });
-        }
-
-        // Export/Import/Reset Functions
-        function exportData() {
-            const data = {
-                partners: getData(STORAGE_KEYS.PARTNERS),
-                events: getData(STORAGE_KEYS.EVENTS),
-                contacts: getData(STORAGE_KEYS.CONTACTS),
-                rationale: localStorage.getItem(STORAGE_KEYS.RATIONALE) || DEFAULT_DATA.rationale,
-                mission: localStorage.getItem(STORAGE_KEYS.MISSION) || DEFAULT_DATA.mission
-            };
-
-            const dataStr = JSON.stringify(data, null, 2);
-            const dataBlob = new Blob([dataStr], { type: 'application/json' });
-            const url = URL.createObjectURL(dataBlob);
-            const link = document.createElement('a');
-            link.href = url;
-            link.download = 'ai-in-action-data-backup.json';
-            link.click();
-
-            showNotification('Data exported successfully!');
-        }
-
-        function importData() {
-            const input = document.createElement('input');
-            input.type = 'file';
-            input.accept = 'application/json';
-            input.onchange = function(e) {
-                const file = e.target.files[0];
-                const reader = new FileReader();
-                reader.onload = function(event) {
-                    try {
-                        const data = JSON.parse(event.target.result);
-                        if (data.partners) saveData(STORAGE_KEYS.PARTNERS, data.partners);
-                        if (data.events) saveData(STORAGE_KEYS.EVENTS, data.events);
-                        if (data.contacts) saveData(STORAGE_KEYS.CONTACTS, data.contacts);
-                        if (data.rationale) localStorage.setItem(STORAGE_KEYS.RATIONALE, data.rationale);
-                        if (data.mission) localStorage.setItem(STORAGE_KEYS.MISSION, data.mission);
-
-                        loadAdminData();
-                        showNotification('Data imported successfully!');
-                    } catch (error) {
-                        alert('Error importing data. Please check the file format.');
-                    }
-                };
-                reader.readAsText(file);
-            };
-            input.click();
-        }
-
-        function resetData() {
-            if (!confirm('Are you sure you want to reset all data to default? This cannot be undone!')) return;
-
-            saveData(STORAGE_KEYS.PARTNERS, DEFAULT_DATA.partners);
-            saveData(STORAGE_KEYS.EVENTS, DEFAULT_DATA.events);
-            saveData(STORAGE_KEYS.CONTACTS, DEFAULT_DATA.contacts);
-            localStorage.setItem(STORAGE_KEYS.RATIONALE, DEFAULT_DATA.rationale);
-            localStorage.setItem(STORAGE_KEYS.MISSION, DEFAULT_DATA.mission);
-
-            loadAdminData();
-            showNotification('Data reset to default!');
-        }
-
         // Message Board Functionality
         document.getElementById('messageForm').addEventListener('submit', function(e) {
             e.preventDefault();
@@ -1973,6 +1319,7 @@ Ultimately, academia carries a profound ethical and social responsibility to pre
             const institution = document.getElementById('institution').value;
             const messageText = document.getElementById('messageText').value;
 
+            // Create new message element
             const messageItem = document.createElement('div');
             messageItem.className = 'message-item';
 
@@ -1992,6 +1339,7 @@ Ultimately, academia carries a profound ethical and social responsibility to pre
                 <p>${messageText}</p>
             `;
 
+            // Add to top of messages container (after the h3)
             const messagesContainer = document.getElementById('messagesContainer');
             const firstMessage = messagesContainer.querySelector('.message-item');
             if (firstMessage) {
@@ -2000,8 +1348,13 @@ Ultimately, academia carries a profound ethical and social responsibility to pre
                 messagesContainer.appendChild(messageItem);
             }
 
+            // Clear form
             document.getElementById('messageForm').reset();
+
+            // Show notification
             showNotification('Message posted successfully!');
+
+            // Scroll to the new message
             messageItem.scrollIntoView({ behavior: 'smooth', block: 'center' });
         });
 
@@ -2033,111 +1386,118 @@ Ultimately, academia carries a profound ethical and social responsibility to pre
             });
         });
 
-        // Close partner modal on ESC key
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape') {
-                document.getElementById('partnerModalOverlay').classList.remove('active');
-                document.body.style.overflow = '';
-            }
-        });
-
-        // Partner Institution Details
-        const PARTNER_DETAILS = {
-            "Whatcom Community College": {
-                location: "Bellingham, Washington (Pacific Northwest)",
-                size: "Approximately 7,000 students",
-                community: "Northwest Washington — Whatcom County and surrounding region, including Indigenous tribal nations and rural communities.",
-                aiInitiatives: "Integrating AI literacy across CTE and workforce programs; expanding Computer Information Systems curriculum with AI and machine learning components; focusing on AI applications in healthcare and the trades; active NSF ATE AI in Action participant.",
-                contact: "Michelle Robinson"
-            },
-            "Las Positas College": {
-                location: "Livermore, California (San Francisco Bay Area — Tri-Valley)",
-                size: "Approximately 9,000 students",
-                community: "Tri-Valley region (Livermore, Pleasanton, Dublin); workforce adjacent to Lawrence Livermore National Laboratory and the Bay Area tech sector.",
-                aiInitiatives: "AI and machine learning coursework integrated into STEM programs; partnerships with Bay Area technology industry; AI-enhanced instructional design; workforce development aligned with Silicon Valley AI demands; NSF ATE AI in Action participant.",
-                contact: "Jeff Weichert"
-            },
-            "St Petersburg Community College": {
-                location: "St. Petersburg, Florida (Tampa Bay Area — multiple campuses)",
-                size: "Approximately 35,000 students",
-                community: "Pinellas County, FL; diverse urban, suburban, and coastal populations; one of Florida's most populous counties.",
-                aiInitiatives: "AI integration across healthcare technology, IT, and business programs; bachelor's degree programs in technology education; digital transformation and AI literacy initiatives; partnerships with Tampa Bay healthcare and tech employers; NSF ATE AI in Action participant.",
-                contact: "Laura Malave"
-            },
-            "Moraine Valley Community College": {
-                location: "Palos Hills, Illinois (Southwest Suburban Chicago)",
-                size: "Approximately 12,000–14,000 students",
-                community: "40 southwest suburban Chicago communities; diverse working-class and professional populations across the greater Chicago metropolitan area.",
-                aiInitiatives: "Host institution for the NSF ATE AI in Action grant (Award #2500821); leading national AI curriculum development; partnering with NCyTE to build a National AI Teachers Academy; training 100+ faculty annually; flagship initiative bridging cybersecurity and artificial intelligence.",
-                contact: "Kristine Christensen"
-            },
-            "Brookdale Community College": {
-                location: "Lincroft, New Jersey (Monmouth County)",
-                size: "Approximately 13,000–15,000 students",
-                community: "Monmouth County, NJ; coastal New Jersey communities; suburban professionals and returning adult learners.",
-                aiInitiatives: "Nationally recognized AI and robotics education programs; AI integration in computer science, cybersecurity, and business curricula; faculty-led AI instructional design and research; active NSF ATE AI in Action partner.",
-                contact: "Michael Qaissaunee"
-            },
-            "Northern Virginia Community College": {
-                location: "Annandale, Virginia (main campus) — six campuses across Northern Virginia",
-                size: "Approximately 70,000–75,000 students — one of the largest community colleges in the United States",
-                community: "Northern Virginia region including Fairfax, Prince William, and Loudoun counties, and the City of Alexandria; proximity to federal government agencies, defense contractors, and the technology corridor.",
-                aiInitiatives: "Robust IT, cybersecurity, and data science programs with embedded AI competencies; workforce AI training for federal and defense sector employees; partnerships with AWS, Microsoft, and Northern Virginia tech companies; AI curriculum aligned with CompTIA AI+ and emerging credentials; NSF ATE AI in Action partner.",
-                contact: "Fernando Seminario"
-            },
-            "Sinclair Community College": {
-                location: "Dayton, Ohio (main campus and regional learning centers)",
-                size: "Approximately 17,000–20,000 students",
-                community: "Greater Dayton metropolitan area; significant military-affiliated population (Wright-Patterson Air Force Base); diverse urban and suburban workforce.",
-                aiInitiatives: "AI integration in advanced manufacturing, aerospace, and defense technology programs; AI-enhanced simulation labs for industrial automation; partnerships with defense and aerospace employers; AI tools embedded in healthcare technology and engineering programs; NSF ATE AI in Action participant.",
-                contact: "Kyle Jones"
-            },
-            "Fayetteville Technical College": {
-                location: "Fayetteville, North Carolina",
-                size: "Approximately 15,000–17,000 students",
-                community: "Cumberland County, NC; one of the largest military-adjacent communities in the nation (Fort Liberty, formerly Fort Bragg); serves active duty military, veterans, and their families alongside the civilian workforce.",
-                aiInitiatives: "AI and technology training tailored to military transition workforce; cybersecurity and AI convergence programs; STEM integration in healthcare, manufacturing, and public safety; veteran-focused AI literacy pathways; NSF ATE AI in Action partner.",
-                contact: "Christina Royal"
-            },
-            "El Paso Community College": {
-                location: "El Paso, Texas (five campuses across El Paso County)",
-                size: "Approximately 27,000–30,000 students",
-                community: "El Paso County, TX; US–Mexico border region; predominantly Hispanic/Latino community; bilingual and bicultural workforce.",
-                aiInitiatives: "AI integration in border-region workforce programs including healthcare, manufacturing, and logistics; bilingual AI literacy initiatives; partnerships with Fort Bliss and local industry; AI tools in STEM and CTE programs focused on underrepresented communities; NSF ATE AI in Action partner.",
-                contact: "Christian Servin"
-            },
-            "Honolulu Community College": {
-                location: "Honolulu, Hawaii (Oahu)",
-                size: "Approximately 3,500–4,500 students",
-                community: "Oahu, Hawaii; serves Native Hawaiian, Pacific Islander, Asian, and multicultural communities; unique Pacific island context for workforce development.",
-                aiInitiatives: "AI integration in trades, technology, and maritime programs; AI tools adapted for Pacific-region workforce needs including tourism, defense, and maritime industries; culturally responsive AI literacy programs; NSF ATE AI in Action partner.",
-                contact: "Debasis Bhattacharya"
-            },
-            "Miami Dade Community College": {
-                location: "Miami, Florida (eight campuses across Miami-Dade County)",
-                size: "Approximately 100,000+ students — one of the largest colleges in the United States",
-                community: "Miami-Dade County; one of the most diverse jurisdictions in the US with a majority Hispanic/Latino population; gateway institution to Latin America and the Caribbean.",
-                aiInitiatives: "Established AI Center of Excellence; bachelor's degree programs in AI and computer science; partnerships with Microsoft, Google, and Amazon; AI literacy embedded across all disciplines; leading national model for AI education in diverse, urban community colleges; NSF ATE AI in Action partner.",
-                contact: "Dr. Diego Tibaquirá"
-            },
-            "Pikes Peak State College": {
-                location: "Colorado Springs, Colorado (multiple campuses)",
-                size: "Approximately 16,000–18,000 students",
-                community: "El Paso County, CO; large military community (Fort Carson, Peterson Space Force Base, NORAD/NORTHCOM, Schriever SFB); serves military personnel, veterans, defense contractors, and the civilian workforce.",
-                aiInitiatives: "AI and cybersecurity programs serving the defense and space technology sector; workforce AI training for military transition; AI integration in STEM and CTE programs; strong partnerships with DoD and Colorado Springs tech community; NSF ATE AI in Action partner.",
-                contact: "Mike Krawow"
-            }
+        // Add animation on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
         };
 
-        // Initialize on page load
+        const observer = new IntersectionObserver(function(entries) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // Observe all sections
+        document.querySelectorAll('section').forEach(section => {
+            section.style.opacity = '0';
+            section.style.transform = 'translateY(20px)';
+            section.style.transition = 'opacity 0.6s ease-out, transform 0.6s ease-out';
+            observer.observe(section);
+        });
+
+        // Sticky navigation active state
+        window.addEventListener('scroll', function() {
+            const sections = document.querySelectorAll('section[id]');
+            const navLinks = document.querySelectorAll('nav a');
+
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                if (pageYOffset >= (sectionTop - 200)) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.style.backgroundColor = '';
+                if (link.getAttribute('href') === '#' + current) {
+                    link.style.backgroundColor = 'rgba(255,255,255,0.2)';
+                }
+            });
+        });
+
+        // Dynamic calendar loading (placeholder for future integration)
+        function loadCalendarEvents() {
+            // This function can be expanded to load events from an external calendar API
+            console.log('Calendar events loaded');
+        }
+
+        // Initialize
         window.addEventListener('load', function() {
-            initializeData();
-            renderPartners();
-            renderEvents();
-            renderContacts();
-            renderRationaleAndMission();
+            loadCalendarEvents();
             showNotification('Welcome to AI in Action!');
         });
+
+        // Resource download tracking (for analytics)
+        document.querySelectorAll('.download-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const resourceName = this.parentElement.querySelector('h4')?.textContent || 'Resource';
+                console.log(`Resource accessed: ${resourceName}`);
+                // Here you could send analytics data to your server
+            });
+        });
+
+        // ============================================
+        // Course sidebar — mobile toggle + active state
+        // ============================================
+        (function() {
+            const sidebar = document.getElementById('courseSidebar');
+            const toggle = document.getElementById('sidebarToggle');
+            const backdrop = document.getElementById('sidebarBackdrop');
+
+            function openSidebar() {
+                sidebar.classList.add('open');
+                toggle.classList.add('open');
+                backdrop.classList.add('show');
+                toggle.setAttribute('aria-expanded', 'true');
+            }
+            function closeSidebar() {
+                sidebar.classList.remove('open');
+                toggle.classList.remove('open');
+                backdrop.classList.remove('show');
+                toggle.setAttribute('aria-expanded', 'false');
+            }
+
+            toggle.addEventListener('click', function() {
+                if (sidebar.classList.contains('open')) closeSidebar();
+                else openSidebar();
+            });
+            backdrop.addEventListener('click', closeSidebar);
+
+            // Close mobile sidebar when a lesson link is tapped
+            sidebar.querySelectorAll('.lesson-link').forEach(link => {
+                link.addEventListener('click', function() {
+                    if (window.innerWidth <= 768) closeSidebar();
+                });
+            });
+
+            // Reset state when resizing back to desktop
+            window.addEventListener('resize', function() {
+                if (window.innerWidth > 768) closeSidebar();
+            });
+
+            // Mark current page as active (filename match)
+            const currentPage = window.location.pathname.split('/').pop().toLowerCase();
+            sidebar.querySelectorAll('.lesson-link').forEach(link => {
+                const href = link.getAttribute('href').toLowerCase();
+                if (href === currentPage) link.classList.add('active');
+            });
+        })();
     </script>
 </body>
 </html>
