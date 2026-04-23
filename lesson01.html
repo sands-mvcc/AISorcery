@@ -1,0 +1,1387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Introduction to Large Language Models | AI in Action · Lesson 01</title>
+<style>
+  /* ============================================
+     BASE TOKENS — White, Green, Black palette
+     (identical to lesson07)
+     ============================================ */
+  :root {
+    --ink: #0a0a0a;
+    --ink-soft: #2a2a2a;
+    --paper: #ffffff;
+    --paper-warm: #fafaf7;
+    --rule: #e5e5e0;
+    --rule-strong: #0a0a0a;
+
+    --forest: #0f3d2e;
+    --forest-deep: #072318;
+    --moss: #1d6b4f;
+    --sage: #e8f0ea;
+    --sage-deep: #c9ddd0;
+    --lime: #8cc152;
+
+    --serif: 'Cormorant Garamond', 'EB Garamond', Georgia, serif;
+    --sans: 'Inter Tight', 'Helvetica Neue', Arial, sans-serif;
+    --mono: 'JetBrains Mono', 'Courier New', monospace;
+
+    --shadow-soft: 0 1px 2px rgba(10,10,10,.04), 0 8px 24px rgba(10,10,10,.04);
+    --shadow-card: 0 1px 0 rgba(10,10,10,.06), 0 12px 32px rgba(15,61,46,.08);
+  }
+
+  @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Inter+Tight:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: var(--sans);
+    color: var(--ink);
+    background: var(--paper);
+    line-height: 1.6;
+    font-size: 16px;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ============================================
+     HEADER — masthead feel
+     ============================================ */
+  .masthead {
+    border-bottom: 3px double var(--ink);
+    padding: 2.25rem 2rem 1.5rem;
+    background: var(--paper);
+    position: relative;
+  }
+  .masthead-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--rule);
+  }
+  .masthead-top .edition { color: var(--forest); font-weight: 600; }
+  .masthead-top .date::before {
+    content: "●";
+    color: var(--lime);
+    margin-right: 0.5em;
+  }
+
+  .masthead h1 {
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: clamp(2.2rem, 5vw, 4rem);
+    line-height: 1.02;
+    letter-spacing: -0.02em;
+    max-width: 18ch;
+    margin-bottom: 1rem;
+  }
+  .masthead h1 em {
+    font-style: italic;
+    color: var(--forest);
+    font-weight: 400;
+  }
+  .masthead .dek {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 1.25rem;
+    color: var(--ink-soft);
+    max-width: 60ch;
+    font-weight: 400;
+  }
+  .masthead .meta {
+    margin-top: 1.5rem;
+    display: flex;
+    gap: 2rem;
+    flex-wrap: wrap;
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--ink-soft);
+  }
+  .masthead .meta span strong {
+    display: block;
+    color: var(--forest);
+    font-weight: 600;
+    margin-top: 2px;
+  }
+
+  /* ============================================
+     LAYOUT
+     ============================================ */
+  main {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 3rem 2rem 5rem;
+  }
+
+  section { margin-bottom: 4rem; scroll-margin-top: 1rem; }
+
+  .section-head {
+    display: flex;
+    align-items: baseline;
+    gap: 1rem;
+    margin-bottom: 1.75rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--ink);
+  }
+  .section-head .num {
+    font-family: var(--mono);
+    font-size: 0.8rem;
+    color: var(--moss);
+    font-weight: 500;
+    letter-spacing: 0.08em;
+  }
+  .section-head h2 {
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: 2.2rem;
+    letter-spacing: -0.015em;
+    line-height: 1.1;
+  }
+  .section-head h2 em { color: var(--forest); font-style: italic; }
+
+  p { margin-bottom: 1rem; max-width: 72ch; }
+  p.lede {
+    font-family: var(--serif);
+    font-size: 1.35rem;
+    line-height: 1.45;
+    color: var(--ink-soft);
+    font-weight: 400;
+    max-width: 62ch;
+    margin-bottom: 2rem;
+  }
+  p.lede::first-letter {
+    font-size: 3.5rem;
+    font-weight: 600;
+    float: left;
+    line-height: 0.9;
+    margin: 0.35rem 0.5rem 0 0;
+    color: var(--forest);
+  }
+
+  /* ============================================
+     CORE CONCEPT CARDS (reused from lesson07)
+     ============================================ */
+  .concept-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    margin-top: 2rem;
+  }
+  .concept-card {
+    border: 1px solid var(--rule);
+    padding: 1.75rem 1.5rem;
+    background: var(--paper);
+    position: relative;
+  }
+  .concept-card.highlight {
+    background: var(--forest);
+    color: var(--paper);
+    border-color: var(--forest);
+  }
+  .concept-card .label {
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--moss);
+    margin-bottom: 0.75rem;
+  }
+  .concept-card.highlight .label { color: var(--lime); }
+  .concept-card h3 {
+    font-family: var(--serif);
+    font-weight: 600;
+    font-size: 1.5rem;
+    margin-bottom: 0.75rem;
+    letter-spacing: -0.01em;
+  }
+  .concept-card p {
+    font-size: 0.92rem;
+    line-height: 1.55;
+    margin: 0;
+  }
+  .concept-card .symbol {
+    position: absolute;
+    top: 1rem;
+    right: 1.25rem;
+    font-family: var(--serif);
+    font-size: 2rem;
+    font-style: italic;
+    color: var(--sage-deep);
+  }
+  .concept-card.highlight .symbol { color: var(--lime); opacity: 0.5; }
+
+  /* ============================================
+     COMPARISON TABLE (reused from lesson07)
+     ============================================ */
+  .compare-wrapper { overflow-x: auto; border: 1px solid var(--ink); }
+  table.compare {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.93rem;
+  }
+  table.compare thead th {
+    background: var(--ink);
+    color: var(--paper);
+    font-family: var(--mono);
+    font-weight: 500;
+    text-transform: uppercase;
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    padding: 1rem 1.2rem;
+    text-align: left;
+    border-right: 1px solid var(--ink-soft);
+  }
+  table.compare thead th:last-child { border-right: none; }
+  table.compare thead th.attr-col { background: var(--forest); }
+
+  table.compare tbody th {
+    background: var(--sage);
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-weight: 600;
+    color: var(--forest-deep);
+    padding: 1rem 1.2rem;
+    text-align: left;
+    vertical-align: top;
+    border-right: 2px solid var(--forest);
+    border-bottom: 1px solid var(--sage-deep);
+    width: 22%;
+  }
+  table.compare tbody td {
+    padding: 1rem 1.2rem;
+    vertical-align: top;
+    border-right: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+    line-height: 1.55;
+  }
+  table.compare tbody td:last-child { border-right: none; }
+  table.compare tbody tr:last-child th,
+  table.compare tbody tr:last-child td { border-bottom: none; }
+  table.compare tbody td strong { color: var(--forest); }
+
+  /* ============================================
+     OBJECTIVES — Bloom's ladder (reused)
+     ============================================ */
+  .bloom-ladder {
+    list-style: none;
+    counter-reset: bloom;
+    display: grid;
+    gap: 0.5rem;
+  }
+  .bloom-ladder li {
+    counter-increment: bloom;
+    display: grid;
+    grid-template-columns: 140px 160px 1fr;
+    align-items: start;
+    gap: 1.5rem;
+    padding: 1.1rem 1.25rem;
+    border-left: 3px solid var(--forest);
+    background: var(--paper-warm);
+    position: relative;
+  }
+  .bloom-ladder li:nth-child(1) { border-left-color: #dceee2; }
+  .bloom-ladder li:nth-child(2) { border-left-color: #b8dcc4; }
+  .bloom-ladder li:nth-child(3) { border-left-color: #8ac79d; }
+  .bloom-ladder li:nth-child(4) { border-left-color: #5bad75; }
+  .bloom-ladder li:nth-child(5) { border-left-color: var(--moss); }
+
+  .bloom-level {
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+  }
+  .bloom-level strong {
+    display: block;
+    font-size: 0.78rem;
+    color: var(--forest);
+    font-weight: 600;
+    margin-top: 2px;
+  }
+  .bloom-verb {
+    font-family: var(--serif);
+    font-size: 1.3rem;
+    font-style: italic;
+    color: var(--ink);
+    font-weight: 500;
+  }
+  .bloom-objective {
+    font-size: 0.94rem;
+    line-height: 1.5;
+  }
+
+  /* ============================================
+     USE CASES ROSTER (reused persona grid pattern)
+     ============================================ */
+  .roster {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0;
+    border-top: 1px solid var(--ink);
+    border-left: 1px solid var(--ink);
+  }
+  .use-case {
+    border-right: 1px solid var(--ink);
+    border-bottom: 1px solid var(--ink);
+    padding: 1.5rem 1.4rem;
+    background: var(--paper);
+    transition: background 0.3s ease;
+    position: relative;
+  }
+  .use-case:hover { background: var(--sage); }
+  .use-case .tag {
+    font-family: var(--mono);
+    font-size: 0.68rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--moss);
+    margin-bottom: 0.5rem;
+    display: flex;
+    justify-content: space-between;
+  }
+  .use-case .tag .id { color: var(--ink-soft); }
+  .use-case h4 {
+    font-family: var(--serif);
+    font-size: 1.3rem;
+    font-weight: 600;
+    line-height: 1.15;
+    margin-bottom: 0.6rem;
+    letter-spacing: -0.005em;
+  }
+  .use-case p {
+    font-size: 0.88rem;
+    line-height: 1.5;
+    margin-bottom: 0.75rem;
+    color: var(--ink-soft);
+  }
+  .use-case .example {
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    color: var(--forest);
+    border-top: 1px dashed var(--sage-deep);
+    padding-top: 0.6rem;
+    margin-top: 0.75rem;
+    margin-bottom: 0;
+  }
+  .use-case .example strong {
+    display: block;
+    color: var(--ink);
+    margin-bottom: 2px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  /* Limitations callout (reused team-synthesis pattern) */
+  .limits-callout {
+    margin-top: 2rem;
+    padding: 2rem 2.2rem;
+    background: var(--forest-deep);
+    color: var(--paper);
+    border-left: 6px solid var(--lime);
+    position: relative;
+  }
+  .limits-callout h3 {
+    font-family: var(--serif);
+    font-weight: 500;
+    font-style: italic;
+    font-size: 1.6rem;
+    margin-bottom: 0.75rem;
+    color: var(--paper);
+  }
+  .limits-callout p {
+    color: #d8e5dc;
+    max-width: 78ch;
+    margin-bottom: 0.75rem;
+  }
+  .limits-callout p:last-child { margin-bottom: 0; }
+  .limits-callout em { color: var(--lime); font-style: normal; font-weight: 500; }
+
+  /* ============================================
+     CAPABILITIES LIST (reused skills-grid pattern)
+     ============================================ */
+  .cap-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
+  }
+  .cap {
+    display: grid;
+    grid-template-columns: 3.5rem 1fr;
+    gap: 1rem;
+    padding: 1.1rem 1.25rem;
+    border: 1px solid var(--rule);
+    background: var(--paper);
+  }
+  .cap-num {
+    font-family: var(--serif);
+    font-size: 2rem;
+    font-weight: 500;
+    font-style: italic;
+    color: var(--forest);
+    line-height: 1;
+    border-right: 1px solid var(--sage-deep);
+    padding-right: 0.75rem;
+  }
+  .cap h5 {
+    font-family: var(--sans);
+    font-weight: 600;
+    font-size: 1rem;
+    margin-bottom: 0.35rem;
+    color: var(--ink);
+  }
+  .cap p {
+    font-size: 0.85rem;
+    line-height: 1.5;
+    margin: 0;
+    color: var(--ink-soft);
+  }
+
+  /* ============================================
+     TOKEN DEMO — interactive element
+     ============================================ */
+  .token-demo {
+    border: 1px solid var(--ink);
+    background: var(--paper-warm);
+    margin-top: 1.5rem;
+  }
+  .token-demo-head {
+    background: var(--ink);
+    color: var(--paper);
+    padding: 0.9rem 1.25rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .token-demo-head h3 {
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: 1.3rem;
+    font-style: italic;
+  }
+  .token-demo-head .badge {
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    padding: 4px 10px;
+    border: 1px solid var(--lime);
+    color: var(--lime);
+  }
+  .token-demo-body {
+    padding: 1.5rem;
+  }
+  .token-demo textarea {
+    width: 100%;
+    min-height: 110px;
+    font-family: var(--mono);
+    font-size: 0.9rem;
+    line-height: 1.55;
+    padding: 0.9rem 1rem;
+    border: 1px solid var(--rule);
+    background: var(--paper);
+    color: var(--ink);
+    resize: vertical;
+  }
+  .token-demo textarea:focus {
+    outline: 2px solid var(--moss);
+    outline-offset: 1px;
+  }
+  .token-metrics {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+    margin-top: 1rem;
+    border: 1px solid var(--sage-deep);
+  }
+  .token-metric {
+    padding: 0.85rem 1rem;
+    border-right: 1px solid var(--sage-deep);
+    background: var(--paper);
+  }
+  .token-metric:last-child { border-right: none; }
+  .token-metric .m-label {
+    font-family: var(--mono);
+    font-size: 0.68rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--ink-soft);
+    margin-bottom: 0.3rem;
+  }
+  .token-metric .m-value {
+    font-family: var(--serif);
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: var(--forest);
+    line-height: 1;
+  }
+  .token-visual {
+    margin-top: 1rem;
+    padding: 0.9rem 1rem;
+    background: var(--paper);
+    border: 1px solid var(--sage-deep);
+    font-family: var(--mono);
+    font-size: 0.85rem;
+    line-height: 1.9;
+    min-height: 3rem;
+    color: var(--ink-soft);
+  }
+  .tok {
+    display: inline-block;
+    padding: 2px 5px;
+    margin: 1px 2px;
+    border-radius: 2px;
+    background: var(--sage);
+    color: var(--forest-deep);
+    border: 1px solid var(--sage-deep);
+  }
+  .tok:nth-child(3n) { background: #f0e8d6; border-color: #d9cfb5; color: #5a4a1f; }
+  .tok:nth-child(5n) { background: #e0ecd8; border-color: #b8cfa3; color: #3b5520; }
+  .token-note {
+    font-size: 0.82rem;
+    color: var(--ink-soft);
+    font-style: italic;
+    margin-top: 0.75rem;
+  }
+
+  /* ============================================
+     PRICING TABLE (reused comparison pattern)
+     ============================================ */
+  .pricing-note {
+    font-size: 0.82rem;
+    color: var(--ink-soft);
+    font-style: italic;
+    margin-top: 0.75rem;
+  }
+
+  /* ============================================
+     QUIZ — knowledge check (new component)
+     Styled using the lesson07 palette and borders
+     ============================================ */
+  .quiz {
+    border: 1px solid var(--ink);
+    background: var(--paper);
+  }
+  .quiz-head {
+    background: var(--ink);
+    color: var(--paper);
+    padding: 0.9rem 1.25rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .quiz-head h3 {
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: 1.3rem;
+    font-style: italic;
+  }
+  .quiz-head .score {
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    padding: 4px 10px;
+    border: 1px solid var(--lime);
+    color: var(--lime);
+  }
+  .quiz-item {
+    padding: 1.5rem 1.5rem 1.25rem;
+    border-bottom: 1px solid var(--rule);
+  }
+  .quiz-item:last-of-type { border-bottom: none; }
+  .quiz-item .q-num {
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--moss);
+    margin-bottom: 0.4rem;
+  }
+  .quiz-item .q-prompt {
+    font-family: var(--serif);
+    font-size: 1.2rem;
+    font-weight: 500;
+    line-height: 1.3;
+    margin-bottom: 0.9rem;
+    color: var(--ink);
+  }
+  .choices {
+    display: grid;
+    gap: 0.5rem;
+  }
+  .choice {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    padding: 0.7rem 0.9rem;
+    border: 1px solid var(--rule);
+    background: var(--paper-warm);
+    cursor: pointer;
+    font-size: 0.92rem;
+    line-height: 1.45;
+    transition: background 0.15s ease, border-color 0.15s ease;
+  }
+  .choice:hover { background: var(--sage); }
+  .choice input { margin-top: 3px; accent-color: var(--forest); }
+  .choice.correct {
+    background: var(--sage);
+    border-color: var(--forest);
+    color: var(--forest-deep);
+  }
+  .choice.wrong {
+    background: #fbecec;
+    border-color: #b84848;
+    color: #5a1f1f;
+  }
+  .choice.locked { cursor: default; }
+  .feedback {
+    margin-top: 0.75rem;
+    padding: 0.7rem 0.9rem;
+    font-size: 0.85rem;
+    line-height: 1.5;
+    border-left: 3px solid var(--moss);
+    background: var(--paper-warm);
+    color: var(--ink-soft);
+    display: none;
+  }
+  .feedback.show { display: block; }
+  .feedback strong { color: var(--forest); }
+  .quiz-actions {
+    padding: 1.25rem 1.5rem;
+    border-top: 2px solid var(--ink);
+    background: var(--paper-warm);
+    display: flex;
+    gap: 0.75rem;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  .btn {
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    padding: 0.65rem 1.1rem;
+    background: var(--forest);
+    color: var(--paper);
+    border: 1px solid var(--forest);
+    cursor: pointer;
+    font-weight: 500;
+    transition: background 0.15s ease;
+  }
+  .btn:hover { background: var(--forest-deep); }
+  .btn.secondary {
+    background: var(--paper);
+    color: var(--forest);
+  }
+  .btn.secondary:hover {
+    background: var(--sage);
+  }
+  .btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+  .result-line {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 1.05rem;
+    color: var(--forest);
+  }
+
+  /* ============================================
+     FOOTER
+     ============================================ */
+  footer {
+    border-top: 3px double var(--ink);
+    margin-top: 4rem;
+    padding: 2rem;
+    background: var(--paper);
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--ink-soft);
+    text-align: center;
+  }
+  footer strong { color: var(--forest); }
+
+  /* ============================================
+     RESPONSIVE
+     ============================================ */
+  @media (max-width: 900px) {
+    .concept-grid { grid-template-columns: 1fr; }
+    .roster { grid-template-columns: 1fr; }
+    .cap-grid { grid-template-columns: 1fr; }
+    .token-metrics { grid-template-columns: repeat(2, 1fr); }
+    .token-metric:nth-child(2) { border-right: none; }
+    .token-metric:nth-child(1), .token-metric:nth-child(2) { border-bottom: 1px solid var(--sage-deep); }
+    .bloom-ladder li { grid-template-columns: 1fr; gap: 0.35rem; }
+    .masthead h1 { font-size: 2.2rem; }
+  }
+
+  /* ============================================
+     PRINT — classroom handout
+     ============================================ */
+  @media print {
+    body { font-size: 11pt; }
+    .masthead { page-break-after: avoid; }
+    section { page-break-inside: avoid; }
+    .use-case:hover, .choice:hover { background: none; }
+    .limits-callout { background: white; color: black; border: 2px solid black; }
+    .limits-callout h3, .limits-callout p { color: black; }
+    .quiz-actions { display: none; }
+    a { color: black; text-decoration: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- =========================== MASTHEAD =========================== -->
+<header class="masthead">
+  <div class="masthead-top">
+    <span class="edition">AI in Action · Lesson 01</span>
+    <span class="date">Foundations Module</span>
+  </div>
+  <h1>Introduction to <em>Large Language Models</em></h1>
+  <p class="dek">A plain-language entry point to the technology behind Claude, ChatGPT, Gemini, and Llama — what an LLM <em>is</em>, what it can do, and what it costs to use.</p>
+  <div class="meta">
+    <span>Audience<strong>Community College Students</strong></span>
+    <span>Duration<strong>50 Minutes</strong></span>
+    <span>Format<strong>Lecture + Interactive Demo</strong></span>
+    <span>Prerequisite<strong>None</strong></span>
+  </div>
+</header>
+
+<main>
+
+<!-- =========================== SECTION 1: LEARNING OBJECTIVES =========================== -->
+<section id="objectives">
+  <div class="section-head">
+    <span class="num">§ 01</span>
+    <h2>Learning <em>Objectives</em></h2>
+  </div>
+  <p>By the end of this lesson, students will be able to — mapped across Bloom's cognitive levels:</p>
+
+  <ul class="bloom-ladder">
+    <li>
+      <div class="bloom-level">Level 1<strong>Remember</strong></div>
+      <div class="bloom-verb">Define</div>
+      <div class="bloom-objective">Define a <em>large language model</em> in plain language and name at least three current examples across different providers.</div>
+    </li>
+    <li>
+      <div class="bloom-level">Level 2<strong>Understand</strong></div>
+      <div class="bloom-verb">Explain</div>
+      <div class="bloom-objective">Explain, without jargon, how next-token prediction allows an LLM to produce coherent paragraphs, code, and answers from a prompt.</div>
+    </li>
+    <li>
+      <div class="bloom-level">Level 3<strong>Apply</strong></div>
+      <div class="bloom-verb">Identify</div>
+      <div class="bloom-objective">Identify four realistic workplace or academic tasks where an LLM is a strong fit — and two where it is a poor fit given its current limitations.</div>
+    </li>
+    <li>
+      <div class="bloom-level">Level 4<strong>Analyze</strong></div>
+      <div class="bloom-verb">Estimate</div>
+      <div class="bloom-objective">Estimate the approximate token count of a short passage, and reason about how context windows and token pricing affect the cost and feasibility of a given task.</div>
+    </li>
+    <li>
+      <div class="bloom-level">Level 5<strong>Evaluate</strong></div>
+      <div class="bloom-verb">Compare</div>
+      <div class="bloom-objective">Compare free chat interfaces, paid subscription tiers, and API access, and justify which is most appropriate for a given use case.</div>
+    </li>
+  </ul>
+</section>
+
+<!-- =========================== SECTION 2: WHAT IS AN LLM =========================== -->
+<section id="what">
+  <div class="section-head">
+    <span class="num">§ 02</span>
+    <h2>What Is a <em>Large Language Model</em>?</h2>
+  </div>
+
+  <p class="lede">A large language model — LLM for short — is a computer program that has read an enormous amount of text and, as a result, has learned to predict which word is likely to come next. That single ability, repeated one word at a time, is what lets systems like Claude, ChatGPT, Gemini, and Llama answer questions, draft emails, write code, and summarize documents.</p>
+
+  <div class="concept-grid">
+    <div class="concept-card">
+      <span class="symbol">L</span>
+      <div class="label">The "Large"</div>
+      <h3>Size Matters</h3>
+      <p>Modern LLMs are trained on <strong>hundreds of billions of words</strong> drawn from books, articles, websites, and code. The model's own internal parameters — the numbers that encode what it has learned — often number in the hundreds of billions as well.</p>
+    </div>
+    <div class="concept-card">
+      <span class="symbol">L</span>
+      <div class="label">The "Language"</div>
+      <h3>Text In, Text Out</h3>
+      <p>The model works on <strong>sequences of text</strong>. You give it a prompt — a question, an instruction, a document — and it responds with more text. Many modern LLMs also accept images, audio, or files as input.</p>
+    </div>
+    <div class="concept-card highlight">
+      <span class="symbol">M</span>
+      <div class="label">The "Model"</div>
+      <h3>Pattern, Not Lookup</h3>
+      <p>An LLM is <strong>not a search engine</strong> and does not look up facts in a database. It generates a response from learned statistical patterns — which is why it is fluent, flexible, and occasionally wrong.</p>
+    </div>
+  </div>
+
+  <div class="compare-wrapper" style="margin-top:2rem;">
+    <table class="compare">
+      <thead>
+        <tr>
+          <th class="attr-col">Attribute</th>
+          <th>Traditional Software</th>
+          <th>Large Language Model</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th>How It Works</th>
+          <td>Follows a fixed set of rules a programmer wrote: <em>if this, then that.</em></td>
+          <td>Follows <strong>statistical patterns</strong> learned from training data — rules are implicit, not hand-coded.</td>
+        </tr>
+        <tr>
+          <th>Input Format</th>
+          <td>Structured — buttons, forms, specific commands.</td>
+          <td><strong>Natural language</strong> — plain English (or code, or another language) is the interface.</td>
+        </tr>
+        <tr>
+          <th>Output Behavior</th>
+          <td>Deterministic — the same input always produces the same output.</td>
+          <td><strong>Probabilistic</strong> — the same prompt can yield slightly different answers each time.</td>
+        </tr>
+        <tr>
+          <th>Failure Mode</th>
+          <td>Crashes, error messages, or does nothing.</td>
+          <td>Produces a confident-sounding answer that may be wrong — a <strong>hallucination</strong>.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p style="margin-top:2rem;"><strong>How next-token prediction works.</strong> Start typing <em>"The capital of France is —"</em>. An LLM does not "know" the answer the way a database does. It has seen that pattern of words countless times during training and calculates that <em>Paris</em> is the most probable next token. It picks a token, appends it, and repeats. Everything the model does — reasoning, coding, writing poetry — emerges from this one loop run billions of times across a vast learned landscape of language.</p>
+</section>
+
+<!-- =========================== SECTION 3: PURPOSE & USES =========================== -->
+<section id="uses">
+  <div class="section-head">
+    <span class="num">§ 03</span>
+    <h2>Purpose &amp; Real-World <em>Uses</em></h2>
+  </div>
+  <p>LLMs are general-purpose tools. The same underlying model can shift between roles depending on the prompt. Below are six categories of tasks where LLMs are already in daily use across workplaces and classrooms.</p>
+
+  <div class="roster">
+    <article class="use-case">
+      <div class="tag"><span>Use Case</span><span class="id">U-01</span></div>
+      <h4>Writing &amp; Editing</h4>
+      <p>Drafts, rewrites, tone shifts, outlines, summaries. The model excels at producing a competent first draft quickly, which a human then refines.</p>
+      <p class="example"><strong>Example</strong>Draft a polite follow-up email to a client who hasn't replied in two weeks.</p>
+    </article>
+
+    <article class="use-case">
+      <div class="tag"><span>Use Case</span><span class="id">U-02</span></div>
+      <h4>Coding &amp; Debugging</h4>
+      <p>Generating functions, explaining unfamiliar code, spotting bugs, translating between programming languages, and writing test cases.</p>
+      <p class="example"><strong>Example</strong>Convert this Python script to JavaScript and add error handling.</p>
+    </article>
+
+    <article class="use-case">
+      <div class="tag"><span>Use Case</span><span class="id">U-03</span></div>
+      <h4>Analysis &amp; Summarization</h4>
+      <p>Condensing long documents, extracting key points from meetings, comparing sources, and turning unstructured notes into structured tables.</p>
+      <p class="example"><strong>Example</strong>Summarize this 40-page report into ten bullet points for an executive briefing.</p>
+    </article>
+
+    <article class="use-case">
+      <div class="tag"><span>Use Case</span><span class="id">U-04</span></div>
+      <h4>Tutoring &amp; Explanation</h4>
+      <p>Explaining concepts at different levels, generating practice problems, walking through solutions step by step, and role-playing Socratic dialogue.</p>
+      <p class="example"><strong>Example</strong>Explain subnetting to me as if I've never seen an IP address before.</p>
+    </article>
+
+    <article class="use-case">
+      <div class="tag"><span>Use Case</span><span class="id">U-05</span></div>
+      <h4>Research &amp; Discovery</h4>
+      <p>Brainstorming angles, surfacing counterarguments, synthesizing across sources, and translating specialist language for a general audience.</p>
+      <p class="example"><strong>Example</strong>What are the main criticisms of NIST SP 800-171, and who makes them?</p>
+    </article>
+
+    <article class="use-case">
+      <div class="tag"><span>Use Case</span><span class="id">U-06</span></div>
+      <h4>Customer Service &amp; Support</h4>
+      <p>Answering routine questions, classifying tickets, drafting personalized replies, and handing off to a human when the conversation exceeds its scope.</p>
+      <p class="example"><strong>Example</strong>A first-line chatbot that triages IT help-desk tickets before a technician reviews them.</p>
+    </article>
+  </div>
+</section>
+
+<!-- =========================== SECTION 4: CAPABILITIES & LIMITS =========================== -->
+<section id="capabilities">
+  <div class="section-head">
+    <span class="num">§ 04</span>
+    <h2>Core Capabilities <em>&amp; Limits</em></h2>
+  </div>
+  <p>Current frontier LLMs — the generation that includes Claude, GPT, Gemini, and Llama — share a common feature set. Capability does not mean infallibility: each strength has a matching limit worth knowing before you rely on the tool.</p>
+
+  <div class="cap-grid">
+    <div class="cap">
+      <div class="cap-num">01</div>
+      <div>
+        <h5>Reasoning &amp; Multi-Step Logic</h5>
+        <p>Works through problems that require several linked steps — math, planning, code logic — especially when asked to think it through before answering.</p>
+      </div>
+    </div>
+    <div class="cap">
+      <div class="cap-num">02</div>
+      <div>
+        <h5>Summarization &amp; Rewriting</h5>
+        <p>Condenses long text, changes tone, adjusts reading level, and rewrites for different audiences without losing the source's meaning.</p>
+      </div>
+    </div>
+    <div class="cap">
+      <div class="cap-num">03</div>
+      <div>
+        <h5>Translation Across Languages</h5>
+        <p>Translates between dozens of human languages and between programming languages, preserving nuance when the input is clear.</p>
+      </div>
+    </div>
+    <div class="cap">
+      <div class="cap-num">04</div>
+      <div>
+        <h5>Code Generation</h5>
+        <p>Writes, explains, and refactors code in most modern programming languages, and can produce tests, documentation, and commit messages alongside it.</p>
+      </div>
+    </div>
+    <div class="cap">
+      <div class="cap-num">05</div>
+      <div>
+        <h5>Tool Use &amp; Function Calling</h5>
+        <p>Modern LLMs can call external tools — search the web, run code, query a database, send an email — as part of answering a single prompt.</p>
+      </div>
+    </div>
+    <div class="cap">
+      <div class="cap-num">06</div>
+      <div>
+        <h5>Multimodal Input</h5>
+        <p>Accepts images, PDFs, spreadsheets, and in some products audio or video — allowing questions like <em>"What's wrong with this circuit diagram?"</em></p>
+      </div>
+    </div>
+  </div>
+
+  <aside class="limits-callout">
+    <h3>What an LLM still cannot reliably do</h3>
+    <p><em>Hallucination.</em> Because the model generates text from patterns, it can produce confident, fluent answers that are factually wrong — fabricated citations, invented statistics, plausible-sounding code that doesn't compile. Always verify claims that matter.</p>
+    <p><em>Knowledge cutoff.</em> The model's training data stops at a specific date. Anything that happened after that date is unknown to the model unless you give it fresh information or connect it to a search tool.</p>
+    <p><em>Context limits.</em> There is a fixed ceiling on how much text the model can consider at once — the <strong>context window</strong>. Paste in a book longer than that ceiling and the earliest pages fall off the back.</p>
+  </aside>
+</section>
+
+<!-- =========================== SECTION 5: FOUNDATION CONCEPTS + TOKEN DEMO =========================== -->
+<section id="foundations">
+  <div class="section-head">
+    <span class="num">§ 05</span>
+    <h2>Foundation <em>Concepts</em></h2>
+  </div>
+  <p>Four terms explain most of what you'll encounter when you start using LLMs seriously: <strong>token</strong>, <strong>context window</strong>, <strong>prompt vs. completion</strong>, and <strong>temperature</strong>. Each one is simple once you see it in action.</p>
+
+  <div class="concept-grid">
+    <div class="concept-card">
+      <span class="symbol">T</span>
+      <div class="label">Concept One</div>
+      <h3>Token</h3>
+      <p>A token is a <strong>chunk of text</strong> — roughly three-quarters of a word in English. Short common words are one token; longer or unusual words split into several. Tokens are the unit the model reads, writes, and — importantly — is billed for.</p>
+    </div>
+    <div class="concept-card">
+      <span class="symbol">C</span>
+      <div class="label">Concept Two</div>
+      <h3>Context Window</h3>
+      <p>The <strong>maximum number of tokens</strong> the model can consider at once — your prompt, any attached documents, and the model's own reply. Current frontier models offer windows of 200,000 tokens or more, roughly a 500-page book.</p>
+    </div>
+    <div class="concept-card">
+      <span class="symbol">P</span>
+      <div class="label">Concept Three</div>
+      <h3>Prompt + Completion</h3>
+      <p>The <strong>prompt</strong> is everything you send in: instructions, context, documents. The <strong>completion</strong> is the model's response. Input tokens and output tokens are usually priced separately, with output costing more.</p>
+    </div>
+  </div>
+
+  <p style="margin-top:2rem;"><strong>Temperature</strong> is a setting, between 0 and about 1, that controls how predictable the model's output is. A low temperature (near 0) makes the model pick the most likely next token every time — good for factual, consistent work. A higher temperature makes the model sample from less-likely options — good for brainstorming or creative writing. Most chat interfaces hide this control; API users adjust it directly.</p>
+
+  <!-- Interactive token counter -->
+  <div class="token-demo">
+    <div class="token-demo-head">
+      <h3>Try It — Token Counter</h3>
+      <span class="badge">Interactive</span>
+    </div>
+    <div class="token-demo-body">
+      <p style="font-size:0.9rem;margin-bottom:0.8rem;color:var(--ink-soft);">Type or paste text below. The rough token breakdown appears as you type. This uses a simple approximation — real tokenizers vary slightly by model — but it's accurate enough to build intuition.</p>
+
+      <textarea id="tokenInput" spellcheck="false" placeholder="Paste a paragraph here, or try typing: 'The quick brown fox jumps over the lazy dog.'"></textarea>
+
+      <div class="token-metrics">
+        <div class="token-metric">
+          <div class="m-label">Characters</div>
+          <div class="m-value" id="mChars">0</div>
+        </div>
+        <div class="token-metric">
+          <div class="m-label">Words</div>
+          <div class="m-value" id="mWords">0</div>
+        </div>
+        <div class="token-metric">
+          <div class="m-label">Tokens (est.)</div>
+          <div class="m-value" id="mTokens">0</div>
+        </div>
+        <div class="token-metric">
+          <div class="m-label">Cost @ $3 / M in</div>
+          <div class="m-value" id="mCost">$0.00</div>
+        </div>
+      </div>
+
+      <div class="token-visual" id="tokenVisual" aria-live="polite">Token preview will appear here.</div>
+
+      <p class="token-note">Rough rule of thumb: <strong>1 token ≈ 4 characters</strong> or <strong>¾ of a word</strong> in English. Rare words, numbers, punctuation, and non-English text tend to produce more tokens per character.</p>
+    </div>
+  </div>
+</section>
+
+<!-- =========================== SECTION 6: ACCESS, SUBSCRIPTIONS, COST =========================== -->
+<section id="access">
+  <div class="section-head">
+    <span class="num">§ 06</span>
+    <h2>Access, Subscriptions <em>&amp; Cost</em></h2>
+  </div>
+  <p>The same underlying model is usually offered in three different forms — a free tier, a paid subscription, and direct API access. Which one fits best depends on how much you use it, whether you're building software, and how sensitive your data is.</p>
+
+  <div class="compare-wrapper">
+    <table class="compare">
+      <thead>
+        <tr>
+          <th class="attr-col">Tier</th>
+          <th>Free Chat</th>
+          <th>Paid Subscription</th>
+          <th>API Access</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th>Who It's For</th>
+          <td>Casual users trying it out or using it lightly.</td>
+          <td>Regular users who hit free-tier limits or want the best model.</td>
+          <td><strong>Developers</strong> building apps, automations, or integrations.</td>
+        </tr>
+        <tr>
+          <th>Interface</th>
+          <td>Web or mobile chat window.</td>
+          <td>Same chat window, with <strong>higher limits</strong> and extra features.</td>
+          <td>Programmatic — requests sent from your own code.</td>
+        </tr>
+        <tr>
+          <th>Typical Cost</th>
+          <td>$0 — usage-capped per day or message.</td>
+          <td>Around <strong>$20/month</strong> for individuals; enterprise plans available.</td>
+          <td>Metered — priced per million <strong>input</strong> and <strong>output</strong> tokens.</td>
+        </tr>
+        <tr>
+          <th>Rate Limits</th>
+          <td>Strict caps; may pause during peak traffic.</td>
+          <td>Generous caps per hour or day; priority access to newest models.</td>
+          <td>Tiered — raise your limits as usage and trust grow.</td>
+        </tr>
+        <tr>
+          <th>Data Handling</th>
+          <td>Check the provider's policy — some train on free-tier chats.</td>
+          <td>Usually not used for training by default.</td>
+          <td>Business-grade controls; zero-retention options available.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p style="margin-top:1.5rem;"><strong>Why cost scales with usage.</strong> API pricing is per token, and both your prompt and the model's reply count. A short question ("What is a subnet?") might cost a fraction of a cent. Feeding in a 100-page PDF for summarization can cost several cents per run — and running that summarization on 10,000 PDFs becomes a real line item. The token counter above is a first, practical tool for estimating cost before you hit Send.</p>
+
+  <p><strong>Why output tokens cost more than input.</strong> Reading your prompt is comparatively cheap; generating each new token requires the model to run its full calculation again. Most providers price output at roughly 3–5× the input rate — which is why a concise prompt that asks for a concise answer is usually the cheapest and best-performing combination.</p>
+</section>
+
+<!-- =========================== SECTION 7: KNOWLEDGE CHECK =========================== -->
+<section id="quiz-section">
+  <div class="section-head">
+    <span class="num">§ 07</span>
+    <h2>Knowledge <em>Check</em></h2>
+  </div>
+  <p>Five questions covering the lesson. Select your answer — feedback appears immediately. Submit at the end to see your score.</p>
+
+  <div class="quiz" id="quiz">
+    <div class="quiz-head">
+      <h3>Lesson 01 · Check for Understanding</h3>
+      <span class="score" id="scoreBadge">0 / 5</span>
+    </div>
+
+    <!-- Questions are injected by JS -->
+    <div id="quizBody"></div>
+
+    <div class="quiz-actions">
+      <button class="btn" id="submitBtn">Submit Quiz</button>
+      <button class="btn secondary" id="resetBtn">Reset</button>
+      <span class="result-line" id="resultLine"></span>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <strong>AI in Action</strong> · Lesson 01 · Introduction to Large Language Models · Prepared for Classroom &amp; Self-Study Use
+</footer>
+
+<script>
+/* ==========================================================
+   TOKEN COUNTER
+   Simple heuristic: ~4 characters per token, with small
+   adjustments for whitespace and punctuation density.
+   ========================================================== */
+(function () {
+  const input = document.getElementById('tokenInput');
+  const mChars = document.getElementById('mChars');
+  const mWords = document.getElementById('mWords');
+  const mTokens = document.getElementById('mTokens');
+  const mCost = document.getElementById('mCost');
+  const visual = document.getElementById('tokenVisual');
+
+  // Price example: $3 per million input tokens (Claude Sonnet-class pricing)
+  const PRICE_PER_M = 3.00;
+
+  function approxTokenize(text) {
+    if (!text) return [];
+    // Split on whitespace first, then break long/rare words into sub-chunks of ~4 chars
+    const out = [];
+    const words = text.split(/(\s+)/);
+    for (const w of words) {
+      if (!w) continue;
+      if (/^\s+$/.test(w)) { continue; }
+      // punctuation often splits off as its own token
+      const parts = w.split(/([.,!?;:()"'\[\]{}/\\-])/).filter(Boolean);
+      for (const p of parts) {
+        if (p.length <= 4) { out.push(p); }
+        else {
+          // break longer words into ~4-char chunks
+          for (let i = 0; i < p.length; i += 4) {
+            out.push(p.slice(i, i + 4));
+          }
+        }
+      }
+    }
+    return out;
+  }
+
+  function render() {
+    const text = input.value;
+    const chars = text.length;
+    const words = text.trim() ? text.trim().split(/\s+/).length : 0;
+    const toks = approxTokenize(text);
+    const tokenCount = toks.length;
+    const costDollars = (tokenCount / 1000000) * PRICE_PER_M;
+
+    mChars.textContent = chars.toLocaleString();
+    mWords.textContent = words.toLocaleString();
+    mTokens.textContent = tokenCount.toLocaleString();
+    mCost.textContent = '$' + costDollars.toFixed(6);
+
+    // Visual preview — cap at ~120 tokens to keep DOM light
+    if (tokenCount === 0) {
+      visual.textContent = 'Token preview will appear here.';
+    } else {
+      visual.innerHTML = '';
+      const preview = toks.slice(0, 120);
+      preview.forEach(t => {
+        const span = document.createElement('span');
+        span.className = 'tok';
+        span.textContent = t;
+        visual.appendChild(span);
+        visual.appendChild(document.createTextNode(' '));
+      });
+      if (tokenCount > 120) {
+        const more = document.createElement('span');
+        more.style.fontStyle = 'italic';
+        more.style.color = 'var(--ink-soft)';
+        more.textContent = ' … +' + (tokenCount - 120) + ' more';
+        visual.appendChild(more);
+      }
+    }
+  }
+
+  input.addEventListener('input', render);
+  // Seed with a starter
+  input.value = 'The quick brown fox jumps over the lazy dog.';
+  render();
+})();
+
+/* ==========================================================
+   KNOWLEDGE-CHECK QUIZ
+   ========================================================== */
+(function () {
+  const questions = [
+    {
+      q: "Which statement best describes how an LLM produces its response?",
+      choices: [
+        "It searches a database for the closest matching answer.",
+        "It predicts likely next tokens based on patterns learned during training.",
+        "It executes hand-written rules a programmer wrote for each topic.",
+        "It asks a human expert in the background and relays the answer."
+      ],
+      correct: 1,
+      explain: "LLMs generate output one token at a time by predicting the most likely next token, using statistical patterns from training — not database lookup, not hand-coded rules, and not a hidden human."
+    },
+    {
+      q: "A 'hallucination' in the context of LLMs refers to:",
+      choices: [
+        "The model crashing and returning an error.",
+        "The model refusing to answer a sensitive question.",
+        "The model producing a confident, fluent answer that is factually incorrect.",
+        "The model running too slowly to finish a response."
+      ],
+      correct: 2,
+      explain: "Hallucination is the failure mode where an LLM generates plausible-sounding but incorrect content — fabricated citations, invented statistics, or wrong facts stated with confidence."
+    },
+    {
+      q: "You want to feed a 600-page legal document into an LLM for summarization, but only the first ~200 pages appear to influence the summary. What is the most likely cause?",
+      choices: [
+        "The model's temperature is set too high.",
+        "The document exceeds the model's context window, so later content was truncated.",
+        "The model only reads PDFs with embedded text metadata.",
+        "The model is operating on a free tier that blocks long inputs."
+      ],
+      correct: 1,
+      explain: "The context window is the fixed ceiling on how many tokens the model can consider at once. When input exceeds it, content gets truncated — most often from the end."
+    },
+    {
+      q: "Using the rough rule 1 token ≈ ¾ of a word, roughly how many tokens is a 400-word essay?",
+      choices: [
+        "About 100 tokens.",
+        "About 300 tokens.",
+        "About 530 tokens.",
+        "About 1,600 tokens."
+      ],
+      correct: 2,
+      explain: "If 1 token ≈ ¾ word, then words ÷ 0.75 ≈ tokens. 400 ÷ 0.75 ≈ 533 tokens. The other answers confuse the ratio direction or apply it to characters instead of words."
+    },
+    {
+      q: "A developer is building a customer-service chatbot that will answer 50,000 tickets per month. Which access model is the most appropriate fit?",
+      choices: [
+        "Free chat tier — it's the cheapest.",
+        "Paid consumer subscription (e.g., $20/month).",
+        "Direct API access, priced per input and output token.",
+        "A spreadsheet running VLOOKUP against past tickets."
+      ],
+      correct: 2,
+      explain: "High-volume, programmatic workloads belong on the API, which is built for developer integration and scales with per-token pricing. Consumer chat tiers are for human conversations, not back-end automation."
+    }
+  ];
+
+  const body = document.getElementById('quizBody');
+  const scoreBadge = document.getElementById('scoreBadge');
+  const submitBtn = document.getElementById('submitBtn');
+  const resetBtn = document.getElementById('resetBtn');
+  const resultLine = document.getElementById('resultLine');
+
+  const state = questions.map(() => ({ picked: null, locked: false }));
+
+  function render() {
+    body.innerHTML = '';
+    questions.forEach((item, qi) => {
+      const wrap = document.createElement('div');
+      wrap.className = 'quiz-item';
+
+      const num = document.createElement('div');
+      num.className = 'q-num';
+      num.textContent = 'Question ' + String(qi + 1).padStart(2, '0');
+      wrap.appendChild(num);
+
+      const prompt = document.createElement('div');
+      prompt.className = 'q-prompt';
+      prompt.textContent = item.q;
+      wrap.appendChild(prompt);
+
+      const choices = document.createElement('div');
+      choices.className = 'choices';
+
+      item.choices.forEach((ch, ci) => {
+        const label = document.createElement('label');
+        label.className = 'choice';
+        const input = document.createElement('input');
+        input.type = 'radio';
+        input.name = 'q' + qi;
+        input.value = ci;
+        if (state[qi].picked === ci) input.checked = true;
+        if (state[qi].locked) input.disabled = true;
+        input.addEventListener('change', () => {
+          state[qi].picked = ci;
+          state[qi].locked = true;
+          render();
+        });
+        const span = document.createElement('span');
+        span.textContent = ch;
+        label.appendChild(input);
+        label.appendChild(span);
+
+        if (state[qi].locked) {
+          label.classList.add('locked');
+          if (ci === item.correct) label.classList.add('correct');
+          else if (ci === state[qi].picked) label.classList.add('wrong');
+        }
+        choices.appendChild(label);
+      });
+      wrap.appendChild(choices);
+
+      const fb = document.createElement('div');
+      fb.className = 'feedback';
+      if (state[qi].locked) {
+        fb.classList.add('show');
+        const correct = state[qi].picked === item.correct;
+        fb.innerHTML = '<strong>' + (correct ? 'Correct.' : 'Not quite.') + '</strong> ' + item.explain;
+      }
+      wrap.appendChild(fb);
+
+      body.appendChild(wrap);
+    });
+
+    const answered = state.filter(s => s.locked).length;
+    const correct = state.filter((s, i) => s.locked && s.picked === questions[i].correct).length;
+    scoreBadge.textContent = correct + ' / ' + questions.length;
+  }
+
+  submitBtn.addEventListener('click', () => {
+    // Lock any remaining questions
+    state.forEach(s => { if (s.picked !== null) s.locked = true; });
+    render();
+    const correct = state.filter((s, i) => s.picked === questions[i].correct).length;
+    const pct = Math.round((correct / questions.length) * 100);
+    let message;
+    if (pct === 100) message = 'Perfect — all five correct.';
+    else if (pct >= 80) message = 'Strong grasp of the fundamentals.';
+    else if (pct >= 60) message = 'Solid foundation — review the ones you missed.';
+    else if (pct >= 40) message = 'Worth another pass through sections § 02 and § 05.';
+    else message = 'Start again from the top — these concepts are worth re-reading.';
+    resultLine.textContent = message + '  (' + correct + '/' + questions.length + ', ' + pct + '%)';
+  });
+
+  resetBtn.addEventListener('click', () => {
+    state.forEach(s => { s.picked = null; s.locked = false; });
+    resultLine.textContent = '';
+    render();
+  });
+
+  render();
+})();
+</script>
+</body>
+</html>
