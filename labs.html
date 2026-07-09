@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Labs & Activity Portal</title>
+    <style>
+        :root {
+            --primary-blue: #2e7d32;
+            --primary-dark: #111111;
+            --bg-light: #ffffff;
+            --bg-white: #ffffff;
+            --text-main: #333333;
+            --text-muted: #666666;
+            --border-color: #e0e0e0;
+            --shadow-sm: 0 4px 6px rgba(0,0,0,0.05);
+            --shadow-hover: 0 10px 20px rgba(46, 125, 50, 0.15);
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-light);
+            color: var(--text-main);
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+        }
+
+        header {
+            background-color: var(--primary-dark);
+            color: var(--bg-white);
+            padding: 3rem 1rem;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 2.5rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        header p {
+            margin: 10px auto 0;
+            color: #bbdefb;
+            font-size: 1.1rem;
+            max-width: 600px;
+        }
+
+        .search-container {
+            max-width: 1200px;
+            margin: -25px auto 2rem;
+            padding: 0 1rem;
+            text-align: center;
+            position: relative;
+            z-index: 10;
+        }
+
+        #searchInput {
+            width: 100%;
+            max-width: 600px;
+            padding: 16px 24px;
+            font-size: 1.1rem;
+            border: none;
+            border-radius: 30px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            outline: none;
+            transition: box-shadow 0.3s ease;
+        }
+
+        #searchInput:focus {
+            box-shadow: 0 6px 20px rgba(21, 101, 192, 0.3);
+        }
+
+        .course-section {
+            max-width: 1200px;
+            margin: 0 auto 3rem;
+            padding: 0 1rem;
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+            color: var(--primary-dark);
+            border-bottom: 3px solid var(--primary-blue);
+            padding-bottom: 10px;
+            margin-bottom: 2rem;
+            display: inline-block;
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .card {
+            background-color: var(--bg-white);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 1.5rem;
+            text-decoration: none;
+            color: inherit;
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: var(--shadow-sm);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background-color: var(--primary-blue);
+            transition: width 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .card:hover::before {
+            width: 8px;
+        }
+
+        .card-type {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--primary-blue);
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            margin-left: 10px;
+        }
+
+        .card h3 {
+            font-size: 1.25rem;
+            margin: 0 0 0.5rem 10px;
+            color: var(--text-main);
+        }
+
+        .card p {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            margin: 0 0 1.5rem 10px;
+            flex-grow: 1;
+        }
+
+        .link-text {
+            font-weight: 600;
+            color: var(--primary-blue);
+            font-size: 0.9rem;
+            margin-left: 10px;
+            display: flex;
+            align-items: center;
+        }
+
+        .link-text::after {
+            content: '→';
+            margin-left: 6px;
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover .link-text::after {
+            transform: translateX(5px);
+        }
+
+        .special-card {
+            background: linear-gradient(135deg, #f0fdf4 0%, #ffffff 100%);
+            border-color: #a5d6a7;
+        }
+        
+        .special-card::before {
+            background-color: #4caf50;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Interactive Labs Portal</h1>
+        <p>Access your curriculum-aligned laboratory environments and activity generators.</p>
+    </header>
+
+    <div class="search-container">
+        <input type="text" id="searchInput" placeholder="Search for a specific lab, module, or topic...">
+    </div>
+
+    <!-- LAN153 Section -->
+    <section class="course-section" id="section-lan153">
+        <h2 class="section-title">LAN153: Security+ Curriculum</h2>
+        <div class="grid-container">
+            <a href="https://sands-mvcc.github.io/lan153/activitybuilder.html" class="card special-card" target="_blank">
+                <span class="card-type">Instructor Tool</span>
+                <h3>LAN153 Activity Builder</h3>
+                <p>Generate customized learning activities and assessments for Security+ students.</p>
+                <div class="link-text">Launch Tool</div>
+            </a>
+            <a href="https://sands-mvcc.github.io/lan153/lab01.html" class="card" target="_blank">
+                <span class="card-type">Lab Environment</span>
+                <h3>LAN153 Lab 01</h3>
+                <p>Practical exercise module 01 for foundational Security+ concepts.</p>
+                <div class="link-text">Start Lab</div>
+            </a>
+            <a href="https://sands-mvcc.github.io/lan153/lab02.html" class="card" target="_blank">
+                <span class="card-type">Lab Environment</span>
+                <h3>LAN153 Lab 02</h3>
+                <p>Practical exercise module 02 focusing on network threats and mitigation.</p>
+                <div class="link-text">Start Lab</div>
+            </a>
+            <a href="https://sands-mvcc.github.io/lan153/lab03.html" class="card" target="_blank">
+                <span class="card-type">Lab Environment</span>
+                <h3>LAN153 Lab 03</h3>
+                <p>Practical exercise module 03 for identity and access management.</p>
+                <div class="link-text">Start Lab</div>
+            </a>
+            <a href="https://sands-mvcc.github.io/lan153/lab04.html" class="card" target="_blank">
+                <span class="card-type">Lab Environment</span>
+                <h3>LAN153 Lab 04</h3>
+                <p>Practical exercise module 04 on cryptographic fundamentals.</p>
+                <div class="link-text">Start Lab</div>
+            </a>
+            <a href="https://sands-mvcc.github.io/lan153/lab05.html" class="card" target="_blank">
+                <span class="card-type">Lab Environment</span>
+                <h3>LAN153 Lab 05</h3>
+                <p>Practical exercise module 05 covering secure network architecture.</p>
+                <div class="link-text">Start Lab</div>
+            </a>
+            <a href="https://sands-mvcc.github.io/lan153/lab06.html" class="card" target="_blank">
+                <span class="card-type">Lab Environment</span>
+                <h3>LAN153 Lab 06</h3>
+                <p>Practical exercise module 06 evaluating security operations.</p>
+                <div class="link-text">Start Lab</div>
+            </a>
+            <a href="https://sands-mvcc.github.io/lan153/lab07.html" class="card" target="_blank">
+                <span class="card-type">Lab Environment</span>
+                <h3>LAN153 Lab 07</h3>
+                <p>Practical exercise module 07 for incident response procedures.</p>
+                <div class="link-text">Start Lab</div>
+            </a>
+            <a href="https://sands-mvcc.github.io/lan153/lab08.html" class="card" target="_blank">
+                <span class="card-type">Lab Environment</span>
+                <h3>LAN153 Lab 08</h3>
+                <p>Practical exercise module 08 exploring risk management strategies.</p>
+                <div class="link-text">Start Lab</div>
+            </a>
+            <a href="https://sands-mvcc.github.io/lan153/lab09.html" class="card" target="_blank">
+                <span class="card-type">Lab Environment</span>
+                <h3>LAN153 Lab 09</h3>
+                <p>Practical exercise module 09 focused on physical security controls.</p>
+                <div class="link-text">Start Lab</div>
+            </a>
+            <a href="https://sands-mvcc.github.io/lan153/lab10.html" class="card" target="_blank">
+                <span class="card-type">Lab Environment</span>
+                <h3>LAN153 Lab 10</h3>
+                <p>Practical exercise module 10 for cloud and virtualized security.</p>
+                <div class="link-text">Start Lab</div>
+            </a>
+            <a href="https://sands-mvcc.github.io/lan153/lab11.html" class="card" target="_blank">
+                <span class="card-type">Lab Environment</span>
+                <h3>LAN153 Lab 11</h3>
+                <p>Practical exercise module 11 on enterprise security architecture.</p>
+                <div class="link-text">Start Lab</div>
+            </a>
+            <a href="https://sands-mvcc.github.io/lan153/lab12.html" class="card" target="_blank">
+                <span class="card-type">Lab Environment</span>
+                <h3>LAN153 Lab 12</h3>
+                <p>Practical exercise module 12 providing a comprehensive final review.</p>
+                <div class="link-text">Start Lab</div>
+            </a>
+        </div>
+    </section>
+
+    <!-- CISSP Section -->
+    <section class="course-section" id="section-cissp">
+        <h2 class="section-title">CISSP: Advanced Security Certification</h2>
+        <div class="grid-container">
+            <a href="https://sands-mvcc.github.io/CISSP/gen-activity.html" class="card special-card" target="_blank">
+                <span class="card-type">Instructor Tool</span>
+                <h3>CISSP Activity Generator</h3>
+                <p>Dynamic tool to generate custom scenarios and exercises for CISSP domains.</p>
+                <div class="link-text">Launch Tool</div>
+            </a>
+            <a href="https://sands-mvcc.github.io/CISSP/lab01.html" class="card" target="_blank">
+                <span class="card-type">Lab Environment</span>
+                <h3>CISSP Lab 01</h3>
+                <p>Security and Risk Management practical application exercises.</p>
+                <div class="link-text">Start Lab</div>
+            </a>
+            <a href="https://sands-mvcc.github.io/CISSP/lab02.html" class="card" target="_blank">
+                <span class="card-type">Lab Environment</span>
+                <h3>CISSP Lab 02</h3>
+                <p>Asset Security classification, retention, and lifecycle scenarios.</p>
+                <div class="link-text">Start Lab</div>
+            </a>
+            <a href="https://sands-mvcc.github.io/CISSP/lab03.html" class="card" target="_blank">
+                <span class="card-type">Lab Environment</span>
+                <h3>CISSP Lab 03</h3>
+                <p>Security Architecture and Engineering design principles lab.</p>
+                <div class="link-text">Start Lab</div>
+            </a>
+            <a href="https://sands-mvcc.github.io/CISSP/lab04.html" class="card" target="_blank">
+                <span class="card-type">Lab Environment</span>
+                <h3>CISSP Lab 04</h3>
+                <p>Communication and Network Security infrastructure challenges.</p>
+                <div class="link-text">Start Lab</div>
+            </a>
+            <a href="https://sands-mvcc.github.io/CISSP/lab05.html" class="card" target="_blank">
+                <span class="card-type">Lab Environment</span>
+                <h3>CISSP Lab 05</h3>
+                <p>Identity and Access Management (IAM) provisioning exercises.</p>
+                <div class="link-text">Start Lab</div>
+            </a>
+            <a href="https://sands-mvcc.github.io/CISSP/lab06.html" class="card" target="_blank">
+                <span class="card-type">Lab Environment</span>
+                <h3>CISSP Lab 06</h3>
+                <p>Security Assessment and Testing methodologies in practice.</p>
+                <div class="link-text">Start Lab</div>
+            </a>
+            <a href="https://sands-mvcc.github.io/CISSP/lab07.html" class="card" target="_blank">
+                <span class="card-type">Lab Environment</span>
+                <h3>CISSP Lab 07</h3>
+                <p>Security Operations, incident management, and disaster recovery.</p>
+                <div class="link-text">Start Lab</div>
+            </a>
+            <a href="https://sands-mvcc.github.io/CISSP/lab08.html" class="card" target="_blank">
+                <span class="card-type">Lab Environment</span>
+                <h3>CISSP Lab 08</h3>
+                <p>Software Development Security lifecycle and coding practices.</p>
+                <div class="link-text">Start Lab</div>
+            </a>
+        </div>
+    </section>
+
+    <!-- ELT102 Section -->
+    <section class="course-section" id="section-elt102">
+        <h2 class="section-title">ELT102: Digital Logic & Solid-State Devices</h2>
+        <div class="grid-container">
+            <a href="https://sands-mvcc.github.io/elt102/lab01.html" class="card" target="_blank">
+                <span class="card-type">Lab Environment</span>
+                <h3>ELT102 Lab 01</h3>
+                <p>Foundational exercise in digital logic circuits and solid-state electronics.</p>
+                <div class="link-text">Start Lab</div>
+            </a>
+            <a href="https://sands-mvcc.github.io/elt102/lab02.html" class="card" target="_blank">
+                <span class="card-type">Lab Environment</span>
+                <h3>ELT102 Lab 02</h3>
+                <p>Interactive simulation focusing on basic Logic Gates (AND, OR, NOT, XOR).</p>
+                <div class="link-text">Start Lab</div>
+            </a>
+            <a href="https://sands-mvcc.github.io/elt102/lab03.html" class="card" target="_blank">
+                <span class="card-type">Lab Environment</span>
+                <h3>ELT102 Lab 03</h3>
+                <p>Practical exercise exploring Operational Amplifiers (Op-Amps) and comparative analysis.</p>
+                <div class="link-text">Start Lab</div>
+            </a>
+            <a href="https://sands-mvcc.github.io/elt102/lab04.html" class="card" target="_blank">
+                <span class="card-type">Lab Environment</span>
+                <h3>ELT102 Lab 04</h3>
+                <p>Circuit theory and applications of Halfwave, Fullwave, and Bridge Rectifiers.</p>
+                <div class="link-text">Start Lab</div>
+            </a>
+            <a href="https://sands-mvcc.github.io/elt102/lab05.html" class="card" target="_blank">
+                <span class="card-type">Lab Environment</span>
+                <h3>ELT102 Lab 05</h3>
+                <p>Analog to Digital Conversion (ADC) fundamentals and signal processing.</p>
+                <div class="link-text">Start Lab</div>
+            </a>
+            <a href="https://sands-mvcc.github.io/elt102/lab06.html" class="card" target="_blank">
+                <span class="card-type">Lab Environment</span>
+                <h3>ELT102 Lab 06</h3>
+                <p>Analysis and implementation of Digital Counter Circuits (Up/Down and Johnson counters).</p>
+                <div class="link-text">Start Lab</div>
+            </a>
+            <a href="https://sands-mvcc.github.io/elt102/lab07.html" class="card" target="_blank">
+                <span class="card-type">Lab Environment</span>
+                <h3>ELT102 Lab 07</h3>
+                <p>Exploration of closed-loop systems and PID Controller theory.</p>
+                <div class="link-text">Start Lab</div>
+            </a>
+            <a href="https://sands-mvcc.github.io/elt102/lab08.html" class="card" target="_blank">
+                <span class="card-type">Lab Environment</span>
+                <h3>ELT102 Lab 08</h3>
+                <p>Advanced semiconductor band theory and solid-state device physics.</p>
+                <div class="link-text">Start Lab</div>
+            </a>
+        </div>
+    </section>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const searchInput = document.getElementById('searchInput');
+            const sections = document.querySelectorAll('.course-section');
+
+            searchInput.addEventListener('input', function(e) {
+                const searchTerm = e.target.value.toLowerCase();
+
+                sections.forEach(section => {
+                    let hasVisibleCards = false;
+                    const cards = section.querySelectorAll('.card');
+
+                    cards.forEach(card => {
+                        const title = card.querySelector('h3').textContent.toLowerCase();
+                        const description = card.querySelector('p').textContent.toLowerCase();
+                        const type = card.querySelector('.card-type').textContent.toLowerCase();
+
+                        if (title.includes(searchTerm) || description.includes(searchTerm) || type.includes(searchTerm)) {
+                            card.classList.remove('hidden');
+                            hasVisibleCards = true;
+                        } else {
+                            card.classList.add('hidden');
+                        }
+                    });
+
+                    // Hide the entire section if no cards match the search within it
+                    if (hasVisibleCards) {
+                        section.classList.remove('hidden');
+                    } else {
+                        section.classList.add('hidden');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
