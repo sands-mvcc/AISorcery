@@ -3,7 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AI Interdisciplinary Learning Communities | NSF ATE Grant</title>
+<title>Cohort Application | AI Interdisciplinary Learning Communities</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 <style>
 :root{
   --navy:#0047AB;
@@ -15,6 +16,7 @@
   --ink-soft:#4a5568;
   --card-bg:#ffffff;
   --border:#e2e6ec;
+  --error:#c0392b;
   --shadow:0 4px 14px rgba(0,30,80,0.08);
   --radius:10px;
   --serif:Georgia,'Times New Roman',serif;
@@ -37,7 +39,6 @@ body{
   transition:background .3s ease,color .3s ease;
 }
 a{color:inherit;text-decoration:none;}
-img{max-width:100%;}
 
 /* NAV */
 nav{
@@ -48,7 +49,7 @@ nav{
   box-shadow:0 2px 10px rgba(0,0,0,0.15);
 }
 .nav-inner{
-  max-width:1200px;margin:0 auto;
+  max-width:1100px;margin:0 auto;
   display:flex;align-items:center;justify-content:space-between;
   padding:14px 24px;flex-wrap:wrap;gap:10px;
 }
@@ -60,27 +61,6 @@ nav{
   transition:border-color .2s;
 }
 .nav-links a:hover{border-bottom:2px solid var(--green);}
-
-/* NAV PROJECT BUTTON */
-.nav-projects-btn{
-  display:inline-flex;align-items:center;gap:7px;
-  background:var(--green);
-  color:#fff !important;
-  border:none;border-radius:6px;
-  padding:7px 16px;
-  font-family:var(--narrow);font-size:.88rem;font-weight:bold;
-  letter-spacing:.5px;text-transform:uppercase;
-  cursor:pointer;
-  transition:background .2s, transform .15s;
-  border-bottom:none !important;
-  text-decoration:none;
-}
-.nav-projects-btn:hover{
-  background:var(--green-dark);
-  transform:translateY(-1px);
-  border-bottom:none !important;
-}
-
 #themeToggle{
   background:rgba(255,255,255,0.12);
   border:1px solid rgba(255,255,255,0.3);
@@ -93,215 +73,177 @@ nav{
 header.hero{
   background:linear-gradient(135deg,var(--navy) 0%, var(--navy-dark) 100%);
   color:#fff;text-align:center;
-  padding:70px 20px 60px;
+  padding:56px 20px 48px;
 }
 .eyebrow{
   font-family:var(--narrow);text-transform:uppercase;letter-spacing:3px;
-  color:var(--green);font-size:.85rem;margin-bottom:18px;
+  color:var(--green);font-size:.85rem;margin-bottom:16px;
 }
-header.hero h1{
-  font-size:2.6rem;max-width:850px;margin:0 auto 18px;font-weight:700;
-}
-header.hero p.lede{
-  max-width:700px;margin:0 auto 30px;color:#cfd9ee;font-size:1.08rem;
-}
-.hero-dates{
-  display:inline-flex;gap:10px;flex-wrap:wrap;justify-content:center;
-  font-family:var(--narrow);
-}
-.hero-dates span{
-  background:rgba(255,255,255,0.1);
-  border:1px solid rgba(255,255,255,0.25);
-  padding:8px 18px;border-radius:30px;font-size:.92rem;
-}
-.hero-stats{
-  display:flex;justify-content:center;gap:50px;flex-wrap:wrap;
-  margin-top:40px;
-}
-.stat{text-align:center;}
-.stat .num{font-size:2.1rem;font-weight:700;color:var(--green);font-family:var(--narrow);}
-.stat .label{font-family:var(--narrow);font-size:.85rem;text-transform:uppercase;letter-spacing:1px;color:#cfd9ee;}
+header.hero h1{font-size:2.3rem;max-width:800px;margin:0 auto 14px;font-weight:700;}
+header.hero p.lede{max-width:700px;margin:0 auto;color:#cfd9ee;font-size:1.05rem;}
 
-/* HERO CTA BUTTON */
-.hero-cta{
-  margin-top:36px;
-  display:flex;justify-content:center;gap:14px;flex-wrap:wrap;
+/* MAIN */
+main{max-width:900px;margin:0 auto;padding:48px 24px 72px;}
+.section-kicker{
+  font-family:var(--narrow);text-transform:uppercase;letter-spacing:2px;
+  color:var(--green-dark);font-size:.85rem;margin-bottom:8px;
 }
-.btn-primary{
+.notice{
+  background:var(--card-bg);
+  border:1px solid var(--border);
+  border-left:5px solid var(--green);
+  border-radius:var(--radius);
+  padding:20px 24px;
+  box-shadow:var(--shadow);
+  margin-bottom:32px;
+  font-size:.98rem;
+  color:var(--ink-soft);
+}
+.notice strong{color:var(--ink);}
+.notice .fine{font-size:.88rem;font-style:italic;margin-top:8px;display:block;}
+.notice a{color:var(--green-dark);font-weight:bold;}
+
+/* FORM CARD */
+.form-card{
+  background:var(--card-bg);
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  box-shadow:var(--shadow);
+  padding:36px 40px 40px;
+}
+fieldset{border:none;margin-bottom:34px;padding:0;}
+legend{
+  font-family:var(--narrow);
+  font-size:1.05rem;
+  font-weight:bold;
+  text-transform:uppercase;
+  letter-spacing:1.5px;
+  color:var(--navy);
+  border-bottom:2px solid var(--green);
+  padding-bottom:8px;
+  margin-bottom:20px;
+  width:100%;
+}
+[data-theme="dark"] legend{color:#7fb0ff;}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:18px;}
+.row.single{grid-template-columns:1fr;}
+.field label{
+  display:block;
+  font-family:var(--narrow);
+  font-size:.85rem;
+  font-weight:bold;
+  text-transform:uppercase;
+  letter-spacing:.8px;
+  color:var(--ink-soft);
+  margin-bottom:6px;
+}
+.field label .req{color:var(--error);}
+.field input[type=text],
+.field input[type=email],
+.field input[type=tel],
+.field input[type=date],
+.field select,
+.field textarea{
+  width:100%;
+  padding:11px 14px;
+  border:1.5px solid var(--border);
+  border-radius:6px;
+  font-family:var(--serif);
+  font-size:1rem;
+  background:var(--cream);
+  color:var(--ink);
+  transition:border-color .2s, box-shadow .2s;
+}
+.field input:focus,
+.field select:focus,
+.field textarea:focus{
+  outline:none;
+  border-color:var(--green);
+  box-shadow:0 0 0 3px rgba(0,168,107,0.15);
+}
+.field textarea{resize:vertical;min-height:110px;}
+.field .hint{font-size:.82rem;color:var(--ink-soft);font-style:italic;margin-top:4px;}
+.field.invalid input,
+.field.invalid select,
+.field.invalid textarea{border-color:var(--error);}
+.field .err-msg{
+  display:none;
+  color:var(--error);
+  font-family:var(--narrow);
+  font-size:.8rem;
+  margin-top:4px;
+}
+.field.invalid .err-msg{display:block;}
+
+/* CHECK / RADIO GROUPS */
+.choice-group{display:flex;flex-direction:column;gap:8px;}
+.choice{
+  display:flex;align-items:flex-start;gap:10px;
+  font-size:.96rem;color:var(--ink-soft);
+}
+.choice input{margin-top:5px;accent-color:var(--green);width:16px;height:16px;flex-shrink:0;}
+
+/* COMMITMENTS BOX */
+.cert-box{
+  background:rgba(0,168,107,0.06);
+  border:1px solid rgba(0,168,107,0.3);
+  border-radius:var(--radius);
+  padding:18px 22px;
+}
+.cert-box .err-msg{
+  display:none;color:var(--error);
+  font-family:var(--narrow);font-size:.8rem;margin-top:10px;
+}
+.cert-box.invalid .err-msg{display:block;}
+
+/* BUTTON BAR */
+.btn-bar{
+  display:flex;gap:14px;flex-wrap:wrap;
+  margin-top:10px;
+  padding-top:28px;
+  border-top:1px solid var(--border);
+}
+.btn{
   display:inline-flex;align-items:center;gap:8px;
-  background:var(--green);
-  color:#fff;
   border-radius:8px;
   padding:14px 28px;
   font-family:var(--narrow);font-size:1rem;font-weight:bold;letter-spacing:.5px;
   text-transform:uppercase;
-  border:2px solid var(--green);
+  cursor:pointer;
   transition:background .2s, transform .15s, box-shadow .2s;
+}
+.btn-save{
+  background:var(--green);
+  color:#fff;
+  border:2px solid var(--green);
   box-shadow:0 4px 18px rgba(0,168,107,0.35);
 }
-.btn-primary:hover{
+.btn-save:hover{
   background:var(--green-dark);
   border-color:var(--green-dark);
   transform:translateY(-2px);
   box-shadow:0 8px 26px rgba(0,168,107,0.45);
 }
-.btn-outline{
-  display:inline-flex;align-items:center;gap:8px;
+.btn-clear{
   background:transparent;
-  color:#fff;
+  color:var(--ink-soft);
+  border:2px solid var(--border);
+}
+.btn-clear:hover{border-color:var(--error);color:var(--error);}
+
+/* STATUS MESSAGE */
+#statusMsg{
+  display:none;
+  margin-top:18px;
+  padding:14px 20px;
   border-radius:8px;
-  padding:14px 28px;
-  font-family:var(--narrow);font-size:1rem;font-weight:bold;letter-spacing:.5px;
-  text-transform:uppercase;
-  border:2px solid rgba(255,255,255,0.4);
-  transition:border-color .2s, background .2s, transform .15s;
+  font-family:var(--narrow);
+  font-size:.95rem;
+  font-weight:bold;
+  letter-spacing:.5px;
 }
-.btn-outline:hover{
-  border-color:#fff;
-  background:rgba(255,255,255,0.1);
-  transform:translateY(-2px);
-}
-
-/* SECTION */
-section{
-  max-width:1100px;margin:0 auto;padding:64px 24px;
-}
-.section-kicker{
-  font-family:var(--narrow);text-transform:uppercase;letter-spacing:2px;
-  color:var(--green-dark);font-size:.85rem;margin-bottom:8px;
-}
-section h2{
-  font-size:1.9rem;margin-bottom:28px;color:var(--navy);
-}
-[data-theme="dark"] section h2{color:#7fb0ff;}
-section.alt{background:var(--card-bg);border-top:1px solid var(--border);border-bottom:1px solid var(--border);}
-section.alt > div.wrap, section.alt{max-width:none;}
-section.alt .inner{max-width:1100px;margin:0 auto;padding:64px 24px;}
-
-p{color:var(--ink-soft);margin-bottom:14px;}
-
-/* CARD GRID */
-.card-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:22px;margin-top:10px;}
-.card{
-  background:var(--card-bg);
-  border:1px solid var(--border);
-  border-radius:var(--radius);
-  padding:24px;
-  box-shadow:var(--shadow);
-  transition:transform .2s ease, box-shadow .2s ease;
-}
-.card:hover{transform:translateY(-3px);box-shadow:0 8px 24px rgba(0,30,80,0.14);}
-.card .icon{font-size:1.6rem;margin-bottom:10px;display:block;}
-.card h3{font-size:1.08rem;margin-bottom:8px;color:var(--navy);}
-[data-theme="dark"] .card h3{color:#7fb0ff;}
-.card p{font-size:.95rem;margin-bottom:0;}
-
-/* GOALS LIST */
-.goal-block{
-  background:var(--card-bg);border:1px solid var(--border);
-  border-left:5px solid var(--green);
-  border-radius:var(--radius);padding:22px 26px;margin-bottom:18px;
-  box-shadow:var(--shadow);
-}
-.goal-block h3{color:var(--navy);font-size:1.12rem;margin-bottom:10px;}
-[data-theme="dark"] .goal-block h3{color:#7fb0ff;}
-.goal-block ul{margin-left:20px;color:var(--ink-soft);}
-.goal-block li{margin-bottom:6px;font-size:.96rem;}
-
-/* DETAILS TABLE */
-.details-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:18px;}
-.detail-card{
-  background:var(--card-bg);border:1px solid var(--border);border-radius:var(--radius);
-  padding:20px;text-align:center;box-shadow:var(--shadow);
-}
-.detail-card .num{font-family:var(--narrow);font-size:1.7rem;font-weight:700;color:var(--green-dark);}
-.detail-card .lbl{font-family:var(--narrow);text-transform:uppercase;font-size:.8rem;letter-spacing:1px;color:var(--ink-soft);margin-top:4px;}
-
-.personnel-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:18px;margin-top:24px;}
-.person{
-  background:var(--card-bg);border:1px solid var(--border);border-radius:var(--radius);
-  padding:18px 20px;box-shadow:var(--shadow);
-}
-.person .role{font-family:var(--narrow);text-transform:uppercase;letter-spacing:1px;font-size:.75rem;color:var(--green-dark);margin-bottom:4px;}
-.person .name{font-weight:bold;color:var(--navy);font-size:1.02rem;}
-[data-theme="dark"] .person .name{color:#7fb0ff;}
-.person .org{color:var(--ink-soft);font-size:.88rem;margin-top:2px;}
-
-/* INSTITUTIONS MAP STRIP */
-.inst-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;margin-top:14px;}
-.inst-list div{
-  background:var(--cream);border:1px solid var(--border);border-radius:6px;
-  padding:10px 14px;font-size:.92rem;font-family:var(--narrow);
-}
-[data-theme="dark"] .inst-list div{background:#141c29;}
-
-/* ACCORDION */
-.accordion{border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;margin-bottom:14px;box-shadow:var(--shadow);background:var(--card-bg);}
-.accordion-header{
-  width:100%;text-align:left;background:var(--card-bg);
-  border:none;cursor:pointer;
-  display:flex;justify-content:space-between;align-items:center;
-  padding:20px 24px;font-family:var(--narrow);font-size:1.05rem;font-weight:bold;
-  color:var(--navy);
-}
-[data-theme="dark"] .accordion-header{color:#7fb0ff;}
-.accordion-header:hover{background:rgba(0,168,107,0.06);}
-.accordion-header .chev{
-  transition:transform .25s ease;font-size:1.1rem;color:var(--green);flex-shrink:0;margin-left:14px;
-}
-.accordion.open .chev{transform:rotate(180deg);}
-.accordion-body{
-  max-height:0;overflow:hidden;transition:max-height .35s ease;
-  border-top:1px solid transparent;
-}
-.accordion.open .accordion-body{border-top:1px solid var(--border);}
-.accordion-body-inner{padding:22px 26px 26px;}
-.accordion-body-inner ul{margin-left:20px;color:var(--ink-soft);}
-.accordion-body-inner li{margin-bottom:8px;}
-.accordion-body-inner p{margin-bottom:12px;}
-.accordion-body-inner h4{color:var(--navy);font-size:.98rem;margin:14px 0 6px;}
-[data-theme="dark"] .accordion-body-inner h4{color:#7fb0ff;}
-
-.pill{
-  display:inline-block;background:rgba(0,168,107,0.12);color:var(--green-dark);
-  border:1px solid rgba(0,168,107,0.3);
-  font-family:var(--narrow);font-size:.78rem;text-transform:uppercase;letter-spacing:.5px;
-  padding:4px 12px;border-radius:20px;margin:3px 6px 3px 0;
-}
-
-/* PROJECTS CTA BANNER */
-.projects-banner{
-  background:linear-gradient(135deg,var(--green-dark) 0%,var(--green) 100%);
-  color:#fff;
-  text-align:center;
-  padding:52px 24px;
-}
-.projects-banner h2{
-  color:#fff;font-size:1.75rem;margin-bottom:10px;
-}
-.projects-banner p{
-  color:rgba(255,255,255,.85);max-width:620px;
-  margin:0 auto 28px;font-size:1.02rem;
-}
-.btn-white{
-  display:inline-flex;align-items:center;gap:8px;
-  background:#fff;
-  color:var(--green-dark);
-  border-radius:8px;
-  padding:14px 30px;
-  font-family:var(--narrow);font-size:1rem;font-weight:bold;letter-spacing:.5px;
-  text-transform:uppercase;
-  border:2px solid #fff;
-  transition:background .2s, color .2s, transform .15s, box-shadow .2s;
-  box-shadow:0 4px 18px rgba(0,0,0,0.15);
-}
-.btn-white:hover{
-  background:var(--green-dark);
-  color:#fff;
-  border-color:var(--green-dark);
-  transform:translateY(-2px);
-  box-shadow:0 8px 28px rgba(0,0,0,0.22);
-}
+#statusMsg.ok{display:block;background:rgba(0,168,107,0.12);color:var(--green-dark);border:1px solid rgba(0,168,107,0.35);}
+#statusMsg.bad{display:block;background:rgba(192,57,43,0.1);color:var(--error);border:1px solid rgba(192,57,43,0.35);}
 
 /* FOOTER */
 footer{
@@ -310,10 +252,45 @@ footer{
 }
 footer .small{opacity:.75;margin-top:6px;font-size:.8rem;}
 
+/* ====== PDF EXPORT STYLES ====== */
+.pdf-mode{
+  background:#ffffff !important;
+  color:#1a2433 !important;
+  box-shadow:none !important;
+  border:none !important;
+}
+.pdf-mode .field input,
+.pdf-mode .field select,
+.pdf-mode .field textarea{
+  background:#ffffff !important;
+  color:#1a2433 !important;
+  border-color:#8a94a6 !important;
+}
+.pdf-header{
+  display:none;
+  text-align:center;
+  padding-bottom:18px;
+  margin-bottom:26px;
+  border-bottom:3px double #0047AB;
+}
+.pdf-mode .pdf-header{display:block;}
+.pdf-header h2{color:#0047AB;font-size:1.5rem;margin-bottom:4px;font-family:Georgia,serif;}
+.pdf-header .sub{font-family:'Arial Narrow',Arial,sans-serif;text-transform:uppercase;letter-spacing:2px;font-size:.8rem;color:#00875a;}
+.pdf-header .meta{font-size:.82rem;color:#4a5568;margin-top:6px;font-style:italic;}
+.pdf-mode .btn-bar, .pdf-mode #statusMsg{display:none !important;}
+fieldset{page-break-inside:avoid;}
+
+@media print{
+  nav, header.hero, footer, .btn-bar, #statusMsg, .notice{display:none !important;}
+  body{background:#fff;}
+  .form-card{box-shadow:none;border:none;padding:0;}
+  .pdf-header{display:block;}
+}
 @media(max-width:640px){
-  header.hero h1{font-size:1.9rem;}
-  .hero-stats{gap:28px;}
-  .btn-primary,.btn-outline{width:100%;justify-content:center;}
+  .row{grid-template-columns:1fr;}
+  .form-card{padding:26px 20px 30px;}
+  header.hero h1{font-size:1.7rem;}
+  .btn{width:100%;justify-content:center;}
 }
 </style>
 </head>
@@ -323,373 +300,243 @@ footer .small{opacity:.75;margin-top:6px;font-size:.8rem;}
   <div class="nav-inner">
     <div class="brand">AI Interdisciplinary Learning Communities</div>
     <div class="nav-links">
-      <a href="#proposal">Proposal</a>
-      <a href="#goals">Goals</a>
-      <a href="#deliverables">Deliverables</a>
-      <a href="#rationale">Rationale</a>
-      <a href="#details">Details</a>
-      <a href="#institutions">Institutions</a>
-      <a href="#benefits">Benefits</a>
-      <a href="#expectations">Expectations</a>
-      <a href="#library">AI Library</a>
-      <a href="projects.html" class="nav-projects-btn">🧪 Participant Projects</a>
+      <a href="index.html">Home</a>
+      <a href="projects.html">Participant Projects</a>
+      <a href="fw9.pdf" download>W9 Form</a>
       <button id="themeToggle">☾ Dark</button>
     </div>
   </div>
 </nav>
 
 <header class="hero">
-  <div class="eyebrow">◆ NSF ATE Project · NSF 24-584 · Proposal No. 2500821 ◆</div>
-  <h1>AI Interdisciplinary Learning Communities (ILCs)</h1>
-  <p class="lede">A three-year national initiative preparing community college faculty and the technical workforce to apply Artificial Intelligence across disciplines — from healthcare and manufacturing to cybersecurity and automation.</p>
-  <div class="hero-dates">
-    <span>Submitted: October 3, 2024</span>
-    <span>Requested Start: October 1, 2025</span>
-    <span>Duration: 36 Months</span>
-  </div>
-  <div class="hero-stats">
-    <div class="stat"><div class="num">$1M</div><div class="label">Requested</div></div>
-    <div class="stat"><div class="num">12</div><div class="label">Host Colleges</div></div>
-    <div class="stat"><div class="num">300</div><div class="label">Faculty Trained</div></div>
-    <div class="stat"><div class="num">10</div><div class="label">Instructional Modules</div></div>
-  </div>
-  <div class="hero-cta">
-    <a href="projects.html" class="btn-primary">🧪 View Participant Projects →</a>
-    <a href="#proposal" class="btn-outline">Read the Proposal ↓</a>
-  </div>
+  <div class="eyebrow">◆ NSF ATE Project · Proposal No. 2500821 ◆</div>
+  <h1>Cohort Application</h1>
+  <p class="lede">Apply to join the National AI Teachers and Learning Academy. Selected faculty attend a two-day summer workshop, develop a classroom-ready AI activity, and receive a participation stipend of $1,500–$2,500 based on level and SOW.</p>
 </header>
 
-<!-- PROPOSAL OF THE PROJECT -->
-<section id="proposal">
-  <div class="section-kicker">Project Summary</div>
-  <h2>Proposal of the Project</h2>
-  <p>The technical and career workforce must not only comprehend AI technology but also identify innovative ways to leverage it to enhance job performance and add value to their organizations. Building on the success of the Cybersecurity Across Disciplines (CyAD) Conference, Moraine Valley Community College (MVCC) proposes a three-year, comprehensive project to meet labor market demand for workers with artificial intelligence aptitude.</p>
-  <p>Unlike projects focused on AI curriculum within computer science alone, this NSF ATE program is specifically designed to prepare graduates of two-year institutions pursuing career and technical jobs across healthcare, automotive technologies, business integration, automation and manufacturing, HVAC technologies, and criminal justice. The project will collaborate with faculty nationwide to develop content, workforce competencies, and instructional materials hosted in a shared, open-source repository.</p>
-  <div class="card-grid">
-    <div class="card">
-      <span class="icon">🎯</span>
-      <h3>Intellectual Merit</h3>
-      <p>Addresses a critical gap: the practical application of AI within the technical and career workforce trained by community colleges, enhancing operational efficiency, decision-making, and cybersecurity resilience.</p>
-    </div>
-    <div class="card">
-      <span class="icon">🌐</span>
-      <h3>Broader Impacts</h3>
-      <p>Recruits faculty from underrepresented communities, partners with the NCyTE National Faculty Development Academy, and disseminates results nationally through conferences and open repositories.</p>
-    </div>
-    <div class="card">
-      <span class="icon">🏫</span>
-      <h3>Awardee Organization</h3>
-      <p>Moraine Valley Community College, Palos Hills, IL — Computer Integrated Technology Department, in partnership with Whatcom Community College and the NCyTE Center.</p>
-    </div>
-  </div>
-</section>
-
-<!-- GOALS AND OBJECTIVES -->
-<section class="alt" id="goals">
-  <div class="inner">
-    <div class="section-kicker">Roadmap</div>
-    <h2>Goals and Objectives</h2>
-
-    <div class="goal-block">
-      <h3>Goal One — Produce Interactive Instructional Materials for Teaching AI in STEM Programs</h3>
-      <ul>
-        <li>Develop ten modular, interactive instructional materials covering machine learning, neural networks, data analysis, and AI ethics</li>
-        <li>Design hands-on labs and projects applying AI to real-world scenarios</li>
-        <li>Integrate cutting-edge tools: AI agents, topic-specific chatbots, deep learning/neural networks, image recognition</li>
-        <li>Pilot and evaluate materials across 15 community college STEM programs</li>
-      </ul>
-    </div>
-
-    <div class="goal-block">
-      <h3>Goal Two — Establish a National AI Teachers and Learning Academy</h3>
-      <ul>
-        <li>Build a comprehensive faculty training program in AI technologies, teaching methods, and curriculum design</li>
-        <li>Offer five hybrid training workshops annually serving 100 faculty per year</li>
-        <li>Host AI workshops and sessions at the CyAD Conference</li>
-        <li>Develop micro-credentials in partnership with leading AI organizations</li>
-      </ul>
-    </div>
-
-    <div class="goal-block">
-      <h3>Goal Three — Establish a National AI Community of Practice</h3>
-      <ul>
-        <li>Launch an online collaborative platform for sharing resources and teaching initiatives</li>
-        <li>Host local faculty development events and recurring virtual meetings</li>
-        <li>Curate a shared repository of instructional materials, case studies, and research</li>
-        <li>Promote interdisciplinary AI research and showcase events</li>
-      </ul>
-    </div>
-
-    <div class="goal-block">
-      <h3>Goal Four — Target and Work with All Communities</h3>
-      <ul>
-        <li>Create outreach initiatives raising AI career awareness in all communities</li>
-        <li>Partner with local organizations and schools to deliver workshops and informational sessions</li>
-        <li>Provide access to AI tools to address the growing AI digital divide</li>
-        <li>Build mentorship programs connecting students with AI professionals and educators</li>
-      </ul>
-    </div>
-  </div>
-</section>
-
-<!-- DELIVERABLES -->
-<section id="deliverables">
-  <div class="section-kicker">Outputs</div>
-  <h2>Deliverables</h2>
-  <div class="card-grid">
-    <div class="card">
-      <span class="icon">📚</span>
-      <h3>10 Modular Instructional Units</h3>
-      <p>Interactive lessons covering machine learning, neural networks, data analysis, and AI ethics, built for community college STEM and CTE programs.</p>
-    </div>
-    <div class="card">
-      <span class="icon">🧑‍🏫</span>
-      <h3>National AI Teachers &amp; Learning Academy</h3>
-      <p>Five hybrid summer workshops per year, training over 100 faculty annually, plus ongoing monthly mentoring sessions.</p>
-    </div>
-    <div class="card">
-      <span class="icon">🤝</span>
-      <h3>National Community of Practice</h3>
-      <p>An online platform for educators to share resources, discuss challenges, and collaborate on AI teaching initiatives across disciplines.</p>
-    </div>
-    <div class="card">
-      <span class="icon">🗂️</span>
-      <h3>Open-Source AI Content Library</h3>
-      <p>A GitHub-hosted repository of chatbots, lesson plans, assessment tools, and case studies under Creative Commons license.</p>
-    </div>
-    <div class="card">
-      <span class="icon">🎓</span>
-      <h3>AI Micro-Credentials</h3>
-      <p>Industry-aligned credentials developed with AI organization partners for faculty demonstrating teaching proficiency.</p>
-    </div>
-    <div class="card">
-      <span class="icon">📊</span>
-      <h3>Annual Evaluation Reports</h3>
-      <p>Summative and formative reports from external evaluation, driving continuous improvement of content and workshops.</p>
-    </div>
-  </div>
-</section>
-
-<!-- RATIONALE -->
-<section class="alt" id="rationale">
-  <div class="inner">
-    <div class="section-kicker">Why This Project</div>
-    <h2>Rationale for the Project</h2>
-    <p>As an NSF ATE National Center for Cybersecurity for the past three years, the NCyTE Center has worked closely with MVCC and a national network of business and industry partners — including Microsoft Corporation, Cisco Systems, Meraki, ESPO Systems, Dell SecureWorks, and Advocate Health Care Systems. This collaboration identified a growing need to incorporate AI-generated data and processes into business operations, particularly in operational technologies and cybersecurity.</p>
-    <p>In response, NCyTE established the Cybersecurity Across Disciplines (CyAD) Conference, now operating for two years, which integrates cybersecurity and AI knowledge across business, health sciences, manufacturing, automation, IT, and automotive technology programs. Attendee feedback consistently underscored the necessity of integrating AI education across diverse disciplines — not just computer science.</p>
-    <p>The technical and career workforce requires competencies distinct from those pursuing AI development roles: the ability to apply AI concepts practically, validate AI output, and recognize the limits of systems that are "only as intelligent as the data and knowledge used to program them." This project responds directly to that workforce demand by bringing together faculty from computer science, IT, manufacturing, business, and health sciences to build and disseminate real-world AI instructional content.</p>
-  </div>
-</section>
-
-<!-- DETAILS -->
-<section id="details">
-  <div class="section-kicker">Project Specifications</div>
-  <h2>Details</h2>
-  <div class="details-grid">
-    <div class="detail-card"><div class="num">36 mo</div><div class="lbl">Duration</div></div>
-    <div class="detail-card"><div class="num">$1,000,000</div><div class="lbl">Requested Amount</div></div>
-    <div class="detail-card"><div class="num">NSF ATE</div><div class="lbl">Program / DUE</div></div>
-    <div class="detail-card"><div class="num">10/01/2025</div><div class="lbl">Requested Start</div></div>
+<main>
+  <div class="section-kicker">Before You Apply</div>
+  <div class="notice">
+    <p><strong>How this works:</strong> Complete all required fields below, then click <strong>Save Completed Form as PDF</strong>. Your application downloads to your computer as a PDF — nothing is transmitted from this page. Email the PDF, along with your completed <a href="fw9.pdf" download>W9 form</a>, to the project team to submit your application.</p>
+    <span class="fine">* 6–8 faculty participants per institution are eligible annually. Acceptance is based on participation capacity and statement of work.</span>
   </div>
 
-  <h3 style="margin-top:38px;margin-bottom:6px;color:var(--navy);font-size:1.2rem;">Project Personnel</h3>
-  <div class="personnel-grid">
-    <div class="person">
-      <div class="role">Principal Investigator</div>
-      <div class="name">John L. Sands, DPhil</div>
-      <div class="org">Professor, Information Technology — Moraine Valley Community College</div>
-    </div>
-    <div class="person">
-      <div class="role">Senior Advisor / Director, EPNC</div>
-      <div class="name">Jiri Jirik, MBA</div>
-      <div class="org">Moraine Valley Community College</div>
-    </div>
-    <div class="person">
-      <div class="role">Senior Advisor</div>
-      <div class="name">Michele L. Robinson</div>
-      <div class="org">Director, NCyTE — Whatcom Community College</div>
-    </div>
-    <div class="person">
-      <div class="role">Events Coordinator / Budget Manager</div>
-      <div class="name">Stanley Kostka</div>
-      <div class="org">CAE Midwest Hub Manager — Moraine Valley Community College</div>
-    </div>
-    <div class="person">
-      <div class="role">Marketing &amp; Communications</div>
-      <div class="name">Michael A. Gonzalez</div>
-      <div class="org">Program Coordinator — Moraine Valley Community College</div>
-    </div>
-    <div class="person">
-      <div class="role">External Evaluator</div>
-      <div class="name">Michael Qaissaunee</div>
-      <div class="org">Chair, Engineering &amp; Technology — Brookdale Community College</div>
-    </div>
-  </div>
-</section>
+  <div class="form-card" id="formCard">
 
-<!-- ACCORDION SECTIONS -->
-<section class="alt" id="institutions-expectations-wrap">
-  <div class="inner">
-    <div class="section-kicker">Expand For Detail</div>
-    <h2 id="institutions">Program Details</h2>
+    <!-- Header shown only in the exported PDF / print view -->
+    <div class="pdf-header">
+      <h2>AI Interdisciplinary Learning Communities — Cohort Application</h2>
+      <div class="sub">NSF ATE Project · Proposal No. 2500821 · Moraine Valley Community College &amp; NCyTE</div>
+      <div class="meta" id="pdfDateLine">Generated: —</div>
+    </div>
 
-    <!-- INSTITUTIONS -->
-    <div class="accordion" id="acc-institutions">
-      <button class="accordion-header" onclick="toggleAccordion('acc-institutions')">
-        🏫 Participating Institutions
-        <span class="chev">▾</span>
-      </button>
-      <div class="accordion-body">
-        <div class="accordion-body-inner">
-          <p>The project will establish communities of practice by hosting summer workshops at twelve community colleges in different regions of the country, leveraging existing NCyTE partnerships:</p>
-          <div class="inst-list">
-            <div>1. Whatcom Community College</div>
-            <div>2. Las Positas College</div>
-            <div>3. St Petersburg Community College</div>
-            <div>4. Moraine Valley Community College</div>
-            <div>5. Brookdale Community College</div>
-            <div>6. Anne Arundel Community College</div>
-            <div>7. Sinclair Community College</div>
-            <div>8. Fayetteville Technical College</div>
-            <div>9. El Paso Community College</div>
-            <div>10. Honolulu Community College</div>
-            <div>11. Miami Dade Community College</div>
-            <div>12. Pikes Peak State College</div>
+    <form id="cohortForm" novalidate>
+
+      <!-- APPLICANT -->
+      <fieldset>
+        <legend>1 · Applicant Information</legend>
+        <div class="row">
+          <div class="field" data-required>
+            <label for="firstName">First Name <span class="req">*</span></label>
+            <input type="text" id="firstName" autocomplete="given-name">
+            <span class="err-msg">First name is required.</span>
           </div>
-          <p style="margin-top:16px;">Five workshops of 20–25 participants will run each summer: two days of in-person instruction followed by monthly online continuing education and mentoring sessions.</p>
-        </div>
-      </div>
-    </div>
-
-    <!-- COMPENSATION & BENEFITS -->
-    <div class="accordion" id="acc-benefits">
-      <button class="accordion-header" onclick="toggleAccordion('acc-benefits')">
-        💵 Compensation and Benefits to Partners and Participants
-        <span class="chev">▾</span>
-      </button>
-      <div class="accordion-body">
-        <div class="accordion-body-inner">
-          <h4>Participant Stipends</h4>
-          <p>6-8 faculty participants per institution will be eligible for a participation stipend paid by MVCC annually. The stipend is based on participation and deliverable. The stipend will be $1,500 – $2,500 based on level of participant and SOW.</p>
-          <h4>Instructional Materials &amp; Supplies</h4>
-          <p>Each participant receives AI advanced access and the opportunity to attend regional and national AI related events.</p>
-          <h4>Professional Growth</h4>
-          <p>Participants gain access to AI micro-credentials developed with leading AI organizations, recognition at the national CyAD Conference, and continued mentoring through monthly or quarterly online sessions.</p>
-          <h4>Institutional Benefits</h4>
-          <p>Access to creative commons open-source AI content repository, and opportunities for ongoing collaboration with NSF ATE centers including NITIC, CORD, CREAT, FLATE, NCAT, and GeoTec.</p>
-          <div class="pill">$1,500 — Participant Stipends (1 yr)</div>
-          <div class="pill">$220 — Instructional Materials</div>
-          <div class="pill">Travel Funds upon request</div>
-          <div style="margin-top:20px;display:flex;gap:14px;flex-wrap:wrap;">
-            <a href="application.html" class="btn-primary">📝 Cohort Application</a>
-            <a href="fw9.pdf" class="btn-primary" download>📄 Download W9 Form</a>
+          <div class="field" data-required>
+            <label for="lastName">Last Name <span class="req">*</span></label>
+            <input type="text" id="lastName" autocomplete="family-name">
+            <span class="err-msg">Last name is required.</span>
           </div>
         </div>
-      </div>
-    </div>
-
-    <!-- EXPECTATIONS -->
-    <div class="accordion" id="acc-expectations">
-      <button class="accordion-header" onclick="toggleAccordion('acc-expectations')">
-        ✅ Expectations of Participants
-        <span class="chev">▾</span>
-      </button>
-      <div class="accordion-body">
-        <div class="accordion-body-inner">
-          <p>Faculty accepted into the National AI Teachers and Learning Academy commit to the following:</p>
-          <ul>
-            <li>Attend a two-day, in-person summer workshop plus monthly online continuing-education and mentoring sessions</li>
-            <li>Develop a classroom-ready example of AI use, such as a chatbot, lesson plan, assessment tool, data analytics activity, or individualized student study plan</li>
-            <li>Create an activity that enables students to apply AI in a practical workforce scenario relevant to their discipline</li>
-            <li>Submit developed materials for review, editing, and validation before inclusion in the open-source online library</li>
-            <li>Share knowledge, experience, and developed content with colleagues at their home institution and/or region</li>
-            <li>Participate in project evaluation activities, including surveys, focus groups, and interviews</li>
-            <li>Engage with the National Community of Practice platform and the annual CyAD Conference</li>
-          </ul>
+        <div class="row">
+          <div class="field" data-required data-type="email">
+            <label for="email">Institutional Email <span class="req">*</span></label>
+            <input type="email" id="email" autocomplete="email">
+            <span class="err-msg">A valid email address is required.</span>
+          </div>
+          <div class="field" data-required>
+            <label for="phone">Phone Number <span class="req">*</span></label>
+            <input type="tel" id="phone" autocomplete="tel">
+            <span class="err-msg">Phone number is required.</span>
+          </div>
         </div>
-      </div>
-    </div>
-
-    <!-- AI LIBRARY -->
-    <div class="accordion" id="acc-library">
-      <button class="accordion-header" onclick="toggleAccordion('acc-library')">
-        🗂️ Creation of AI Library
-        <span class="chev">▾</span>
-      </button>
-      <div class="accordion-body">
-        <div class="accordion-body-inner">
-          <p>All instructional materials, lesson plans, labs, case studies, and faculty-developed activities produced through the project will be reviewed, edited, validated, and published in a centralized, open-source online library.</p>
-          <h4>Hosting &amp; Access</h4>
-          <p>Content is hosted in a collaborative, version-controlled repository on GitHub, including source code and revision history so materials can be properly tracked, reviewed, approved, and updated. The library is freely accessible with no cost to use, and is publicly posted on the EPNC and NCyTE websites.</p>
-          <h4>Licensing</h4>
-          <p>All developed content is shared and disseminated under a Creative Commons license, tailored to the needs of community college technical and career programs.</p>
-          <h4>Library Foundation</h4>
-          <p>The NCyTE Center has already produced a library of over 20 examples to inspire ideas and innovation among workshop participants, forming the foundation this project will expand.</p>
-          <h4>Sustainability</h4>
-          <p>Participants are encouraged to continue creating new and innovative AI applications and contribute them to the repository, ensuring the library grows and remains current well beyond the grant's three-year funding period.</p>
+        <div class="row">
+          <div class="field" data-required>
+            <label for="institution">Institution <span class="req">*</span></label>
+            <select id="institution">
+              <option value="">— Select Your Institution —</option>
+              <option>Whatcom Community College</option>
+              <option>Las Positas College</option>
+              <option>St Petersburg Community College</option>
+              <option>Moraine Valley Community College</option>
+              <option>Brookdale Community College</option>
+              <option>Anne Arundel Community College</option>
+              <option>Sinclair Community College</option>
+              <option>Fayetteville Technical College</option>
+              <option>El Paso Community College</option>
+              <option>Honolulu Community College</option>
+              <option>Miami Dade Community College</option>
+              <option>Pikes Peak State College</option>
+              <option>Other (specify in Title field)</option>
+            </select>
+            <span class="err-msg">Please select your institution.</span>
+          </div>
+          <div class="field" data-required>
+            <label for="title">Title / Position <span class="req">*</span></label>
+            <input type="text" id="title" autocomplete="organization-title">
+            <span class="err-msg">Title is required.</span>
+          </div>
         </div>
-      </div>
-    </div>
+      </fieldset>
 
+      <!-- PROPOSED PROJECT -->
+      <fieldset>
+        <legend>2 · Proposed Classroom AI Project</legend>
+        <div class="row single">
+          <div class="field" data-required>
+            <label for="projectDesc">Describe your proposed classroom AI project <span class="req">*</span></label>
+            <textarea id="projectDesc" rows="5" placeholder="What will you build, which course will it serve, and how will students apply AI in a practical workforce scenario?"></textarea>
+            <span class="err-msg">Please describe your proposed project.</span>
+          </div>
+        </div>
+      </fieldset>
+
+      <!-- SIGNATURE -->
+      <fieldset>
+        <legend>3 · Signature</legend>
+        <div class="row">
+          <div class="field" data-required>
+            <label for="signature">Electronic Signature (Type Full Name) <span class="req">*</span></label>
+            <input type="text" id="signature">
+            <span class="err-msg">Signature is required.</span>
+          </div>
+          <div class="field" data-required>
+            <label for="sigDate">Date <span class="req">*</span></label>
+            <input type="date" id="sigDate">
+            <span class="err-msg">Date is required.</span>
+          </div>
+        </div>
+      </fieldset>
+
+      <!-- BUTTONS -->
+      <div class="btn-bar">
+        <button type="button" class="btn btn-save" id="savePdfBtn">💾 Save Completed Form as PDF</button>
+        <button type="button" class="btn btn-clear" id="clearBtn">Clear Form</button>
+      </div>
+      <div id="statusMsg" role="status"></div>
+    </form>
   </div>
-</section>
-
-<!-- PROJECTS CTA BANNER -->
-<div class="projects-banner" id="projects-cta">
-  <h2>Ready to Explore Participant Projects?</h2>
-  <p>Browse 12 model AI projects across disciplines — from virtual speech audiences and SOC simulators to chemistry lab safety tools and historical artifact analyzers. Each includes a full SOW summary.</p>
-  <a href="participation.html" class="btn-white">🧪 View All Participant Projects →</a>
-</div>
+</main>
 
 <footer>
   <div>AI Interdisciplinary Learning Communities (ILCs) — NSF ATE Project, Proposal No. 2500821</div>
   <div class="small">Moraine Valley Community College · Information Technology Department · Palos Hills, IL</div>
-  <div class="small">PI: John L. Sands, DPhil · In partnership with the National Cybersecurity Training and Education (NCyTE) Center</div>
-  <div class="small">🔗 Hosted on GitHub Pages © 2025 — Educational Use Only</div>
+  <div class="small">PI: John L. Sands, DPhil · In partnership with the NCyTE Center</div>
 </footer>
 
 <script>
-function toggleAccordion(id){
-  const acc = document.getElementById(id);
-  const body = acc.querySelector('.accordion-body');
-  const isOpen = acc.classList.contains('open');
-  if(isOpen){
-    acc.classList.remove('open');
-    body.style.maxHeight = null;
-  } else {
-    acc.classList.add('open');
-    body.style.maxHeight = body.scrollHeight + 'px';
-  }
-}
-
+/* ---------- Theme toggle (same key as index) ---------- */
 const themeToggle = document.getElementById('themeToggle');
 const root = document.documentElement;
-function applyTheme(theme){
-  if(theme === 'dark'){
-    root.setAttribute('data-theme','dark');
-    themeToggle.textContent = '☀ Light';
-  } else {
-    root.removeAttribute('data-theme');
-    themeToggle.textContent = '☾ Dark';
-  }
+function applyTheme(t){
+  if(t === 'dark'){ root.setAttribute('data-theme','dark'); themeToggle.textContent = '☀ Light'; }
+  else { root.removeAttribute('data-theme'); themeToggle.textContent = '☾ Dark'; }
 }
-const saved = localStorage.getItem('ai-ilc-theme') || 'light';
-applyTheme(saved);
+let savedTheme = 'light';
+try { savedTheme = localStorage.getItem('ai-ilc-theme') || 'light'; } catch(e){}
+applyTheme(savedTheme);
 themeToggle.addEventListener('click', () => {
-  const current = root.getAttribute('data-theme') === 'dark' ? 'dark' : 'light';
-  const next = current === 'dark' ? 'light' : 'dark';
-  localStorage.setItem('ai-ilc-theme', next);
+  const next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+  try { localStorage.setItem('ai-ilc-theme', next); } catch(e){}
   applyTheme(next);
 });
 
-document.querySelectorAll('a[href^="#"]').forEach(a=>{
-  a.addEventListener('click', e=>{
-    const target = document.querySelector(a.getAttribute('href'));
-    if(target){
-      e.preventDefault();
-      target.scrollIntoView({behavior:'smooth', block:'start'});
+/* ---------- Default signature date to today ---------- */
+document.getElementById('sigDate').value = new Date().toISOString().slice(0,10);
+
+/* ---------- Validation ---------- */
+function validateForm(){
+  let firstBad = null;
+  document.querySelectorAll('.field[data-required]').forEach(f => {
+    const input = f.querySelector('input, select, textarea');
+    const isEmail = f.dataset.type === 'email';
+    let ok = input.value.trim() !== '';
+    if(ok && isEmail){
+      ok = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(input.value.trim());
     }
+    f.classList.toggle('invalid', !ok);
+    if(!ok && !firstBad) firstBad = input;
   });
+  if(firstBad){ firstBad.focus(); firstBad.scrollIntoView({behavior:'smooth', block:'center'}); }
+  return { fieldsOk: !firstBad };
+}
+
+function showStatus(msg, ok){
+  const s = document.getElementById('statusMsg');
+  s.textContent = msg;
+  s.className = ok ? 'ok' : 'bad';
+}
+
+/* ---------- Save completed form as PDF ---------- */
+document.getElementById('savePdfBtn').addEventListener('click', () => {
+  const { fieldsOk } = validateForm();
+  if(!fieldsOk){
+    showStatus('Please complete all required fields (marked *) before saving.', false);
+    return;
+  }
+
+  const card = document.getElementById('formCard');
+  const wasDark = root.getAttribute('data-theme') === 'dark';
+
+  // Stamp generation date into the PDF header
+  const now = new Date();
+  document.getElementById('pdfDateLine').textContent =
+    'Generated: ' + now.toLocaleDateString('en-US', {year:'numeric', month:'long', day:'numeric'}) +
+    ' at ' + now.toLocaleTimeString('en-US', {hour:'numeric', minute:'2-digit'});
+
+  // Force light, print-friendly rendering during capture
+  if(wasDark) root.removeAttribute('data-theme');
+  card.classList.add('pdf-mode');
+
+  const lastName = document.getElementById('lastName').value.trim().replace(/\s+/g,'_') || 'Applicant';
+  const filename = 'ILC_Cohort_Application_' + lastName + '_' + now.toISOString().slice(0,10) + '.pdf';
+
+  const opt = {
+    margin: [0.5, 0.5, 0.6, 0.5],
+    filename: filename,
+    image: { type: 'jpeg', quality: 0.98 },
+    html2canvas: { scale: 2, useCORS: true, scrollY: 0 },
+    jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' },
+    pagebreak: { mode: ['css', 'legacy'] }
+  };
+
+  const cleanup = () => {
+    card.classList.remove('pdf-mode');
+    if(wasDark) root.setAttribute('data-theme','dark');
+  };
+
+  if(typeof html2pdf !== 'undefined'){
+    showStatus('Generating PDF… this may take a few seconds.', true);
+    html2pdf().set(opt).from(card).save()
+      .then(() => { cleanup(); showStatus('PDF saved to your Downloads folder: ' + filename, true); })
+      .catch(err => {
+        cleanup(); console.error(err);
+        showStatus('PDF generation failed — opening the print dialog instead. Choose "Save as PDF" as the destination.', false);
+        window.print();
+      });
+  } else {
+    // Offline / CDN-blocked fallback: browser print-to-PDF
+    showStatus('Opening the print dialog — choose "Save as PDF" as the destination.', true);
+    setTimeout(() => { window.print(); cleanup(); }, 300);
+  }
+});
+
+/* ---------- Clear form ---------- */
+document.getElementById('clearBtn').addEventListener('click', () => {
+  if(!confirm('Clear all entered information? This cannot be undone.')) return;
+  document.getElementById('cohortForm').reset();
+  document.querySelectorAll('.field.invalid').forEach(f => f.classList.remove('invalid'));
+  document.getElementById('sigDate').value = new Date().toISOString().slice(0,10);
+  showStatus('Form cleared.', true);
 });
 </script>
 
