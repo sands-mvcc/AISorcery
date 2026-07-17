@@ -3,9 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AI Cohort — Participant Projects | NSF ATE AI ILC</title>
+<title>Statement of Work Form | AI Cohort — NSF ATE AI ILC</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 <style>
-/* ── TOKENS ────────────────────────────────────────────────────── */
+/* ── TOKENS (inherited from AI Cohort page) ────────────────────── */
 :root{
   --navy:#0047AB;
   --navy-dark:#003380;
@@ -13,18 +14,17 @@
   --green:#00a86b;
   --green-dark:#00875a;
   --green-pale:rgba(0,168,107,.08);
-  --amber:#f59e0b;
   --cream:#f7f8fa;
   --ink:#1a2433;
   --ink-soft:#4a5568;
   --ink-mute:#7a8a9e;
   --card-bg:#ffffff;
   --border:#e2e6ec;
+  --error:#c0392b;
   --shadow:0 4px 18px rgba(0,30,80,.08);
   --shadow-lg:0 10px 36px rgba(0,30,80,.14);
   --radius:10px;
   --serif:Georgia,'Times New Roman',serif;
-  --sans:'Segoe UI',system-ui,sans-serif;
   --narrow:'Arial Narrow',Arial,sans-serif;
   --transition:.28s ease;
 }
@@ -39,8 +39,6 @@
   --shadow-lg:0 12px 40px rgba(0,0,0,.6);
   --green-pale:rgba(0,168,107,.12);
 }
-
-/* ── RESET ─────────────────────────────────────────────────────── */
 *{box-sizing:border-box;margin:0;padding:0;}
 html{scroll-behavior:smooth;}
 body{
@@ -53,7 +51,7 @@ body{
 a{color:inherit;text-decoration:none;}
 button{cursor:pointer;font-family:inherit;}
 
-/* ── NAV ────────────────────────────────────────────────────────── */
+/* ── NAV ───────────────────────────────────────────────────────── */
 nav{
   position:sticky;top:0;z-index:200;
   background:var(--navy);
@@ -61,14 +59,11 @@ nav{
   box-shadow:0 2px 12px rgba(0,0,0,.18);
 }
 .nav-inner{
-  max-width:1200px;margin:0 auto;
+  max-width:1100px;margin:0 auto;
   display:flex;align-items:center;justify-content:space-between;
   padding:13px 24px;gap:12px;flex-wrap:wrap;
 }
-.brand{
-  font-family:var(--serif);font-size:1.05rem;font-weight:bold;
-  letter-spacing:.3px;white-space:nowrap;
-}
+.brand{font-family:var(--serif);font-size:1.05rem;font-weight:bold;letter-spacing:.3px;white-space:nowrap;}
 .brand span{color:var(--green);font-family:var(--narrow);}
 .nav-links{display:flex;align-items:center;gap:18px;flex-wrap:wrap;}
 .nav-links a{
@@ -86,10 +81,10 @@ nav{
 }
 #themeBtn:hover{background:rgba(255,255,255,.22);}
 
-/* ── HERO ───────────────────────────────────────────────────────── */
+/* ── HERO ──────────────────────────────────────────────────────── */
 .hero{
   background:linear-gradient(140deg,var(--navy-xd) 0%,var(--navy) 55%,#1a4a8a 100%);
-  color:#fff;text-align:center;padding:72px 24px 64px;
+  color:#fff;text-align:center;padding:60px 24px 52px;
   position:relative;overflow:hidden;
 }
 .hero::before{
@@ -99,221 +94,162 @@ nav{
 }
 .hero-eyebrow{
   font-family:var(--narrow);text-transform:uppercase;letter-spacing:3px;
-  color:var(--green);font-size:.83rem;margin-bottom:16px;
+  color:var(--green);font-size:.83rem;margin-bottom:14px;position:relative;
 }
 .hero h1{
-  font-size:clamp(1.9rem,4vw,2.9rem);max-width:820px;margin:0 auto 18px;
-  font-weight:700;line-height:1.2;
+  font-size:clamp(1.8rem,4vw,2.5rem);max-width:800px;margin:0 auto 14px;
+  font-weight:700;line-height:1.2;position:relative;
 }
 .hero h1 em{color:var(--green);font-style:normal;}
-.hero p.lede{
-  max-width:680px;margin:0 auto 32px;
-  color:#c8d8f0;font-size:1.06rem;
-}
-.hero-pills{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;}
-.hero-pills span{
-  background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.22);
-  padding:7px 18px;border-radius:30px;
-  font-family:var(--narrow);font-size:.88rem;color:#e0eaff;
-}
+.hero p.lede{max-width:680px;margin:0 auto;color:#c8d8f0;font-size:1.04rem;position:relative;}
 
-/* ── SECTIONS ───────────────────────────────────────────────────── */
-.section{max-width:1100px;margin:0 auto;padding:64px 24px;}
-.section-alt{background:var(--card-bg);border-top:1px solid var(--border);border-bottom:1px solid var(--border);}
-.section-alt .section{padding:64px 24px;}
-.section-alt > .section{max-width:1100px;}
-
+/* ── MAIN ──────────────────────────────────────────────────────── */
+main{max-width:920px;margin:0 auto;padding:48px 24px 72px;}
 .kicker{
   font-family:var(--narrow);text-transform:uppercase;letter-spacing:2px;
   color:var(--green-dark);font-size:.82rem;margin-bottom:8px;
 }
 [data-theme="dark"] .kicker{color:var(--green);}
-.section h2{font-size:1.85rem;color:var(--navy);margin-bottom:6px;}
-[data-theme="dark"] .section h2{color:#7fb4ff;}
-.section-intro{color:var(--ink-soft);max-width:760px;margin-bottom:32px;}
-
-/* ── REQUIREMENTS GRID ─────────────────────────────────────────── */
-.req-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px;}
-.req-card{
-  background:var(--card-bg);border:1px solid var(--border);
-  border-radius:var(--radius);padding:24px;
+.notice{
+  background:var(--card-bg);
+  border:1px solid var(--border);
+  border-left:5px solid var(--green);
+  border-radius:var(--radius);
+  padding:20px 24px;
   box-shadow:var(--shadow);
-  border-top:4px solid var(--green);
-  transition:transform .2s, box-shadow .2s;
+  margin-bottom:32px;
+  font-size:.96rem;
+  color:var(--ink-soft);
 }
-.req-card:hover{transform:translateY(-3px);box-shadow:var(--shadow-lg);}
-.req-card .rc-icon{font-size:1.7rem;margin-bottom:10px;display:block;}
-.req-card h3{color:var(--navy);font-size:1rem;margin-bottom:8px;}
-[data-theme="dark"] .req-card h3{color:#7fb4ff;}
-.req-card p{color:var(--ink-soft);font-size:.93rem;margin:0;}
+.notice strong{color:var(--ink);}
+.notice .fine{font-size:.86rem;font-style:italic;margin-top:8px;display:block;color:var(--ink-mute);}
 
-/* ── SOW TABLE ─────────────────────────────────────────────────── */
-.sow-box{
-  background:var(--card-bg);border:1px solid var(--border);
-  border-radius:var(--radius);padding:28px 32px;
-  box-shadow:var(--shadow);margin-top:10px;
-}
-.sow-box h3{color:var(--navy);margin-bottom:16px;font-size:1.08rem;}
-[data-theme="dark"] .sow-box h3{color:#7fb4ff;}
-.sow-grid{display:grid;grid-template-columns:1fr 2fr;gap:12px 20px;}
-.sow-label{
-  font-family:var(--narrow);text-transform:uppercase;letter-spacing:.8px;
-  font-size:.78rem;color:var(--ink-mute);padding-top:3px;
-}
-.sow-value{color:var(--ink-soft);font-size:.94rem;border-bottom:1px solid var(--border);padding-bottom:10px;}
-.sow-label:last-of-type~.sow-value,.sow-grid .sow-value:last-child{border-bottom:none;}
-
-/* ── FOCUS AREAS ────────────────────────────────────────────────── */
-.focus-pills{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:36px;}
-.focus-pill{
-  background:var(--green-pale);border:1px solid rgba(0,168,107,.3);
-  color:var(--green-dark);border-radius:24px;
-  padding:6px 16px;font-family:var(--narrow);font-size:.84rem;
-  cursor:pointer;transition:all .2s;
-}
-[data-theme="dark"] .focus-pill{color:var(--green);}
-.focus-pill:hover,.focus-pill.active{
-  background:var(--green);color:#fff;border-color:var(--green);
-}
-
-/* ── PROJECTS ───────────────────────────────────────────────────── */
-.projects-grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(310px,1fr));
-  gap:24px;
-}
-.proj-card{
-  background:var(--card-bg);border:1px solid var(--border);
+/* ── FORM CARD ─────────────────────────────────────────────────── */
+.form-card{
+  background:var(--card-bg);
+  border:1px solid var(--border);
   border-radius:var(--radius);
   box-shadow:var(--shadow);
-  overflow:hidden;
-  transition:transform .22s, box-shadow .22s;
-  display:flex;flex-direction:column;
+  padding:36px 40px 40px;
 }
-.proj-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg);}
+fieldset{border:none;margin-bottom:34px;padding:0;page-break-inside:avoid;}
+legend{
+  font-family:var(--narrow);
+  font-size:1.02rem;
+  font-weight:bold;
+  text-transform:uppercase;
+  letter-spacing:1.5px;
+  color:var(--navy);
+  border-bottom:2px solid var(--green);
+  padding-bottom:8px;
+  margin-bottom:8px;
+  width:100%;
+}
+[data-theme="dark"] legend{color:#7fb4ff;}
+.legend-hint{
+  font-size:.88rem;color:var(--ink-mute);font-style:italic;
+  margin-bottom:18px;
+}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:18px;}
+.row.single{grid-template-columns:1fr;}
+.field label{
+  display:block;
+  font-family:var(--narrow);
+  font-size:.84rem;
+  font-weight:bold;
+  text-transform:uppercase;
+  letter-spacing:.8px;
+  color:var(--ink-soft);
+  margin-bottom:6px;
+}
+.field label .req{color:var(--error);}
+.field label .opt{color:var(--ink-mute);font-weight:normal;text-transform:none;letter-spacing:0;}
+.field input[type=text],
+.field input[type=email],
+.field input[type=date],
+.field select,
+.field textarea{
+  width:100%;
+  padding:11px 14px;
+  border:1.5px solid var(--border);
+  border-radius:6px;
+  font-family:var(--serif);
+  font-size:.98rem;
+  background:var(--cream);
+  color:var(--ink);
+  transition:border-color .2s, box-shadow .2s;
+}
+.field input:focus,
+.field select:focus,
+.field textarea:focus{
+  outline:none;
+  border-color:var(--green);
+  box-shadow:0 0 0 3px rgba(0,168,107,0.15);
+}
+.field textarea{resize:vertical;min-height:96px;}
+.field .hint{font-size:.8rem;color:var(--ink-mute);font-style:italic;margin-top:4px;}
+.field.invalid input,
+.field.invalid select,
+.field.invalid textarea{border-color:var(--error);}
+.field .err-msg{
+  display:none;
+  color:var(--error);
+  font-family:var(--narrow);
+  font-size:.8rem;
+  margin-top:4px;
+}
+.field.invalid .err-msg{display:block;}
 
-.proj-header{
-  padding:20px 22px 16px;
-  display:flex;align-items:flex-start;gap:14px;
-  border-bottom:1px solid var(--border);
+/* ── BUTTON BAR ────────────────────────────────────────────────── */
+.btn-bar{
+  display:flex;gap:14px;flex-wrap:wrap;
+  margin-top:10px;
+  padding-top:28px;
+  border-top:1px solid var(--border);
 }
-.proj-icon{
-  font-size:2rem;flex-shrink:0;
-  width:52px;height:52px;
-  border-radius:10px;
-  display:flex;align-items:center;justify-content:center;
+.btn{
+  display:inline-flex;align-items:center;gap:8px;
+  border-radius:8px;
+  padding:14px 28px;
+  font-family:var(--narrow);font-size:1rem;font-weight:bold;letter-spacing:.5px;
+  text-transform:uppercase;
+  transition:background .2s, transform .15s, box-shadow .2s;
 }
-.proj-meta{flex:1;}
-.proj-discipline{
-  font-family:var(--narrow);text-transform:uppercase;letter-spacing:1px;
-  font-size:.75rem;color:var(--green-dark);margin-bottom:3px;
+.btn-save{
+  background:var(--green);
+  color:#fff;
+  border:2px solid var(--green);
+  box-shadow:0 4px 18px rgba(0,168,107,.35);
 }
-[data-theme="dark"] .proj-discipline{color:var(--green);}
-.proj-title{font-size:1.04rem;font-weight:bold;color:var(--navy);line-height:1.25;}
-[data-theme="dark"] .proj-title{color:#7fb4ff;}
+.btn-save:hover{
+  background:var(--green-dark);
+  border-color:var(--green-dark);
+  transform:translateY(-2px);
+  box-shadow:0 8px 26px rgba(0,168,107,.45);
+}
+.btn-clear{
+  background:transparent;
+  color:var(--ink-soft);
+  border:2px solid var(--border);
+}
+.btn-clear:hover{border-color:var(--error);color:var(--error);}
 
-.proj-body{padding:16px 22px;flex:1;display:flex;flex-direction:column;gap:14px;}
-.proj-desc{color:var(--ink-soft);font-size:.91rem;}
+/* ── STATUS MESSAGE ────────────────────────────────────────────── */
+#statusMsg{
+  display:none;
+  margin-top:18px;
+  padding:14px 20px;
+  border-radius:8px;
+  font-family:var(--narrow);
+  font-size:.95rem;
+  font-weight:bold;
+  letter-spacing:.5px;
+}
+#statusMsg.ok{display:block;background:var(--green-pale);color:var(--green-dark);border:1px solid rgba(0,168,107,.35);}
+[data-theme="dark"] #statusMsg.ok{color:var(--green);}
+#statusMsg.bad{display:block;background:rgba(192,57,43,.1);color:var(--error);border:1px solid rgba(192,57,43,.35);}
 
-.proj-section-label{
-  font-family:var(--narrow);text-transform:uppercase;letter-spacing:.8px;
-  font-size:.72rem;color:var(--ink-mute);margin-bottom:4px;
-}
-.proj-list{
-  list-style:none;display:flex;flex-direction:column;gap:5px;
-}
-.proj-list li{
-  color:var(--ink-soft);font-size:.88rem;
-  display:flex;gap:8px;align-items:flex-start;
-}
-.proj-list li::before{content:'›';color:var(--green);font-weight:bold;flex-shrink:0;margin-top:1px;}
-
-.proj-footer{
-  padding:14px 22px;border-top:1px solid var(--border);
-  display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;
-}
-.proj-tag{
-  font-family:var(--narrow);font-size:.73rem;text-transform:uppercase;letter-spacing:.5px;
-  background:var(--green-pale);color:var(--green-dark);
-  border:1px solid rgba(0,168,107,.25);
-  padding:3px 10px;border-radius:14px;
-}
-[data-theme="dark"] .proj-tag{color:var(--green);}
-.proj-expand-btn{
-  background:none;border:1px solid var(--border);border-radius:6px;
-  color:var(--navy);font-family:var(--narrow);font-size:.8rem;
-  padding:5px 12px;transition:all .2s;
-}
-[data-theme="dark"] .proj-expand-btn{color:#7fb4ff;}
-.proj-expand-btn:hover{background:var(--navy);color:#fff;border-color:var(--navy);}
-
-/* Detail drawer */
-.proj-detail{
-  max-height:0;overflow:hidden;transition:max-height .35s ease;
-  border-top:0px solid transparent;
-}
-.proj-detail.open{border-top:1px solid var(--border);}
-.proj-detail-inner{padding:16px 22px 20px;display:flex;flex-direction:column;gap:12px;}
-.proj-detail-inner .pd-label{
-  font-family:var(--narrow);text-transform:uppercase;letter-spacing:.8px;
-  font-size:.72rem;color:var(--ink-mute);margin-bottom:2px;
-}
-.proj-detail-inner .pd-val{
-  color:var(--ink-soft);font-size:.89rem;
-}
-.sow-mini{
-  background:var(--green-pale);border-radius:8px;padding:14px 16px;
-  border-left:3px solid var(--green);
-}
-.sow-mini p{font-size:.88rem;color:var(--ink-soft);margin:0;}
-.sow-mini strong{color:var(--ink);display:block;margin-bottom:4px;font-family:var(--narrow);font-size:.78rem;text-transform:uppercase;letter-spacing:.6px;}
-
-/* ── STEPPER ────────────────────────────────────────────────────── */
-.stepper{display:flex;flex-direction:column;gap:0;}
-.step{
-  display:grid;
-  grid-template-columns:52px 1fr;
-  grid-template-rows:auto;
-  gap:0 20px;
-  position:relative;
-}
-/* step-num: column 1, row 1 — the numbered circle */
-.step-num{
-  grid-column:1;
-  grid-row:1;
-  width:52px;height:52px;border-radius:50%;
-  background:var(--navy);color:#fff;
-  display:flex;align-items:center;justify-content:center;
-  font-family:var(--narrow);font-size:1.1rem;font-weight:bold;
-  flex-shrink:0;z-index:1;
-  box-shadow:0 0 0 4px var(--cream);
-  align-self:start;
-}
-[data-theme="dark"] .step-num{box-shadow:0 0 0 4px var(--cream);}
-/* step-line: absolutely positioned — removed from grid flow entirely */
-.step:not(:last-child) .step-line{
-  position:absolute;
-  left:26px;top:52px;
-  width:2px;height:calc(100% - 16px);
-  background:linear-gradient(to bottom,var(--green),var(--border));
-  z-index:0;
-}
-/* step-line must NOT act as a grid item — use display:none on :last-child */
-.step:last-child .step-line{display:none;}
-/* step-content: always column 2, always row 1 — never displaced */
-.step-content{
-  grid-column:2;
-  grid-row:1;
-  padding:12px 0 32px;
-}
-.step-content h3{color:var(--navy);font-size:1.02rem;margin-bottom:6px;}
-[data-theme="dark"] .step-content h3{color:#7fb4ff;}
-.step-content p{color:var(--ink-soft);font-size:.93rem;}
-
-/* ── HIDDEN CLASS ───────────────────────────────────────────────── */
-.proj-card.hidden{display:none;}
-
-/* ── FOOTER ─────────────────────────────────────────────────────── */
+/* ── FOOTER ────────────────────────────────────────────────────── */
 footer{
   background:var(--navy-xd);color:#c0d0e8;
   text-align:center;padding:40px 20px;
@@ -321,12 +257,43 @@ footer{
 }
 footer p+p{margin-top:6px;opacity:.7;font-size:.8rem;}
 
-/* ── RESPONSIVE ─────────────────────────────────────────────────── */
-@media(max-width:680px){
-  .sow-grid{grid-template-columns:1fr;}
-  .sow-label{border-top:1px solid var(--border);padding-top:10px;}
-  .hero h1{font-size:1.75rem;}
-  .projects-grid{grid-template-columns:1fr;}
+/* ── PDF EXPORT STYLES ─────────────────────────────────────────── */
+.pdf-mode{
+  background:#ffffff !important;
+  color:#1a2433 !important;
+  box-shadow:none !important;
+  border:none !important;
+}
+.pdf-mode .field input,
+.pdf-mode .field select,
+.pdf-mode .field textarea{
+  background:#ffffff !important;
+  color:#1a2433 !important;
+  border-color:#8a94a6 !important;
+}
+.pdf-header{
+  display:none;
+  text-align:center;
+  padding-bottom:18px;
+  margin-bottom:26px;
+  border-bottom:3px double #0047AB;
+}
+.pdf-mode .pdf-header{display:block;}
+.pdf-header h2{color:#0047AB;font-size:1.4rem;margin-bottom:4px;font-family:Georgia,serif;}
+.pdf-header .sub{font-family:'Arial Narrow',Arial,sans-serif;text-transform:uppercase;letter-spacing:2px;font-size:.78rem;color:#00875a;}
+.pdf-header .meta{font-size:.82rem;color:#4a5568;margin-top:6px;font-style:italic;}
+.pdf-mode .btn-bar, .pdf-mode #statusMsg{display:none !important;}
+
+@media print{
+  nav, .hero, footer, .btn-bar, #statusMsg, .notice{display:none !important;}
+  body{background:#fff;}
+  .form-card{box-shadow:none;border:none;padding:0;}
+  .pdf-header{display:block;}
+}
+@media(max-width:640px){
+  .row{grid-template-columns:1fr;}
+  .form-card{padding:26px 20px 30px;}
+  .btn{width:100%;justify-content:center;}
 }
 </style>
 </head>
@@ -337,10 +304,9 @@ footer p+p{margin-top:6px;opacity:.7;font-size:.8rem;}
   <div class="nav-inner">
     <div class="brand">AI Cohort <span>· NSF ATE</span></div>
     <div class="nav-links">
-      <a href="#requirements">Requirements</a>
-      <a href="#sow">SOW</a>
-      <a href="#process">Process</a>
-      <a href="#projects">Projects</a>
+      <a href="index.html">Home</a>
+      <a href="projects.html">Projects</a>
+      <a href="application.html">Application</a>
       <button id="themeBtn">☾ Dark</button>
     </div>
   </div>
@@ -349,822 +315,195 @@ footer p+p{margin-top:6px;opacity:.7;font-size:.8rem;}
 <!-- HERO -->
 <div class="hero">
   <div class="hero-eyebrow">◆ AI Interdisciplinary Learning Communities · NSF ATE ◆</div>
-  <h1>AI Cohort <em>Participant Projects</em></h1>
-  <p class="lede">Each cohort member develops an original AI-integrated project for their discipline — from concept through Statement of Work, implementation, and open-source publication.</p>
-  <div class="hero-pills">
-    <span>Community College Focus</span>
-    <span>Faculty-Led</span>
-    <span>Open-Source Deliverables</span>
-    <span>Stipend Eligible</span>
-    <span>Creative Commons</span>
-  </div>
+  <h1>Statement of Work <em>(SOW) Form</em></h1>
+  <p class="lede">Complete the sections below to define your cohort project — activities, deliverables, and expected outcomes. Save the completed form as a PDF and submit it with your project description within 30 days of the summer workshop.</p>
 </div>
 
-<!-- REQUIREMENTS -->
-<div id="requirements">
-<div class="section">
-  <div class="kicker">Participation Requirements</div>
-  <h2>What Every Participant Must Submit</h2>
-  <p class="section-intro">As part of the participation requirements for the AI Cohort, each participant is required to submit a brief project description along with a corresponding Statement of Work (SOW) outlining the activities, deliverables, and expected outcomes of the project.</p>
-
-  <div class="req-grid">
-    <div class="req-card">
-      <span class="rc-icon">📝</span>
-      <h3>Project Description</h3>
-      <p>A concise narrative (1–2 pages) identifying the discipline, the AI technology or tool being applied, the target student audience, and the educational problem being solved.</p>
-    </div>
-    <div class="req-card">
-      <span class="rc-icon">📋</span>
-      <h3>Statement of Work (SOW)</h3>
-      <p>A structured document specifying activities, timeline milestones, measurable deliverables, and expected student and institutional outcomes. Template provided at orientation.</p>
-    </div>
-    <div class="req-card">
-      <span class="rc-icon">🧑‍💻</span>
-      <h3>Classroom Implementation</h3>
-      <p>The developed tool or resource must be piloted in at least one live course section during the grant period and results shared with the cohort community.</p>
-    </div>
-    <div class="req-card">
-      <span class="rc-icon">🔬</span>
-      <h3>Evaluation and Reflection</h3>
-      <p>Participants collect student feedback and self-assess alignment with project outcomes. A brief reflection report is submitted to the external evaluator at semester close.</p>
-    </div>
-    <div class="req-card">
-      <span class="rc-icon">🗂️</span>
-      <h3>Repository Contribution</h3>
-      <p>All deliverables — code, lesson plans, assessment rubrics, and case studies — are uploaded to the shared GitHub repository under Creative Commons license for national dissemination.</p>
-    </div>
-    <div class="req-card">
-      <span class="rc-icon">🤝</span>
-      <h3>Cohort Participation</h3>
-      <p>Participants attend the summer in-person workshop plus monthly online sessions and present project results at the CyAD Conference or a designated regional showcase.</p>
-    </div>
-  </div>
-</div>
-</div>
-
-<!-- FOCUS AREAS -->
-<div class="section-alt">
-<div class="section">
-  <div class="kicker">Eligible Focus Areas</div>
-  <h2>Project Focus Areas</h2>
-  <p class="section-intro">Projects may address any of the following areas related to artificial intelligence in the community college environment. Projects that support effective, ethical, and sustainable AI use are especially encouraged.</p>
-  <div class="req-grid" style="margin-bottom:0;">
-    <div class="req-card">
-      <span class="rc-icon">🎓</span>
-      <h3>AI in Teaching & Learning</h3>
-      <p>Integration of AI tools into instructional practice — including personalized learning, AI-powered tutoring, automated feedback, simulation-based learning, and curriculum design support.</p>
-    </div>
-    <div class="req-card">
-      <span class="rc-icon">⚙️</span>
-      <h3>AI Adoption Challenges & Opportunities</h3>
-      <p>Research and practical projects addressing barriers to adoption, faculty preparedness, student AI literacy, equity and access, academic integrity, and institutional change management.</p>
-    </div>
-    <div class="req-card">
-      <span class="rc-icon">🏛️</span>
-      <h3>Policy, Governance & Strategy</h3>
-      <p>Research, analysis, and documentation related to institutional AI policies, data governance frameworks, privacy compliance, ethical guidelines, and sustainable implementation roadmaps.</p>
-    </div>
-  </div>
-</div>
-</div>
-
-<!-- SOW TEMPLATE -->
-<div id="sow">
-<div class="section">
-  <div class="kicker">Template</div>
-  <h2>Statement of Work (SOW) Components</h2>
-  <p class="section-intro">Every participant SOW must address all components below. Use the provided template, available at orientation and on the cohort portal. Only use the sections that are relavent to your project.</p>
-  <div class="sow-box">
-    <h3>Suggested SOW Sections</h3>
-    <div class="sow-grid">
-      <div class="sow-label">Project Title</div>
-      <div class="sow-value">A descriptive name for the AI-integrated project specific to your discipline.</div>
-
-      <div class="sow-label">Discipline / Course</div>
-      <div class="sow-value">The program area and specific course(s) where the project will be deployed.</div>
-
-      <div class="sow-label">Problem Statement</div>
-      <div class="sow-value">The instructional challenge, gap, or opportunity the project addresses. Include relevant workforce or industry context where applicable.</div>
-
-      <div class="sow-label">AI Tool(s) Used</div>
-      <div class="sow-value">The AI technologies, platforms, or APIs to be integrated (e.g., generative AI APIs, machine learning frameworks, NLP tools, computer vision). Include justification for selection.</div>
-
-      <div class="sow-label">Activities</div>
-      <div class="sow-value">Step-by-step plan: research, design, development, pilot, evaluation, and dissemination. Each activity should have a responsible party and target completion date.</div>
-
-      <div class="sow-label">Deliverables</div>
-      <div class="sow-value">Tangible outputs: prototype tool, lesson plan, lab exercise, video demo, case study, assessment rubric. At least one deliverable must be GitHub-publishable.</div>
-
-      <div class="sow-label">Expected Outcomes</div>
-      <div class="sow-value">Measurable student learning outcomes and faculty development outcomes. Specify how success will be assessed and documented.</div>
-
-      <div class="sow-label">Ethical Considerations</div>
-      <div class="sow-value">How the project addresses data privacy, algorithmic bias, academic integrity, and equitable student access to AI tools.</div>
-
-      <div class="sow-label">Timeline</div>
-      <div class="sow-value">Month-by-month milestones from project kickoff through final repository submission and conference presentation.</div>
-
-      <div class="sow-label">Sustainability Plan</div>
-      <div class="sow-value">How the project will be maintained and updated after the grant period, including plans for integration into the regular course curriculum.</div>
-    </div>
-  </div>
-</div>
-</div>
-
-<!-- PROCESS -->
-<div id="process" class="section-alt">
-<div class="section">
-  <div class="kicker">How It Works</div>
-  <h2>Participation Process</h2>
-  <p class="section-intro">Projects move through five structured phases during the cohort year, with support from the project team, external evaluator, and national network at every step.</p>
-  <div class="stepper">
-
-    <div class="step">
-      <div class="step-num">1</div>
-      <div class="step-line"></div>
-      <div class="step-content">
-        <h3>Orient & Plan (Summer Workshop — Day 1)</h3>
-        <p>Attend the in-person summer workshop. Receive the SOW template and project examples. Work with cohort peers and facilitators to identify your discipline's AI opportunity and draft your project concept.</p>
-      </div>
-    </div>
-
-    <div class="step">
-      <div class="step-num">2</div>
-      <div class="step-line"></div>
-      <div class="step-content">
-        <h3>Design & Develop (Summer Workshop — Day 2 + Fall Semester)</h3>
-        <p>Complete and submit your SOW within 30 days of the workshop. Begin tool or resource development, participating in monthly online mentoring sessions for guidance and peer review.</p>
-      </div>
-    </div>
-
-    <div class="step">
-      <div class="step-num">3</div>
-      <div class="step-line"></div>
-      <div class="step-content">
-        <h3>Pilot in the Classroom (Spring Semester)</h3>
-        <p>Deploy your AI-integrated resource in at least one live course section. Collect student feedback data and document outcomes. Refine based on real classroom evidence.</p>
-      </div>
-    </div>
-
-    <div class="step">
-      <div class="step-num">4</div>
-      <div class="step-line"></div>
-      <div class="step-content">
-        <h3>Evaluate & Report (End of Spring)</h3>
-        <p>Submit your reflection report and outcome data to the external evaluator. Participate in the cohort debrief session. Finalize all repository materials for publication.</p>
-      </div>
-    </div>
-
-    <div class="step">
-      <div class="step-num">5</div>
-      <div class="step-line"></div>
-      <div class="step-content">
-        <h3>Disseminate & Celebrate (CyAD Conference)</h3>
-        <p>Present your project at the Cybersecurity Across Disciplines (CyAD) Conference or a designated regional showcase. All published materials go live in the national AI content library.</p>
-      </div>
-    </div>
-
-  </div>
-</div>
-</div>
-
-<!-- PROJECTS GALLERY -->
-<div id="projects">
-<div class="section">
-  <div class="kicker">Example Projects</div>
-  <h2>12 Model Participant Projects</h2>
-  <p class="section-intro">The following examples illustrate the scope, depth, and variety of projects suitable for AI Cohort participation. Filter by discipline area, then expand any card for a sample SOW summary.</p>
-
-  <!-- FILTER PILLS -->
-  <div class="focus-pills" id="filterPills">
-    <button class="focus-pill active" data-filter="all">All Disciplines</button>
-    <button class="focus-pill" data-filter="communication">Communication</button>
-    <button class="focus-pill" data-filter="automotive">Automotive</button>
-    <button class="focus-pill" data-filter="history">History</button>
-    <button class="focus-pill" data-filter="cybersecurity">Cybersecurity</button>
-    <button class="focus-pill" data-filter="math">Mathematics</button>
-    <button class="focus-pill" data-filter="chemistry">Chemistry</button>
-    <button class="focus-pill" data-filter="healthcare">Healthcare</button>
-    <button class="focus-pill" data-filter="business">Business</button>
+<main>
+  <div class="kicker">Instructions</div>
+  <div class="notice">
+    <p><strong>How this works:</strong> Fill in the sections relevant to your project — sections marked <strong>*</strong> are required; the rest are recommended but optional, per the SOW template guidance. When finished, click <strong>Save as PDF</strong> to download your completed SOW to your computer, then email it to the project team.</p>
+    <span class="fine">Nothing is transmitted from this page — the PDF is generated locally in your browser.</span>
   </div>
 
-  <div class="projects-grid" id="projectsGrid">
+  <div class="form-card" id="formCard">
 
-    <!-- 1 SPEECH -->
-    <div class="proj-card" data-cat="communication">
-      <div class="proj-header">
-        <div class="proj-icon" style="background:#e8f0ff;">🎤</div>
-        <div class="proj-meta">
-          <div class="proj-discipline">Speech / Communication</div>
-          <div class="proj-title">VirtualAudience — AI-Powered Speech Practice Environment</div>
-        </div>
-      </div>
-      <div class="proj-body">
-        <p class="proj-desc">Students deliver live speeches to a simulated AI audience that responds with facial expressions, body language cues, and real-time engagement signals, then generates a structured performance debrief.</p>
-        <div>
-          <div class="proj-section-label">Key Deliverables</div>
-          <ul class="proj-list">
-            <li>Browser-based virtual audience simulator with customizable crowd size and demographics</li>
-            <li>AI feedback engine scoring delivery pace, eye contact, vocal variety, and filler words</li>
-            <li>Student self-assessment rubric aligned to course competencies</li>
-            <li>Instructor dashboard showing aggregate class performance trends</li>
-          </ul>
-        </div>
-        <div>
-          <div class="proj-section-label">Expected Outcomes</div>
-          <ul class="proj-list">
-            <li>Increased student willingness to practice outside class hours</li>
-            <li>Measurable reduction in speech anxiety through repeated low-stakes rehearsal</li>
-            <li>Improved rubric scores on formal graded speeches</li>
-          </ul>
-        </div>
-      </div>
-      <div class="proj-footer">
-        <span class="proj-tag">AI Tool: Generative AI + Computer Vision</span>
-        <button class="proj-expand-btn" onclick="toggleDetail(this)">SOW Summary ▾</button>
-      </div>
-      <div class="proj-detail">
-        <div class="proj-detail-inner">
-          <div class="sow-mini">
-            <strong>Problem Statement</strong>
-            <p>Students avoid speech practice due to self-consciousness; limited class time means only one or two graded speeches per semester. Low rehearsal frequency correlates with high anxiety and poor performance.</p>
-          </div>
-          <div class="sow-mini">
-            <strong>AI Tools</strong>
-            <p>OpenAI API (feedback generation), MediaPipe (posture & eye-contact detection), Web Speech API (transcript & pace analysis).</p>
-          </div>
-          <div class="sow-mini">
-            <strong>Ethical Considerations</strong>
-            <p>Video data processed locally; no recordings stored. Students opt-in. Bias audit of feedback language performed prior to pilot. Accommodations available for students with disabilities affecting delivery norms.</p>
-          </div>
-        </div>
-      </div>
+    <!-- Header shown only in the exported PDF / print view -->
+    <div class="pdf-header">
+      <h2>AI Cohort — Statement of Work (SOW)</h2>
+      <div class="sub">AI Interdisciplinary Learning Communities · NSF ATE Proposal No. 2500821 · MVCC &amp; NCyTE</div>
+      <div class="meta" id="pdfDateLine">Generated: —</div>
     </div>
 
-    <!-- 2 AUTOMOTIVE -->
-    <div class="proj-card" data-cat="automotive">
-      <div class="proj-header">
-        <div class="proj-icon" style="background:#fff3e0;">🔧</div>
-        <div class="proj-meta">
-          <div class="proj-discipline">Automotive Technology</div>
-          <div class="proj-title">AutoDoc AI — Intelligent Repair Documentation & Estimating Tool</div>
-        </div>
-      </div>
-      <div class="proj-body">
-        <p class="proj-desc">Students use natural language and photo input to generate professional repair orders, parts lists, labor hour calculations, and customer-ready service documentation — mirroring real shop workflows.</p>
-        <div>
-          <div class="proj-section-label">Key Deliverables</div>
-          <ul class="proj-list">
-            <li>AI-driven repair order generator accepting text descriptions and under-hood photos</li>
-            <li>Labor time lookup integrated with industry flat-rate databases</li>
-            <li>Parts cost estimator pulling live API pricing data</li>
-            <li>Printable customer estimate and technician job sheet templates</li>
-          </ul>
-        </div>
-        <div>
-          <div class="proj-section-label">Expected Outcomes</div>
-          <ul class="proj-list">
-            <li>Students produce industry-standard documentation at the end of the first semester</li>
-            <li>Reduced errors in labor time calculations on practical assessments</li>
-            <li>Faculty document a 30% reduction in time spent on documentation instruction</li>
-          </ul>
-        </div>
-      </div>
-      <div class="proj-footer">
-        <span class="proj-tag">AI Tool: Vision API + LLM</span>
-        <button class="proj-expand-btn" onclick="toggleDetail(this)">SOW Summary ▾</button>
-      </div>
-      <div class="proj-detail">
-        <div class="proj-detail-inner">
-          <div class="sow-mini">
-            <strong>Problem Statement</strong>
-            <p>Automotive students struggle with professional documentation standards — a core employability skill. Manual instruction is time-intensive and students rarely see real-world volume or variety of repair scenarios.</p>
-          </div>
-          <div class="sow-mini">
-            <strong>AI Tools</strong>
-            <p>GPT-4o Vision (photo-based diagnostic assist), OpenAI API (repair narrative generation), NAPA or Mitchell1 API integration for parts pricing, custom HTML/JS front-end.</p>
-          </div>
-          <div class="sow-mini">
-            <strong>Ethical Considerations</strong>
-            <p>Students learn to verify AI-generated labor estimates against authoritative flat-rate manuals. Project explicitly addresses AI output validation as a workforce competency.</p>
-          </div>
-        </div>
-      </div>
-    </div>
+    <form id="sowForm" novalidate>
 
-    <!-- 3 HISTORY -->
-    <div class="proj-card" data-cat="history">
-      <div class="proj-header">
-        <div class="proj-icon" style="background:#fdf3e7;">🏺</div>
-        <div class="proj-meta">
-          <div class="proj-discipline">History / Social Sciences</div>
-          <div class="proj-title">ArtifactIQ — AI Historical Artifact Analysis & Source Critique Tool</div>
-        </div>
-      </div>
-      <div class="proj-body">
-        <p class="proj-desc">Students submit images or descriptions of historical artifacts and receive structured AI analysis across four critical dimensions — historical bias, factual accuracy, source consistency, and cultural context — then compare AI analysis to scholarly sources.</p>
-        <div>
-          <div class="proj-section-label">Key Deliverables</div>
-          <ul class="proj-list">
-            <li>Artifact analysis interface accepting image upload or text description</li>
-            <li>Structured report template covering bias, accuracy, consistency, and provenance</li>
-            <li>Side-by-side comparison view: AI analysis vs. peer-reviewed source</li>
-            <li>Critical thinking reflection worksheet for student self-assessment</li>
-          </ul>
-        </div>
-        <div>
-          <div class="proj-section-label">Expected Outcomes</div>
-          <ul class="proj-list">
-            <li>Students demonstrate source critique skills using disciplinary vocabulary</li>
-            <li>Increased engagement with primary source analysis in asynchronous courses</li>
-            <li>Students identify and articulate at least two AI limitations per artifact</li>
-          </ul>
-        </div>
-      </div>
-      <div class="proj-footer">
-        <span class="proj-tag">AI Tool: Vision API + LLM Analysis</span>
-        <button class="proj-expand-btn" onclick="toggleDetail(this)">SOW Summary ▾</button>
-      </div>
-      <div class="proj-detail">
-        <div class="proj-detail-inner">
-          <div class="sow-mini">
-            <strong>Problem Statement</strong>
-            <p>History students rarely engage with primary sources deeply enough to evaluate bias and consistency. Traditional assignments lack immediate feedback, limiting the iterative thinking historical analysis demands.</p>
+      <!-- PARTICIPANT -->
+      <fieldset>
+        <legend>1 · Participant Information</legend>
+        <div class="legend-hint">Who is submitting this SOW.</div>
+        <div class="row">
+          <div class="field" data-required>
+            <label for="fullName">Full Name <span class="req">*</span></label>
+            <input type="text" id="fullName" autocomplete="name">
+            <span class="err-msg">Name is required.</span>
           </div>
-          <div class="sow-mini">
-            <strong>AI Tools</strong>
-            <p>GPT-4o with vision (artifact description and contextual analysis), custom prompt chain enforcing bias/accuracy/consistency/provenance framework, HTML5 single-file app hosted on GitHub Pages.</p>
-          </div>
-          <div class="sow-mini">
-            <strong>Ethical Considerations</strong>
-            <p>Project foregrounds AI limitations on historical accuracy as a core learning objective. Students must critically evaluate AI output using scholarly sources — AI serves as a thinking partner, not an authority.</p>
+          <div class="field" data-required data-type="email">
+            <label for="email">Institutional Email <span class="req">*</span></label>
+            <input type="email" id="email" autocomplete="email">
+            <span class="err-msg">A valid email address is required.</span>
           </div>
         </div>
-      </div>
-    </div>
+        <div class="row">
+          <div class="field" data-required>
+            <label for="institution">Institution <span class="req">*</span></label>
+            <select id="institution">
+              <option value="">— Select Your Institution —</option>
+              <option>Whatcom Community College</option>
+              <option>Las Positas College</option>
+              <option>St Petersburg Community College</option>
+              <option>Moraine Valley Community College</option>
+              <option>Brookdale Community College</option>
+              <option>Anne Arundel Community College</option>
+              <option>Sinclair Community College</option>
+              <option>Fayetteville Technical College</option>
+              <option>El Paso Community College</option>
+              <option>Honolulu Community College</option>
+              <option>Miami Dade Community College</option>
+              <option>Pikes Peak State College</option>
+              <option>Other</option>
+            </select>
+            <span class="err-msg">Please select your institution.</span>
+          </div>
+          <div class="field">
+            <label for="cohortYear">Cohort Year <span class="opt">(optional)</span></label>
+            <select id="cohortYear">
+              <option value="">— Select —</option>
+              <option>Year 1</option>
+              <option>Year 2</option>
+              <option>Year 3</option>
+            </select>
+          </div>
+        </div>
+      </fieldset>
 
-    <!-- 4 CYBERSECURITY SOC -->
-    <div class="proj-card" data-cat="cybersecurity">
-      <div class="proj-header">
-        <div class="proj-icon" style="background:#e8fff4;">🛡️</div>
-        <div class="proj-meta">
-          <div class="proj-discipline">Cybersecurity</div>
-          <div class="proj-title">SOCSimAI — Adaptive Security Operations Center Simulator</div>
-        </div>
-      </div>
-      <div class="proj-body">
-        <p class="proj-desc">An AI-driven SOC simulation where students receive a realistic stream of alerts, logs, and threat intelligence. An AI analyst persona guides triage decisions, escalation paths, and incident response documentation in real time.</p>
-        <div>
-          <div class="proj-section-label">Key Deliverables</div>
-          <ul class="proj-list">
-            <li>Simulated SIEM alert dashboard with configurable scenario difficulty</li>
-            <li>AI analyst NPC that responds to student triage decisions with branching feedback</li>
-            <li>Incident response report template auto-populated from student decisions</li>
-            <li>10 scenario packs aligned to CompTIA Security+ and CySA+ objectives</li>
-          </ul>
-        </div>
-        <div>
-          <div class="proj-section-label">Expected Outcomes</div>
-          <ul class="proj-list">
-            <li>Students complete incident response workflows without instructor intervention</li>
-            <li>Demonstrated alignment with NIST IR framework in student-generated reports</li>
-            <li>Measurable improvement on SOC-related lab performance assessments</li>
-          </ul>
-        </div>
-      </div>
-      <div class="proj-footer">
-        <span class="proj-tag">AI Tool: LLM + Scenario Engine</span>
-        <button class="proj-expand-btn" onclick="toggleDetail(this)">SOW Summary ▾</button>
-      </div>
-      <div class="proj-detail">
-        <div class="proj-detail-inner">
-          <div class="sow-mini">
-            <strong>Problem Statement</strong>
-            <p>SOC analyst roles require pattern recognition and decision-making under pressure — skills that cannot be developed from textbooks alone. Commercial simulation platforms are cost-prohibitive for most community colleges.</p>
-          </div>
-          <div class="sow-mini">
-            <strong>AI Tools</strong>
-            <p>Claude API or GPT-4 (adaptive scenario narration and triage feedback), static JSON scenario packs (no external threat data needed), HTML5/JS single-file app deployable on GitHub Pages or MVCC VTLC.</p>
-          </div>
-          <div class="sow-mini">
-            <strong>Ethical Considerations</strong>
-            <p>No real threat intelligence or student-identifiable data used. Scenarios use fictional organizations. Students learn responsible disclosure and chain-of-custody documentation as part of the simulation workflow.</p>
+      <!-- PROJECT IDENTIFICATION -->
+      <fieldset>
+        <legend>2 · Project Identification</legend>
+        <div class="legend-hint">Name the project and where it will be deployed.</div>
+        <div class="row single">
+          <div class="field" data-required>
+            <label for="projectTitle">Project Title <span class="req">*</span></label>
+            <input type="text" id="projectTitle" placeholder="A descriptive name for the AI-integrated project specific to your discipline">
+            <span class="err-msg">Project title is required.</span>
           </div>
         </div>
-      </div>
-    </div>
+        <div class="row single">
+          <div class="field" data-required>
+            <label for="disciplineCourse">Discipline / Course(s) <span class="req">*</span></label>
+            <input type="text" id="disciplineCourse" placeholder="Program area and specific course(s) where the project will be deployed">
+            <span class="err-msg">Discipline / course is required.</span>
+          </div>
+        </div>
+      </fieldset>
 
-    <!-- 5 MATH -->
-    <div class="proj-card" data-cat="math">
-      <div class="proj-header">
-        <div class="proj-icon" style="background:#f3e8ff;">📐</div>
-        <div class="proj-meta">
-          <div class="proj-discipline">Mathematics</div>
-          <div class="proj-title">MathViz AI — Interactive Mathematical Operation Visualizer</div>
-        </div>
-      </div>
-      <div class="proj-body">
-        <p class="proj-desc">Students type or speak a math concept — from basic algebra to calculus — and receive an animated, step-by-step visual simulation paired with an AI tutor that explains the operation in plain language at an adjustable reading level.</p>
-        <div>
-          <div class="proj-section-label">Key Deliverables</div>
-          <ul class="proj-list">
-            <li>Concept visualization engine covering arithmetic, algebra, geometry, statistics, and calculus topics</li>
-            <li>AI tutor responding to follow-up questions in plain English</li>
-            <li>Reading-level toggle (middle school / college / technical) for differentiated instruction</li>
-            <li>Practice problem generator with step-check feedback at each stage</li>
-          </ul>
-        </div>
-        <div>
-          <div class="proj-section-label">Expected Outcomes</div>
-          <ul class="proj-list">
-            <li>Improved scores on conceptual understanding items in pre/post assessments</li>
-            <li>Increased out-of-class self-study engagement tracked via usage analytics</li>
-            <li>Reduced rates of repeated math course enrollment (developmental math context)</li>
-          </ul>
-        </div>
-      </div>
-      <div class="proj-footer">
-        <span class="proj-tag">AI Tool: LLM + D3.js Visualization</span>
-        <button class="proj-expand-btn" onclick="toggleDetail(this)">SOW Summary ▾</button>
-      </div>
-      <div class="proj-detail">
-        <div class="proj-detail-inner">
-          <div class="sow-mini">
-            <strong>Problem Statement</strong>
-            <p>Developmental and gateway math students struggle to connect procedural steps to conceptual meaning. Static textbook diagrams and one-size-fits-all explanations leave visual learners and non-traditional students behind.</p>
-          </div>
-          <div class="sow-mini">
-            <strong>AI Tools</strong>
-            <p>OpenAI API (explanation generation at variable reading levels), D3.js or Chart.js (dynamic math visualizations), MathJax (rendered equations), Web Speech API (optional voice input).</p>
-          </div>
-          <div class="sow-mini">
-            <strong>Ethical Considerations</strong>
-            <p>Tool designed to scaffold understanding, not replace problem-solving practice. Instructors configure whether solution steps are shown or withheld to prevent shortcut use on graded work.</p>
+      <!-- PROBLEM & TOOLS -->
+      <fieldset>
+        <legend>3 · Problem Statement &amp; AI Tools</legend>
+        <div class="legend-hint">What you are solving and what you will use to solve it.</div>
+        <div class="row single">
+          <div class="field" data-required>
+            <label for="problemStatement">Problem Statement <span class="req">*</span></label>
+            <textarea id="problemStatement" rows="4" placeholder="The instructional challenge, gap, or opportunity the project addresses. Include relevant workforce or industry context where applicable."></textarea>
+            <span class="err-msg">Problem statement is required.</span>
           </div>
         </div>
-      </div>
-    </div>
+        <div class="row single">
+          <div class="field" data-required>
+            <label for="aiTools">AI Tool(s) Used <span class="req">*</span></label>
+            <textarea id="aiTools" rows="3" placeholder="AI technologies, platforms, or APIs to be integrated (e.g., generative AI APIs, machine learning frameworks, NLP tools, computer vision). Include justification for selection."></textarea>
+            <span class="err-msg">Please list the AI tool(s) and justification.</span>
+          </div>
+        </div>
+      </fieldset>
 
-    <!-- 6 CHEMISTRY -->
-    <div class="proj-card" data-cat="chemistry">
-      <div class="proj-header">
-        <div class="proj-icon" style="background:#e8f7ff;">⚗️</div>
-        <div class="proj-meta">
-          <div class="proj-discipline">Chemistry</div>
-          <div class="proj-title">LabSafeAI — Virtual Chemistry Lab Safety & Reaction Simulator</div>
-        </div>
-      </div>
-      <div class="proj-body">
-        <p class="proj-desc">Students conduct simulated wet-lab experiments using an AI lab partner that enforces safety protocols, predicts reaction outcomes, explains molecular behavior, and flags hazardous procedure errors before the student "proceeds."</p>
-        <div>
-          <div class="proj-section-label">Key Deliverables</div>
-          <ul class="proj-list">
-            <li>Virtual lab bench interface for common gen-chemistry experiments</li>
-            <li>AI safety officer persona that intercepts unsafe student actions with explanations</li>
-            <li>Reaction outcome predictor covering acid-base, redox, and synthesis reactions</li>
-            <li>Pre-lab and post-lab report generator aligned to course learning objectives</li>
-          </ul>
-        </div>
-        <div>
-          <div class="proj-section-label">Expected Outcomes</div>
-          <ul class="proj-list">
-            <li>Students pass lab safety assessment at higher rates prior to physical lab access</li>
-            <li>Increased confidence entering the physical lab as measured by pre/post survey</li>
-            <li>Online and hybrid students achieve equivalent lab understanding to in-person cohorts</li>
-          </ul>
-        </div>
-      </div>
-      <div class="proj-footer">
-        <span class="proj-tag">AI Tool: LLM + Simulation Engine</span>
-        <button class="proj-expand-btn" onclick="toggleDetail(this)">SOW Summary ▾</button>
-      </div>
-      <div class="proj-detail">
-        <div class="proj-detail-inner">
-          <div class="sow-mini">
-            <strong>Problem Statement</strong>
-            <p>Online and hybrid chemistry students lack access to hands-on lab experience. Safety comprehension gaps create liability concerns when students arrive for the first physical lab session with insufficient preparation.</p>
-          </div>
-          <div class="sow-mini">
-            <strong>AI Tools</strong>
-            <p>Claude API (safety feedback and reaction explanation), PubChem API (molecular data lookup), custom HTML5 lab bench UI, optional WebGL molecular visualization layer.</p>
-          </div>
-          <div class="sow-mini">
-            <strong>Ethical Considerations</strong>
-            <p>Clearly labeled as simulation, not a substitute for physical lab requirements where mandated. AI safety feedback reviewed by department chair and safety officer prior to release. FERPA-compliant — no student data stored.</p>
+      <!-- ACTIVITIES / DELIVERABLES / OUTCOMES -->
+      <fieldset>
+        <legend>4 · Activities, Deliverables &amp; Outcomes</legend>
+        <div class="legend-hint">The work plan and its measurable results.</div>
+        <div class="row single">
+          <div class="field" data-required>
+            <label for="activities">Activities <span class="req">*</span></label>
+            <textarea id="activities" rows="5" placeholder="Step-by-step plan: research, design, development, pilot, evaluation, and dissemination. Each activity should have a responsible party and target completion date."></textarea>
+            <span class="err-msg">Activities are required.</span>
           </div>
         </div>
-      </div>
-    </div>
+        <div class="row single">
+          <div class="field" data-required>
+            <label for="deliverables">Deliverables <span class="req">*</span></label>
+            <textarea id="deliverables" rows="4" placeholder="Tangible outputs: prototype tool, lesson plan, lab exercise, video demo, case study, assessment rubric. At least one deliverable must be GitHub-publishable."></textarea>
+            <span class="err-msg">Deliverables are required.</span>
+          </div>
+        </div>
+        <div class="row single">
+          <div class="field" data-required>
+            <label for="outcomes">Expected Outcomes <span class="req">*</span></label>
+            <textarea id="outcomes" rows="4" placeholder="Measurable student learning outcomes and faculty development outcomes. Specify how success will be assessed and documented."></textarea>
+            <span class="err-msg">Expected outcomes are required.</span>
+          </div>
+        </div>
+      </fieldset>
 
-    <!-- 7 NURSING / HEALTHCARE -->
-    <div class="proj-card" data-cat="healthcare">
-      <div class="proj-header">
-        <div class="proj-icon" style="background:#fff0f0;">🩺</div>
-        <div class="proj-meta">
-          <div class="proj-discipline">Nursing / Healthcare</div>
-          <div class="proj-title">PatientSim AI — Clinical Scenario & Patient Interaction Trainer</div>
-        </div>
-      </div>
-      <div class="proj-body">
-        <p class="proj-desc">Nursing students engage in text-based clinical conversations with AI patient personas presenting realistic symptoms, histories, and emotional states. The system scores assessment technique, therapeutic communication, and documentation accuracy.</p>
-        <div>
-          <div class="proj-section-label">Key Deliverables</div>
-          <ul class="proj-list">
-            <li>AI patient persona library covering 20+ common clinical presentations</li>
-            <li>SBAR documentation generator populated from student interaction transcript</li>
-            <li>Communication technique scorer (empathy, clarity, active listening)</li>
-            <li>Instructor scenario builder for custom patient cases</li>
-          </ul>
-        </div>
-        <div>
-          <div class="proj-section-label">Expected Outcomes</div>
-          <ul class="proj-list">
-            <li>Improved NCLEX-PN communication and documentation scores</li>
-            <li>Students complete more clinical scenario practice hours outside scheduled sim lab</li>
-            <li>Faculty report higher readiness in student cohorts entering clinical rotations</li>
-          </ul>
-        </div>
-      </div>
-      <div class="proj-footer">
-        <span class="proj-tag">AI Tool: LLM Persona + Scoring Rubric</span>
-        <button class="proj-expand-btn" onclick="toggleDetail(this)">SOW Summary ▾</button>
-      </div>
-      <div class="proj-detail">
-        <div class="proj-detail-inner">
-          <div class="sow-mini">
-            <strong>Problem Statement</strong>
-            <p>Clinical simulation lab time is scarce and expensive to staff. Students need repeated, low-stakes patient communication practice before high-stakes clinical rotations, but current options require instructor presence.</p>
-          </div>
-          <div class="sow-mini">
-            <strong>AI Tools</strong>
-            <p>GPT-4 with system-prompt persona definition (patient simulation), custom scoring rubric mapped to therapeutic communication competencies, HTML5 chat interface, session transcript export for portfolio evidence.</p>
-          </div>
-          <div class="sow-mini">
-            <strong>Ethical Considerations</strong>
-            <p>Patient personas are entirely fictional. No real patient data used. Limitations of AI simulation clearly communicated to students. Faculty validate all clinical content before deployment to ensure accuracy.</p>
+      <!-- OPTIONAL SECTIONS -->
+      <fieldset>
+        <legend>5 · Additional SOW Sections</legend>
+        <div class="legend-hint">Complete the sections relevant to your project, per the SOW template guidance.</div>
+        <div class="row single">
+          <div class="field">
+            <label for="ethics">Ethical Considerations <span class="opt">(optional)</span></label>
+            <textarea id="ethics" rows="3" placeholder="How the project addresses data privacy, algorithmic bias, academic integrity, and equitable student access to AI tools."></textarea>
           </div>
         </div>
-      </div>
-    </div>
+        <div class="row single">
+          <div class="field">
+            <label for="timeline">Timeline <span class="opt">(optional)</span></label>
+            <textarea id="timeline" rows="3" placeholder="Month-by-month milestones from project kickoff through final repository submission and conference presentation."></textarea>
+          </div>
+        </div>
+        <div class="row single">
+          <div class="field">
+            <label for="sustainability">Sustainability Plan <span class="opt">(optional)</span></label>
+            <textarea id="sustainability" rows="3" placeholder="How the project will be maintained and updated after the grant period, including plans for integration into the regular course curriculum."></textarea>
+          </div>
+        </div>
+      </fieldset>
 
-    <!-- 8 BUSINESS -->
-    <div class="proj-card" data-cat="business">
-      <div class="proj-header">
-        <div class="proj-icon" style="background:#fffbe8;">📊</div>
-        <div class="proj-meta">
-          <div class="proj-discipline">Business / Accounting</div>
-          <div class="proj-title">FinDecisionAI — Business Case Analysis & Decision Support Trainer</div>
-        </div>
-      </div>
-      <div class="proj-body">
-        <p class="proj-desc">Students input a business scenario (startup funding, inventory decision, hiring plan) and an AI advisor generates a structured cost-benefit analysis, financial projections, and a devil's advocate counterargument — then students defend their own recommendation.</p>
-        <div>
-          <div class="proj-section-label">Key Deliverables</div>
-          <ul class="proj-list">
-            <li>Business scenario intake form with AI-driven financial analysis output</li>
-            <li>Side-by-side view: AI recommendation vs. student recommendation comparison</li>
-            <li>Automated counter-argument generator to stress-test student reasoning</li>
-            <li>Written defense rubric and peer-review protocol for class discussion</li>
-          </ul>
-        </div>
-        <div>
-          <div class="proj-section-label">Expected Outcomes</div>
-          <ul class="proj-list">
-            <li>Students produce higher-quality written business recommendations on final projects</li>
-            <li>Improved critical thinking scores on business case exam items</li>
-            <li>Students articulate AI as a decision-support tool, not a decision-maker</li>
-          </ul>
-        </div>
-      </div>
-      <div class="proj-footer">
-        <span class="proj-tag">AI Tool: LLM + Financial Modeling</span>
-        <button class="proj-expand-btn" onclick="toggleDetail(this)">SOW Summary ▾</button>
-      </div>
-      <div class="proj-detail">
-        <div class="proj-detail-inner">
-          <div class="sow-mini">
-            <strong>Problem Statement</strong>
-            <p>Business students often treat case analysis as a formulaic exercise rather than genuine decision-making practice. The lack of immediate feedback on reasoning quality limits development of the analytical skills employers prioritize.</p>
+      <!-- SIGNATURE -->
+      <fieldset>
+        <legend>6 · Signature</legend>
+        <div class="legend-hint">Certify and date your submission.</div>
+        <div class="row">
+          <div class="field" data-required>
+            <label for="signature">Electronic Signature (Type Full Name) <span class="req">*</span></label>
+            <input type="text" id="signature">
+            <span class="err-msg">Signature is required.</span>
           </div>
-          <div class="sow-mini">
-            <strong>AI Tools</strong>
-            <p>OpenAI API (scenario analysis and counterargument generation), custom HTML5 case analysis interface, optional spreadsheet export for financial modeling, peer collaboration features using shared session links.</p>
-          </div>
-          <div class="sow-mini">
-            <strong>Ethical Considerations</strong>
-            <p>Students explicitly taught that AI financial projections are probabilistic estimates. Rubric includes a required section where students critique the AI's analysis — building healthy skepticism as a professional competency.</p>
+          <div class="field" data-required>
+            <label for="sigDate">Date <span class="req">*</span></label>
+            <input type="date" id="sigDate">
+            <span class="err-msg">Date is required.</span>
           </div>
         </div>
-      </div>
-    </div>
+      </fieldset>
 
-    <!-- 9 ENGLISH COMPOSITION -->
-    <div class="proj-card" data-cat="communication">
-      <div class="proj-header">
-        <div class="proj-icon" style="background:#f0f4ff;">✍️</div>
-        <div class="proj-meta">
-          <div class="proj-discipline">English / Writing</div>
-          <div class="proj-title">DraftCoach AI — Iterative Writing Feedback & Revision Partner</div>
-        </div>
+      <!-- BUTTONS -->
+      <div class="btn-bar">
+        <button type="button" class="btn btn-save" id="savePdfBtn">💾 Save as PDF</button>
+        <button type="button" class="btn btn-clear" id="clearBtn">Clear Form</button>
       </div>
-      <div class="proj-body">
-        <p class="proj-desc">Students submit essay drafts and receive targeted, rubric-aligned feedback in three revision passes — global (thesis and structure), paragraph (coherence and support), and sentence (style and mechanics) — with each pass unlocking the next only after revision.</p>
-        <div>
-          <div class="proj-section-label">Key Deliverables</div>
-          <ul class="proj-list">
-            <li>Three-pass feedback engine with instructor-customizable rubric mapping</li>
-            <li>Revision tracking view showing change between drafts</li>
-            <li>Source integration checker flagging quotation, paraphrase, and citation issues</li>
-            <li>Faculty portal with aggregate class draft-quality trends over the semester</li>
-          </ul>
-        </div>
-        <div>
-          <div class="proj-section-label">Expected Outcomes</div>
-          <ul class="proj-list">
-            <li>Average final draft quality scores improve compared to prior semesters</li>
-            <li>Students submit more revision cycles per essay than in control sections</li>
-            <li>Reduced plagiarism incidents through source-integration coaching during drafting</li>
-          </ul>
-        </div>
-      </div>
-      <div class="proj-footer">
-        <span class="proj-tag">AI Tool: LLM + Rubric Engine</span>
-        <button class="proj-expand-btn" onclick="toggleDetail(this)">SOW Summary ▾</button>
-      </div>
-      <div class="proj-detail">
-        <div class="proj-detail-inner">
-          <div class="sow-mini">
-            <strong>Problem Statement</strong>
-            <p>Faculty cannot provide detailed feedback on multiple drafts for all students in large sections. Students who receive feedback only on final drafts have no opportunity to apply learning within the same assignment cycle.</p>
-          </div>
-          <div class="sow-mini">
-            <strong>AI Tools</strong>
-            <p>Claude API (feedback generation with instructor-defined rubric as system context), diff-viewer for revision comparison (custom JS), optional integration with existing LMS assignment submission via iframe.</p>
-          </div>
-          <div class="sow-mini">
-            <strong>Ethical Considerations</strong>
-            <p>Tool provides feedback on student writing — it does not write for students. Institutional AI policy acknowledgment required before first use. Faculty retain final grading authority; AI feedback is advisory only.</p>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- 10 HVAC / MANUFACTURING -->
-    <div class="proj-card" data-cat="automotive">
-      <div class="proj-header">
-        <div class="proj-icon" style="background:#e8f5e9;">🌡️</div>
-        <div class="proj-meta">
-          <div class="proj-discipline">HVAC / Manufacturing Technology</div>
-          <div class="proj-title">DiagnostIQ — AI Fault Diagnosis & Predictive Maintenance Trainer</div>
-        </div>
-      </div>
-      <div class="proj-body">
-        <p class="proj-desc">Students input sensor readings, error codes, and symptom descriptions from HVAC or manufacturing equipment scenarios. The AI diagnoses the fault, ranks repair priority, and generates a preventive maintenance schedule aligned to industry standards.</p>
-        <div>
-          <div class="proj-section-label">Key Deliverables</div>
-          <ul class="proj-list">
-            <li>Fault diagnosis interface accepting sensor data and error code input</li>
-            <li>AI-ranked repair priority list with cost-impact justification</li>
-            <li>Predictive maintenance schedule generator aligned to OEM specifications</li>
-            <li>15 scenario packs covering HVAC, PLC, and conveyor system faults</li>
-          </ul>
-        </div>
-        <div>
-          <div class="proj-section-label">Expected Outcomes</div>
-          <ul class="proj-list">
-            <li>Students develop systematic fault-isolation methodology before shop access</li>
-            <li>Improved scores on diagnostic reasoning components of program assessments</li>
-            <li>Faculty document increased student confidence in equipment troubleshooting</li>
-          </ul>
-        </div>
-      </div>
-      <div class="proj-footer">
-        <span class="proj-tag">AI Tool: LLM + Sensor Data Modeling</span>
-        <button class="proj-expand-btn" onclick="toggleDetail(this)">SOW Summary ▾</button>
-      </div>
-      <div class="proj-detail">
-        <div class="proj-detail-inner">
-          <div class="sow-mini">
-            <strong>Problem Statement</strong>
-            <p>Diagnostic reasoning is the highest-value and hardest-to-teach skill in technical programs. Equipment access is limited, and real faults cannot be induced safely in a classroom setting.</p>
-          </div>
-          <div class="sow-mini">
-            <strong>AI Tools</strong>
-            <p>OpenAI API (fault reasoning and maintenance scheduling), custom scenario JSON library built by faculty from real service records (anonymized), single-file HTML5 app with no backend required.</p>
-          </div>
-          <div class="sow-mini">
-            <strong>Ethical Considerations</strong>
-            <p>Students explicitly taught to verify AI diagnostic conclusions against manufacturer service manuals before any real-world action. Tool clearly labeled as training simulation — not a certified diagnostic instrument.</p>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- 11 CRIMINAL JUSTICE -->
-    <div class="proj-card" data-cat="cybersecurity">
-      <div class="proj-header">
-        <div class="proj-icon" style="background:#fff0f0;">⚖️</div>
-        <div class="proj-meta">
-          <div class="proj-discipline">Criminal Justice</div>
-          <div class="proj-title">EthicsEngine — AI Bias & Accountability in Criminal Justice Analyzer</div>
-        </div>
-      </div>
-      <div class="proj-body">
-        <p class="proj-desc">Students examine real and simulated criminal justice AI systems (risk assessment tools, predictive policing, facial recognition) through structured scenario analysis, evaluating accuracy, bias, due process implications, and policy alternatives.</p>
-        <div>
-          <div class="proj-section-label">Key Deliverables</div>
-          <ul class="proj-list">
-            <li>Case study database of 12 documented AI-in-criminal-justice deployments</li>
-            <li>Bias analysis framework tool with structured evaluation categories</li>
-            <li>Policy brief generator scaffolding student arguments with evidence prompts</li>
-            <li>Mock hearing simulation where students present and defend policy positions</li>
-          </ul>
-        </div>
-        <div>
-          <div class="proj-section-label">Expected Outcomes</div>
-          <ul class="proj-list">
-            <li>Students articulate constitutional and ethical implications of AI in criminal justice</li>
-            <li>Improved analytical writing quality on policy-focused course assignments</li>
-            <li>Students demonstrate understanding of algorithmic accountability frameworks</li>
-          </ul>
-        </div>
-      </div>
-      <div class="proj-footer">
-        <span class="proj-tag">AI Tool: LLM + Case Analysis Framework</span>
-        <button class="proj-expand-btn" onclick="toggleDetail(this)">SOW Summary ▾</button>
-      </div>
-      <div class="proj-detail">
-        <div class="proj-detail-inner">
-          <div class="sow-mini">
-            <strong>Problem Statement</strong>
-            <p>AI decision-support tools are rapidly entering criminal justice practice, yet most CJ curricula have not addressed AI ethics, algorithmic bias, or technology accountability — leaving graduates unprepared for these emerging professional challenges.</p>
-          </div>
-          <div class="sow-mini">
-            <strong>AI Tools</strong>
-            <p>GPT-4 (scenario analysis and policy brief scaffolding), curated public dataset integration (ProPublica COMPAS data, ACLU documentation), structured Socratic questioning prompts for guided analysis.</p>
-          </div>
-          <div class="sow-mini">
-            <strong>Ethical Considerations</strong>
-            <p>All case studies use public record data only. Multiple perspectives — law enforcement, defendant, civil liberties, community — are required in every analysis. Tool is explicitly critical of AI deployment, not promotional.</p>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- 12 INFORMATION TECHNOLOGY / AI POLICY -->
-    <div class="proj-card" data-cat="business">
-      <div class="proj-header">
-        <div class="proj-icon" style="background:#f0f4ff;">🏛️</div>
-        <div class="proj-meta">
-          <div class="proj-discipline">Information Technology / Administration</div>
-          <div class="proj-title">PolicyForge AI — Institutional AI Policy Builder for Community Colleges</div>
-        </div>
-      </div>
-      <div class="proj-body">
-        <p class="proj-desc">Faculty and administrators use a guided AI-assisted wizard to draft, review, and refine institutional AI use policies — covering academic integrity, data governance, accessibility, and procurement — customized to their college's size, mission, and accreditation context.</p>
-        <div>
-          <div class="proj-section-label">Key Deliverables</div>
-          <ul class="proj-list">
-            <li>Guided policy wizard with branching questions based on institution type and context</li>
-            <li>AI-drafted policy sections with editable placeholders and rationale notes</li>
-            <li>Comparison view against AACC, EDUCAUSE, and state-system policy examples</li>
-            <li>Policy gap analysis report identifying missing governance components</li>
-          </ul>
-        </div>
-        <div>
-          <div class="proj-section-label">Expected Outcomes</div>
-          <ul class="proj-list">
-            <li>Participating institutions produce a first-draft AI policy within the grant year</li>
-            <li>Faculty report increased confidence in institutional AI governance knowledge</li>
-            <li>Tool adopted by at least five NCyTE network institutions beyond the pilot cohort</li>
-          </ul>
-        </div>
-      </div>
-      <div class="proj-footer">
-        <span class="proj-tag">AI Tool: LLM + Policy Framework</span>
-        <button class="proj-expand-btn" onclick="toggleDetail(this)">SOW Summary ▾</button>
-      </div>
-      <div class="proj-detail">
-        <div class="proj-detail-inner">
-          <div class="sow-mini">
-            <strong>Problem Statement</strong>
-            <p>Most community colleges lack formal AI governance policies, yet faculty, students, and staff are already using AI tools daily. Policy gaps create inconsistent enforcement, equity concerns, and accreditation risk.</p>
-          </div>
-          <div class="sow-mini">
-            <strong>AI Tools</strong>
-            <p>Claude API (policy drafting with institutional context from wizard responses), curated policy corpus (EDUCAUSE, ACE, state system examples), HTML5 wizard interface with section-by-section draft export to Word/PDF.</p>
-          </div>
-          <div class="sow-mini">
-            <strong>Ethical Considerations</strong>
-            <p>Tool generates policy drafts only — final policy requires human governance review and board approval. Wizard explicitly surfaces equity, accessibility, and due-process considerations in every policy section.</p>
-          </div>
-        </div>
-      </div>
-    </div>
-
-  </div><!-- /projects-grid -->
-</div>
-</div>
+      <div id="statusMsg" role="status"></div>
+    </form>
+  </div>
+</main>
 
 <!-- FOOTER -->
 <footer>
@@ -1175,62 +514,108 @@ footer p+p{margin-top:6px;opacity:.7;font-size:.8rem;}
 </footer>
 
 <script>
-/* ── THEME ─────────────────────────────────────────────────────── */
-const btn = document.getElementById('themeBtn');
+/* ── THEME (same key as AI Cohort page) ────────────────────────── */
+const themeBtn = document.getElementById('themeBtn');
 const root = document.documentElement;
 function applyTheme(t){
-  if(t==='dark'){root.setAttribute('data-theme','dark');btn.textContent='☀ Light';}
-  else{root.removeAttribute('data-theme');btn.textContent='☾ Dark';}
+  if(t==='dark'){root.setAttribute('data-theme','dark');themeBtn.textContent='☀ Light';}
+  else{root.removeAttribute('data-theme');themeBtn.textContent='☾ Dark';}
 }
-applyTheme(localStorage.getItem('ai-cohort-theme')||'light');
-btn.addEventListener('click',()=>{
-  const next = root.getAttribute('data-theme')==='dark'?'light':'dark';
-  localStorage.setItem('ai-cohort-theme',next);applyTheme(next);
+let savedTheme='light';
+try{savedTheme=localStorage.getItem('ai-cohort-theme')||'light';}catch(e){}
+applyTheme(savedTheme);
+themeBtn.addEventListener('click',()=>{
+  const next=root.getAttribute('data-theme')==='dark'?'light':'dark';
+  try{localStorage.setItem('ai-cohort-theme',next);}catch(e){}
+  applyTheme(next);
 });
 
-/* ── ACCORDION DETAIL DRAWERS ─────────────────────────────────── */
-function toggleDetail(btn){
-  const card = btn.closest('.proj-card');
-  const detail = card.querySelector('.proj-detail');
-  const isOpen = detail.style.maxHeight && detail.style.maxHeight!=='0px';
-  if(isOpen){
-    detail.style.maxHeight='0';
-    detail.classList.remove('open');
-    btn.textContent='SOW Summary ▾';
-  } else {
-    detail.style.maxHeight = detail.scrollHeight+'px';
-    detail.classList.add('open');
-    btn.textContent='SOW Summary ▴';
-  }
-}
+/* ── Default signature date to today ───────────────────────────── */
+document.getElementById('sigDate').value = new Date().toISOString().slice(0,10);
 
-/* ── FILTER ────────────────────────────────────────────────────── */
-document.getElementById('filterPills').addEventListener('click', e=>{
-  const pill = e.target.closest('.focus-pill');
-  if(!pill) return;
-  document.querySelectorAll('.focus-pill').forEach(p=>p.classList.remove('active'));
-  pill.classList.add('active');
-  const filter = pill.dataset.filter;
-  document.querySelectorAll('.proj-card').forEach(card=>{
-    if(filter==='all'||card.dataset.cat===filter){
-      card.classList.remove('hidden');
-    } else {
-      card.classList.add('hidden');
-      // Close any open detail in hidden cards
-      const det = card.querySelector('.proj-detail');
-      if(det){det.style.maxHeight='0';det.classList.remove('open');}
-      const eb = card.querySelector('.proj-expand-btn');
-      if(eb) eb.textContent='SOW Summary ▾';
+/* ── Validation ────────────────────────────────────────────────── */
+function validateForm(){
+  let firstBad = null;
+  document.querySelectorAll('.field[data-required]').forEach(f=>{
+    const input = f.querySelector('input, select, textarea');
+    const isEmail = f.dataset.type === 'email';
+    let ok = input.value.trim() !== '';
+    if(ok && isEmail){
+      ok = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(input.value.trim());
     }
+    f.classList.toggle('invalid', !ok);
+    if(!ok && !firstBad) firstBad = input;
   });
+  if(firstBad){ firstBad.focus(); firstBad.scrollIntoView({behavior:'smooth', block:'center'}); }
+  return !firstBad;
+}
+
+function showStatus(msg, ok){
+  const s = document.getElementById('statusMsg');
+  s.textContent = msg;
+  s.className = ok ? 'ok' : 'bad';
+}
+
+/* ── Save as PDF ───────────────────────────────────────────────── */
+document.getElementById('savePdfBtn').addEventListener('click', ()=>{
+  if(!validateForm()){
+    showStatus('Please complete all required fields (marked *) before saving.', false);
+    return;
+  }
+
+  const card = document.getElementById('formCard');
+  const wasDark = root.getAttribute('data-theme') === 'dark';
+
+  // Stamp generation date into the PDF header
+  const now = new Date();
+  document.getElementById('pdfDateLine').textContent =
+    'Generated: ' + now.toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'}) +
+    ' at ' + now.toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'});
+
+  // Force light, print-friendly rendering during capture
+  if(wasDark) root.removeAttribute('data-theme');
+  card.classList.add('pdf-mode');
+
+  const nameSlug = (document.getElementById('fullName').value.trim().split(/\s+/).pop() || 'Participant').replace(/[^A-Za-z0-9_-]/g,'');
+  const filename = 'AI_Cohort_SOW_' + nameSlug + '_' + now.toISOString().slice(0,10) + '.pdf';
+
+  const opt = {
+    margin: [0.5, 0.5, 0.6, 0.5],
+    filename: filename,
+    image: { type: 'jpeg', quality: 0.98 },
+    html2canvas: { scale: 2, useCORS: true, scrollY: 0 },
+    jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' },
+    pagebreak: { mode: ['css', 'legacy'] }
+  };
+
+  const cleanup = () => {
+    card.classList.remove('pdf-mode');
+    if(wasDark) root.setAttribute('data-theme','dark');
+  };
+
+  if(typeof html2pdf !== 'undefined'){
+    showStatus('Generating PDF… this may take a few seconds.', true);
+    html2pdf().set(opt).from(card).save()
+      .then(()=>{ cleanup(); showStatus('PDF saved to your Downloads folder: ' + filename, true); })
+      .catch(err=>{
+        cleanup(); console.error(err);
+        showStatus('PDF generation failed — opening the print dialog instead. Choose "Save as PDF" as the destination.', false);
+        window.print();
+      });
+  } else {
+    // Offline / CDN-blocked fallback: browser print-to-PDF
+    showStatus('Opening the print dialog — choose "Save as PDF" as the destination.', true);
+    setTimeout(()=>{ window.print(); cleanup(); }, 300);
+  }
 });
 
-/* ── SMOOTH SCROLL ─────────────────────────────────────────────── */
-document.querySelectorAll('a[href^="#"]').forEach(a=>{
-  a.addEventListener('click',e=>{
-    const t=document.querySelector(a.getAttribute('href'));
-    if(t){e.preventDefault();t.scrollIntoView({behavior:'smooth',block:'start'});}
-  });
+/* ── Clear form ────────────────────────────────────────────────── */
+document.getElementById('clearBtn').addEventListener('click', ()=>{
+  if(!confirm('Clear all entered information? This cannot be undone.')) return;
+  document.getElementById('sowForm').reset();
+  document.querySelectorAll('.field.invalid').forEach(f=>f.classList.remove('invalid'));
+  document.getElementById('sigDate').value = new Date().toISOString().slice(0,10);
+  showStatus('Form cleared.', true);
 });
 </script>
 </body>
