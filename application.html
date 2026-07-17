@@ -463,107 +463,14 @@ footer .small{opacity:.75;margin-top:6px;font-size:.8rem;}
         </div>
       </fieldset>
 
-      <!-- EVENT INFORMATION -->
-      <fieldset>
-        <legend>2 · Event Information</legend>
-        <div class="row single">
-          <div class="field" data-required>
-            <label for="eventName">Name of Conference / Workshop <span class="req">*</span></label>
-            <input type="text" id="eventName" name="eventName">
-            <span class="err-msg">Event name is required.</span>
-          </div>
-        </div>
-        <div class="row thirds">
-          <div class="field" data-required>
-            <label for="eventStart">Start Date <span class="req">*</span></label>
-            <input type="date" id="eventStart" name="eventStart">
-            <span class="err-msg">Start date is required.</span>
-          </div>
-          <div class="field" data-required>
-            <label for="eventEnd">End Date <span class="req">*</span></label>
-            <input type="date" id="eventEnd" name="eventEnd">
-            <span class="err-msg">End date is required.</span>
-          </div>
-          <div class="field" data-required>
-            <label for="eventLocation">Location (City, State) <span class="req">*</span></label>
-            <input type="text" id="eventLocation" name="eventLocation">
-            <span class="err-msg">Location is required.</span>
-          </div>
-        </div>
-        <div class="row">
-          <div class="field">
-            <label for="eventUrl">Event Website / URL</label>
-            <input type="text" id="eventUrl" name="eventUrl" placeholder="https://">
-          </div>
-          <div class="field">
-            <label for="role">Your Role at the Event</label>
-            <select id="role" name="role">
-              <option value="">— Select —</option>
-              <option>Attendee</option>
-              <option>Presenter / Speaker</option>
-              <option>Workshop Facilitator</option>
-              <option>Panelist</option>
-              <option>Volunteer</option>
-              <option>Other</option>
-            </select>
-          </div>
-        </div>
-      </fieldset>
-
-      <!-- FUNDING REQUEST -->
-      <fieldset>
-        <legend>3 · Funding Request</legend>
-        <table class="expense-table" aria-label="Estimated expenses">
-          <thead>
-            <tr>
-              <th style="width:55%;">Expense Category</th>
-              <th>Estimated Amount (USD)</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr><td>Registration Fees</td><td><input type="number" min="0" step="0.01" class="expense" id="expRegistration" placeholder="0.00"></td></tr>
-            <tr><td>Airfare / Transportation</td><td><input type="number" min="0" step="0.01" class="expense" id="expTravel" placeholder="0.00"></td></tr>
-            <tr><td>Lodging</td><td><input type="number" min="0" step="0.01" class="expense" id="expLodging" placeholder="0.00"></td></tr>
-            <tr><td>Meals / Per Diem</td><td><input type="number" min="0" step="0.01" class="expense" id="expMeals" placeholder="0.00"></td></tr>
-            <tr><td>Ground Transportation / Parking</td><td><input type="number" min="0" step="0.01" class="expense" id="expGround" placeholder="0.00"></td></tr>
-            <tr><td>Other (describe in justification)</td><td><input type="number" min="0" step="0.01" class="expense" id="expOther" placeholder="0.00"></td></tr>
-          </tbody>
-          <tfoot>
-            <tr>
-              <td>Total Amount Requested</td>
-              <td style="text-align:right;"><span id="totalRequested">$0.00</span></td>
-            </tr>
-          </tfoot>
-        </table>
-        <div class="row">
-          <div class="field">
-            <label for="otherFunding">Other Funding Sources</label>
-            <select id="otherFunding" name="otherFunding">
-              <option value="">— Select —</option>
-              <option>No other funding available</option>
-              <option>Partial institutional support</option>
-              <option>Full institutional support</option>
-              <option>Other grant support</option>
-            </select>
-          </div>
-          <div class="field">
-            <label for="priorStipend">Have You Received an NCyTE Stipend Before?</label>
-            <select id="priorStipend" name="priorStipend">
-              <option value="">— Select —</option>
-              <option>No</option>
-              <option>Yes — within the past year</option>
-              <option>Yes — more than a year ago</option>
-            </select>
-          </div>
-        </div>
-      </fieldset>
-
+   
+   
       <!-- JUSTIFICATION -->
       <fieldset>
         <legend>4 · Justification</legend>
         <div class="row single">
           <div class="field" data-required>
-            <label for="justification">How will attending this event benefit your professional development and your institution's cybersecurity program? <span class="req">*</span></label>
+            <label for="justification">How will your participation impact your students, courses or institution's? <span class="req">*</span></label>
             <textarea id="justification" name="justification" rows="5"></textarea>
             <span class="err-msg">Please provide a justification statement.</span>
           </div>
@@ -572,35 +479,6 @@ footer .small{opacity:.75;margin-top:6px;font-size:.8rem;}
           <div class="field">
             <label for="dissemination">How will you share what you learn with colleagues or students?</label>
             <textarea id="dissemination" name="dissemination" rows="4"></textarea>
-          </div>
-        </div>
-      </fieldset>
-
-      <!-- CERTIFICATION -->
-      <fieldset>
-        <legend>5 · Certification</legend>
-        <div class="cert-box">
-          <div class="choice-group">
-            <label class="choice">
-              <input type="checkbox" id="certAccurate">
-              <span>I certify that the information provided in this application is accurate and complete to the best of my knowledge.</span>
-            </label>
-            <label class="choice">
-              <input type="checkbox" id="certUnderstand">
-              <span>I understand that receipt of this application does not guarantee funding, and that awards are made on an ad hoc basis as funds allow.</span>
-            </label>
-          </div>
-          <div class="row" style="margin-top:18px;margin-bottom:0;">
-            <div class="field" data-required>
-              <label for="signature">Electronic Signature (Type Full Name) <span class="req">*</span></label>
-              <input type="text" id="signature" name="signature">
-              <span class="err-msg">Signature is required.</span>
-            </div>
-            <div class="field" data-required>
-              <label for="sigDate">Date <span class="req">*</span></label>
-              <input type="date" id="sigDate" name="sigDate">
-              <span class="err-msg">Date is required.</span>
-            </div>
           </div>
         </div>
       </fieldset>
@@ -638,45 +516,9 @@ themeToggle.addEventListener('click', () => {
   applyTheme(next);
 });
 
-/* ---------- Live expense total ---------- */
-const expenseInputs = document.querySelectorAll('.expense');
-const totalEl = document.getElementById('totalRequested');
-function updateTotal(){
-  let total = 0;
-  expenseInputs.forEach(i => { const v = parseFloat(i.value); if(!isNaN(v)) total += v; });
-  totalEl.textContent = '$' + total.toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2});
-}
-expenseInputs.forEach(i => i.addEventListener('input', updateTotal));
 
 /* ---------- Default signature date to today ---------- */
 document.getElementById('sigDate').value = new Date().toISOString().slice(0,10);
-
-/* ---------- Validation ---------- */
-function validateForm(){
-  let firstBad = null;
-  document.querySelectorAll('.field[data-required]').forEach(f => {
-    const input = f.querySelector('input, select, textarea');
-    const isEmail = f.dataset.type === 'email';
-    let ok = input.value.trim() !== '';
-    if(ok && isEmail){
-      ok = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(input.value.trim());
-    }
-    f.classList.toggle('invalid', !ok);
-    if(!ok && !firstBad) firstBad = input;
-  });
-  // certification checkboxes
-  const c1 = document.getElementById('certAccurate');
-  const c2 = document.getElementById('certUnderstand');
-  const certsOk = c1.checked && c2.checked;
-  if(firstBad){ firstBad.focus(); firstBad.scrollIntoView({behavior:'smooth', block:'center'}); }
-  return { fieldsOk: !firstBad, certsOk };
-}
-
-function showStatus(msg, ok){
-  const s = document.getElementById('statusMsg');
-  s.textContent = msg;
-  s.className = ok ? 'ok' : 'bad';
-}
 
 /* ---------- Save as PDF ---------- */
 document.getElementById('savePdfBtn').addEventListener('click', () => {
