@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stipend Application | NCyTE Center</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+<style>
+:root{
+  --navy:#0047AB;
+  --navy-dark:#003380;
+  --green:#00a86b;
+  --green-dark:#00875a;
+  --cream:#f7f8fa;
+  --ink:#1a2433;
+  --ink-soft:#4a5568;
+  --card-bg:#ffffff;
+  --border:#e2e6ec;
+  --error:#c0392b;
+  --shadow:0 4px 14px rgba(0,30,80,0.08);
+  --radius:10px;
+  --serif:Georgia,'Times New Roman',serif;
+  --narrow:'Arial Narrow',Arial,sans-serif;
+}
+[data-theme="dark"]{
+  --cream:#10151f;
+  --ink:#eef1f6;
+  --ink-soft:#aab4c4;
+  --card-bg:#1a2230;
+  --border:#2a3548;
+  --shadow:0 4px 18px rgba(0,0,0,0.45);
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{
+  font-family:var(--serif);
+  background:var(--cream);
+  color:var(--ink);
+  line-height:1.65;
+  transition:background .3s ease,color .3s ease;
+}
+a{color:inherit;text-decoration:none;}
+
+/* NAV */
+nav{
+  position:sticky;top:0;z-index:100;
+  background:var(--navy);
+  color:#fff;
+  font-family:var(--narrow);
+  box-shadow:0 2px 10px rgba(0,0,0,0.15);
+}
+.nav-inner{
+  max-width:1100px;margin:0 auto;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:14px 24px;flex-wrap:wrap;gap:10px;
+}
+.brand{font-family:var(--serif);font-weight:bold;font-size:1.15rem;letter-spacing:.5px;}
+.nav-links{display:flex;gap:16px;flex-wrap:wrap;align-items:center;}
+.nav-links a{
+  font-size:.92rem;letter-spacing:.5px;text-transform:uppercase;
+  padding:6px 4px;border-bottom:2px solid transparent;
+  transition:border-color .2s;
+}
+.nav-links a:hover{border-bottom:2px solid var(--green);}
+#themeToggle{
+  background:rgba(255,255,255,0.12);
+  border:1px solid rgba(255,255,255,0.3);
+  color:#fff;border-radius:20px;
+  padding:6px 14px;cursor:pointer;font-family:var(--narrow);font-size:.85rem;
+}
+#themeToggle:hover{background:rgba(255,255,255,0.22);}
+
+/* HERO */
+header.hero{
+  background:linear-gradient(135deg,var(--navy) 0%, var(--navy-dark) 100%);
+  color:#fff;text-align:center;
+  padding:56px 20px 48px;
+}
+.eyebrow{
+  font-family:var(--narrow);text-transform:uppercase;letter-spacing:3px;
+  color:var(--green);font-size:.85rem;margin-bottom:16px;
+}
+header.hero h1{font-size:2.3rem;max-width:800px;margin:0 auto 14px;font-weight:700;}
+header.hero p.lede{max-width:700px;margin:0 auto;color:#cfd9ee;font-size:1.05rem;}
+
+/* MAIN */
+main{max-width:900px;margin:0 auto;padding:48px 24px 72px;}
+.section-kicker{
+  font-family:var(--narrow);text-transform:uppercase;letter-spacing:2px;
+  color:var(--green-dark);font-size:.85rem;margin-bottom:8px;
+}
+.notice{
+  background:var(--card-bg);
+  border:1px solid var(--border);
+  border-left:5px solid var(--green);
+  border-radius:var(--radius);
+  padding:20px 24px;
+  box-shadow:var(--shadow);
+  margin-bottom:32px;
+  font-size:.98rem;
+  color:var(--ink-soft);
+}
+.notice strong{color:var(--ink);}
+.notice .fine{font-size:.88rem;font-style:italic;margin-top:8px;display:block;}
+
+/* FORM CARD */
+.form-card{
+  background:var(--card-bg);
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  box-shadow:var(--shadow);
+  padding:36px 40px 40px;
+}
+fieldset{
+  border:none;
+  margin-bottom:34px;
+  padding:0;
+}
+legend{
+  font-family:var(--narrow);
+  font-size:1.05rem;
+  font-weight:bold;
+  text-transform:uppercase;
+  letter-spacing:1.5px;
+  color:var(--navy);
+  border-bottom:2px solid var(--green);
+  padding-bottom:8px;
+  margin-bottom:20px;
+  width:100%;
+}
+[data-theme="dark"] legend{color:#7fb0ff;}
+.row{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:18px;
+  margin-bottom:18px;
+}
+.row.single{grid-template-columns:1fr;}
+.row.thirds{grid-template-columns:1fr 1fr 1fr;}
+.field label{
+  display:block;
+  font-family:var(--narrow);
+  font-size:.85rem;
+  font-weight:bold;
+  text-transform:uppercase;
+  letter-spacing:.8px;
+  color:var(--ink-soft);
+  margin-bottom:6px;
+}
+.field label .req{color:var(--error);}
+.field input[type=text],
+.field input[type=email],
+.field input[type=tel],
+.field input[type=date],
+.field input[type=number],
+.field select,
+.field textarea{
+  width:100%;
+  padding:11px 14px;
+  border:1.5px solid var(--border);
+  border-radius:6px;
+  font-family:var(--serif);
+  font-size:1rem;
+  background:var(--cream);
+  color:var(--ink);
+  transition:border-color .2s, box-shadow .2s;
+}
+.field input:focus,
+.field select:focus,
+.field textarea:focus{
+  outline:none;
+  border-color:var(--green);
+  box-shadow:0 0 0 3px rgba(0,168,107,0.15);
+}
+.field textarea{resize:vertical;min-height:110px;}
+.field .hint{
+  font-size:.82rem;
+  color:var(--ink-soft);
+  font-style:italic;
+  margin-top:4px;
+}
+.field.invalid input,
+.field.invalid select,
+.field.invalid textarea{border-color:var(--error);}
+.field .err-msg{
+  display:none;
+  color:var(--error);
+  font-family:var(--narrow);
+  font-size:.8rem;
+  margin-top:4px;
+}
+.field.invalid .err-msg{display:block;}
+
+/* EXPENSES TABLE */
+.expense-table{
+  width:100%;
+  border-collapse:collapse;
+  margin-bottom:8px;
+}
+.expense-table th{
+  background:var(--navy);
+  color:#fff;
+  font-family:var(--narrow);
+  text-transform:uppercase;
+  letter-spacing:1px;
+  font-size:.8rem;
+  text-align:left;
+  padding:10px 14px;
+}
+.expense-table td{
+  padding:10px 14px;
+  border-bottom:1px solid var(--border);
+  font-size:.95rem;
+}
+.expense-table td:first-child{color:var(--ink);font-weight:bold;font-size:.92rem;}
+.expense-table input{
+  width:100%;
+  padding:8px 12px;
+  border:1.5px solid var(--border);
+  border-radius:6px;
+  font-family:var(--serif);
+  font-size:.98rem;
+  background:var(--cream);
+  color:var(--ink);
+  text-align:right;
+}
+.expense-table input:focus{
+  outline:none;border-color:var(--green);
+  box-shadow:0 0 0 3px rgba(0,168,107,0.15);
+}
+.expense-table tfoot td{
+  background:rgba(0,168,107,0.08);
+  font-family:var(--narrow);
+  font-weight:bold;
+  text-transform:uppercase;
+  letter-spacing:1px;
+  color:var(--green-dark);
+  border-bottom:none;
+}
+#totalRequested{font-size:1.1rem;}
+
+/* CHECK / RADIO GROUPS */
+.choice-group{display:flex;flex-direction:column;gap:8px;}
+.choice{
+  display:flex;align-items:flex-start;gap:10px;
+  font-size:.96rem;color:var(--ink-soft);
+}
+.choice input{margin-top:5px;accent-color:var(--green);width:16px;height:16px;flex-shrink:0;}
+
+/* CERT BOX */
+.cert-box{
+  background:rgba(0,168,107,0.06);
+  border:1px solid rgba(0,168,107,0.3);
+  border-radius:var(--radius);
+  padding:18px 22px;
+}
+
+/* BUTTON BAR */
+.btn-bar{
+  display:flex;gap:14px;flex-wrap:wrap;
+  margin-top:10px;
+  padding-top:28px;
+  border-top:1px solid var(--border);
+}
+.btn{
+  display:inline-flex;align-items:center;gap:8px;
+  border-radius:8px;
+  padding:14px 28px;
+  font-family:var(--narrow);font-size:1rem;font-weight:bold;letter-spacing:.5px;
+  text-transform:uppercase;
+  cursor:pointer;
+  transition:background .2s, transform .15s, box-shadow .2s;
+}
+.btn-save{
+  background:var(--green);
+  color:#fff;
+  border:2px solid var(--green);
+  box-shadow:0 4px 18px rgba(0,168,107,0.35);
+}
+.btn-save:hover{
+  background:var(--green-dark);
+  border-color:var(--green-dark);
+  transform:translateY(-2px);
+  box-shadow:0 8px 26px rgba(0,168,107,0.45);
+}
+.btn-clear{
+  background:transparent;
+  color:var(--ink-soft);
+  border:2px solid var(--border);
+}
+.btn-clear:hover{border-color:var(--error);color:var(--error);}
+
+/* STATUS TOAST */
+#statusMsg{
+  display:none;
+  margin-top:18px;
+  padding:14px 20px;
+  border-radius:8px;
+  font-family:var(--narrow);
+  font-size:.95rem;
+  font-weight:bold;
+  letter-spacing:.5px;
+}
+#statusMsg.ok{display:block;background:rgba(0,168,107,0.12);color:var(--green-dark);border:1px solid rgba(0,168,107,0.35);}
+#statusMsg.bad{display:block;background:rgba(192,57,43,0.1);color:var(--error);border:1px solid rgba(192,57,43,0.35);}
+
+/* FOOTER */
+footer{
+  background:var(--navy-dark);color:#cfd9ee;text-align:center;
+  padding:38px 20px;font-family:var(--narrow);font-size:.88rem;
+}
+footer .small{opacity:.75;margin-top:6px;font-size:.8rem;}
+
+/* ====== PDF EXPORT STYLES ====== */
+/* When exporting, the .pdf-mode class forces light colors and print-friendly layout */
+.pdf-mode{
+  background:#ffffff !important;
+  color:#1a2433 !important;
+  box-shadow:none !important;
+  border:none !important;
+}
+.pdf-mode .field input,
+.pdf-mode .field select,
+.pdf-mode .field textarea,
+.pdf-mode .expense-table input{
+  background:#ffffff !important;
+  color:#1a2433 !important;
+  border-color:#8a94a6 !important;
+}
+.pdf-header{
+  display:none;
+  text-align:center;
+  padding-bottom:18px;
+  margin-bottom:26px;
+  border-bottom:3px double #0047AB;
+}
+.pdf-mode .pdf-header{display:block;}
+.pdf-header h2{color:#0047AB;font-size:1.5rem;margin-bottom:4px;font-family:Georgia,serif;}
+.pdf-header .sub{font-family:'Arial Narrow',Arial,sans-serif;text-transform:uppercase;letter-spacing:2px;font-size:.8rem;color:#00875a;}
+.pdf-header .meta{font-size:.82rem;color:#4a5568;margin-top:6px;font-style:italic;}
+.pdf-mode .btn-bar, .pdf-mode #statusMsg{display:none !important;}
+
+@media print{
+  nav, header.hero, footer, .btn-bar, #statusMsg, .notice{display:none !important;}
+  body{background:#fff;}
+  .form-card{box-shadow:none;border:none;padding:0;}
+  .pdf-header{display:block;}
+}
+@media(max-width:640px){
+  .row, .row.thirds{grid-template-columns:1fr;}
+  .form-card{padding:26px 20px 30px;}
+  header.hero h1{font-size:1.7rem;}
+  .btn{width:100%;justify-content:center;}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <div class="brand">AI in Action</div>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="cohort.html">Cohort</a>
+      <a href="#application">Application</a>
+      <button id="themeToggle">☾ Dark</button>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="eyebrow">◆ NCyTE Center · Professional Development Funding ◆</div>
+  <h1>Stipend Application</h1>
+  <p class="lede">The National Cybersecurity Training &amp; Education (NCyTE) Center supports cybersecurity education and professional development by providing funding on an ad hoc basis for conferences and workshops.</p>
+</header>
+
+<main id="application">
+  <div class="section-kicker">Before You Apply</div>
+  <div class="notice">
+    <p><strong>For CyAD travel support and stipend applications,</strong> please visit the <a href="https://www.ncyte.net/resources/events/cyad-summit-cybersecurity-across-disciplines/cyad-travel-stipend-information" target="_blank" style="color:var(--green-dark);font-weight:bold;">CyAD Travel Stipend Information Page</a>. This form is for general NCyTE travel stipend applications.</p>
+    <p style="margin-top:10px;">If you are looking for assistance to participate in an NCyTE advertised conference or workshop, you may fill out the following stipend application. Complete all required fields, then use <strong>Save as PDF</strong> to download a copy of your completed application for your records and submission.</p>
+    <span class="fine">* Receipt of the application does not mean funding is guaranteed.</span>
+  </div>
+
+  <div class="form-card" id="formCard">
+
+    <!-- Header shown only in the exported PDF / print view -->
+    <div class="pdf-header">
+      <h2>NCyTE Center — Stipend Application</h2>
+      <div class="sub">National Cybersecurity Training &amp; Education Center · NSF Grant 2054724</div>
+      <div class="meta" id="pdfDateLine">Generated: —</div>
+    </div>
+
+    <form id="stipendForm" novalidate>
+
+      <!-- APPLICANT INFORMATION -->
+      <fieldset>
+        <legend>1 · Applicant Information</legend>
+        <div class="row">
+          <div class="field" data-required>
+            <label for="firstName">First Name <span class="req">*</span></label>
+            <input type="text" id="firstName" name="firstName" autocomplete="given-name">
+            <span class="err-msg">First name is required.</span>
+          </div>
+          <div class="field" data-required>
+            <label for="lastName">Last Name <span class="req">*</span></label>
+            <input type="text" id="lastName" name="lastName" autocomplete="family-name">
+            <span class="err-msg">Last name is required.</span>
+          </div>
+        </div>
+        <div class="row">
+          <div class="field" data-required data-type="email">
+            <label for="email">Email Address <span class="req">*</span></label>
+            <input type="email" id="email" name="email" autocomplete="email">
+            <span class="hint">A copy of your submission will be associated with this address.</span>
+            <span class="err-msg">A valid email address is required.</span>
+          </div>
+          <div class="field" data-required>
+            <label for="phone">Phone Number <span class="req">*</span></label>
+            <input type="tel" id="phone" name="phone" autocomplete="tel">
+            <span class="err-msg">Phone number is required.</span>
+          </div>
+        </div>
+        <div class="row">
+          <div class="field" data-required>
+            <label for="institution">Institution / Organization <span class="req">*</span></label>
+            <input type="text" id="institution" name="institution" autocomplete="organization">
+            <span class="err-msg">Institution is required.</span>
+          </div>
+          <div class="field" data-required>
+            <label for="title">Title / Position <span class="req">*</span></label>
+            <input type="text" id="title" name="title" autocomplete="organization-title">
+            <span class="err-msg">Title is required.</span>
+          </div>
+        </div>
+        <div class="row single">
+          <div class="field">
+            <label for="address">Mailing Address</label>
+            <input type="text" id="address" name="address" autocomplete="street-address" placeholder="Street, City, State, ZIP">
+          </div>
+        </div>
+        <div class="row">
+          <div class="field">
+            <label for="memberStatus">NCyTE Membership Status</label>
+            <select id="memberStatus" name="memberStatus">
+              <option value="">— Select —</option>
+              <option>Current NCyTE Member</option>
+              <option>Institution is an NCyTE Member</option>
+              <option>Not a Member</option>
+              <option>Unsure</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="caeStatus">Institution CAE Designation</label>
+            <select id="caeStatus" name="caeStatus">
+              <option value="">— Select —</option>
+              <option>CAE-CD (Cyber Defense)</option>
+              <option>CAE-2Y</option>
+              <option>CAE Candidate</option>
+              <option>Not Designated</option>
+              <option>Unsure</option>
+            </select>
+          </div>
+        </div>
+      </fieldset>
+
+      <!-- EVENT INFORMATION -->
+      <fieldset>
+        <legend>2 · Event Information</legend>
+        <div class="row single">
+          <div class="field" data-required>
+            <label for="eventName">Name of Conference / Workshop <span class="req">*</span></label>
+            <input type="text" id="eventName" name="eventName">
+            <span class="err-msg">Event name is required.</span>
+          </div>
+        </div>
+        <div class="row thirds">
+          <div class="field" data-required>
+            <label for="eventStart">Start Date <span class="req">*</span></label>
+            <input type="date" id="eventStart" name="eventStart">
+            <span class="err-msg">Start date is required.</span>
+          </div>
+          <div class="field" data-required>
+            <label for="eventEnd">End Date <span class="req">*</span></label>
+            <input type="date" id="eventEnd" name="eventEnd">
+            <span class="err-msg">End date is required.</span>
+          </div>
+          <div class="field" data-required>
+            <label for="eventLocation">Location (City, State) <span class="req">*</span></label>
+            <input type="text" id="eventLocation" name="eventLocation">
+            <span class="err-msg">Location is required.</span>
+          </div>
+        </div>
+        <div class="row">
+          <div class="field">
+            <label for="eventUrl">Event Website / URL</label>
+            <input type="text" id="eventUrl" name="eventUrl" placeholder="https://">
+          </div>
+          <div class="field">
+            <label for="role">Your Role at the Event</label>
+            <select id="role" name="role">
+              <option value="">— Select —</option>
+              <option>Attendee</option>
+              <option>Presenter / Speaker</option>
+              <option>Workshop Facilitator</option>
+              <option>Panelist</option>
+              <option>Volunteer</option>
+              <option>Other</option>
+            </select>
+          </div>
+        </div>
+      </fieldset>
+
+      <!-- FUNDING REQUEST -->
+      <fieldset>
+        <legend>3 · Funding Request</legend>
+        <table class="expense-table" aria-label="Estimated expenses">
+          <thead>
+            <tr>
+              <th style="width:55%;">Expense Category</th>
+              <th>Estimated Amount (USD)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>Registration Fees</td><td><input type="number" min="0" step="0.01" class="expense" id="expRegistration" placeholder="0.00"></td></tr>
+            <tr><td>Airfare / Transportation</td><td><input type="number" min="0" step="0.01" class="expense" id="expTravel" placeholder="0.00"></td></tr>
+            <tr><td>Lodging</td><td><input type="number" min="0" step="0.01" class="expense" id="expLodging" placeholder="0.00"></td></tr>
+            <tr><td>Meals / Per Diem</td><td><input type="number" min="0" step="0.01" class="expense" id="expMeals" placeholder="0.00"></td></tr>
+            <tr><td>Ground Transportation / Parking</td><td><input type="number" min="0" step="0.01" class="expense" id="expGround" placeholder="0.00"></td></tr>
+            <tr><td>Other (describe in justification)</td><td><input type="number" min="0" step="0.01" class="expense" id="expOther" placeholder="0.00"></td></tr>
+          </tbody>
+          <tfoot>
+            <tr>
+              <td>Total Amount Requested</td>
+              <td style="text-align:right;"><span id="totalRequested">$0.00</span></td>
+            </tr>
+          </tfoot>
+        </table>
+        <div class="row">
+          <div class="field">
+            <label for="otherFunding">Other Funding Sources</label>
+            <select id="otherFunding" name="otherFunding">
+              <option value="">— Select —</option>
+              <option>No other funding available</option>
+              <option>Partial institutional support</option>
+              <option>Full institutional support</option>
+              <option>Other grant support</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="priorStipend">Have You Received an NCyTE Stipend Before?</label>
+            <select id="priorStipend" name="priorStipend">
+              <option value="">— Select —</option>
+              <option>No</option>
+              <option>Yes — within the past year</option>
+              <option>Yes — more than a year ago</option>
+            </select>
+          </div>
+        </div>
+      </fieldset>
+
+      <!-- JUSTIFICATION -->
+      <fieldset>
+        <legend>4 · Justification</legend>
+        <div class="row single">
+          <div class="field" data-required>
+            <label for="justification">How will attending this event benefit your professional development and your institution's cybersecurity program? <span class="req">*</span></label>
+            <textarea id="justification" name="justification" rows="5"></textarea>
+            <span class="err-msg">Please provide a justification statement.</span>
+          </div>
+        </div>
+        <div class="row single">
+          <div class="field">
+            <label for="dissemination">How will you share what you learn with colleagues or students?</label>
+            <textarea id="dissemination" name="dissemination" rows="4"></textarea>
+          </div>
+        </div>
+      </fieldset>
+
+      <!-- CERTIFICATION -->
+      <fieldset>
+        <legend>5 · Certification</legend>
+        <div class="cert-box">
+          <div class="choice-group">
+            <label class="choice">
+              <input type="checkbox" id="certAccurate">
+              <span>I certify that the information provided in this application is accurate and complete to the best of my knowledge.</span>
+            </label>
+            <label class="choice">
+              <input type="checkbox" id="certUnderstand">
+              <span>I understand that receipt of this application does not guarantee funding, and that awards are made on an ad hoc basis as funds allow.</span>
+            </label>
+          </div>
+          <div class="row" style="margin-top:18px;margin-bottom:0;">
+            <div class="field" data-required>
+              <label for="signature">Electronic Signature (Type Full Name) <span class="req">*</span></label>
+              <input type="text" id="signature" name="signature">
+              <span class="err-msg">Signature is required.</span>
+            </div>
+            <div class="field" data-required>
+              <label for="sigDate">Date <span class="req">*</span></label>
+              <input type="date" id="sigDate" name="sigDate">
+              <span class="err-msg">Date is required.</span>
+            </div>
+          </div>
+        </div>
+      </fieldset>
+
+      <!-- BUTTONS -->
+      <div class="btn-bar">
+        <button type="button" class="btn btn-save" id="savePdfBtn">💾 Save as PDF</button>
+        <button type="button" class="btn btn-clear" id="clearBtn">Clear Form</button>
+      </div>
+      <div id="statusMsg" role="status"></div>
+    </form>
+  </div>
+</main>
+
+<footer>
+  <div>NCyTE Center — National Cybersecurity Training &amp; Education Center</div>
+  <div class="small">Hosted at Whatcom Community College · 237 West Kellogg Rd., Bellingham, WA 98226 · (360) 383-3175</div>
+  <div class="small">The NCyTE Center is funded by the National Science Foundation grant 2054724.</div>
+</footer>
+
+<script>
+/* ---------- Theme toggle (matches site convention) ---------- */
+const themeToggle = document.getElementById('themeToggle');
+const root = document.documentElement;
+function applyTheme(t){
+  if(t === 'dark'){ root.setAttribute('data-theme','dark'); themeToggle.textContent = '☀ Light'; }
+  else { root.removeAttribute('data-theme'); themeToggle.textContent = '☾ Dark'; }
+}
+let savedTheme = 'light';
+try { savedTheme = localStorage.getItem('ai-in-action-theme') || 'light'; } catch(e){}
+applyTheme(savedTheme);
+themeToggle.addEventListener('click', () => {
+  const next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+  try { localStorage.setItem('ai-in-action-theme', next); } catch(e){}
+  applyTheme(next);
+});
+
+/* ---------- Live expense total ---------- */
+const expenseInputs = document.querySelectorAll('.expense');
+const totalEl = document.getElementById('totalRequested');
+function updateTotal(){
+  let total = 0;
+  expenseInputs.forEach(i => { const v = parseFloat(i.value); if(!isNaN(v)) total += v; });
+  totalEl.textContent = '$' + total.toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2});
+}
+expenseInputs.forEach(i => i.addEventListener('input', updateTotal));
+
+/* ---------- Default signature date to today ---------- */
+document.getElementById('sigDate').value = new Date().toISOString().slice(0,10);
+
+/* ---------- Validation ---------- */
+function validateForm(){
+  let firstBad = null;
+  document.querySelectorAll('.field[data-required]').forEach(f => {
+    const input = f.querySelector('input, select, textarea');
+    const isEmail = f.dataset.type === 'email';
+    let ok = input.value.trim() !== '';
+    if(ok && isEmail){
+      ok = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(input.value.trim());
+    }
+    f.classList.toggle('invalid', !ok);
+    if(!ok && !firstBad) firstBad = input;
+  });
+  // certification checkboxes
+  const c1 = document.getElementById('certAccurate');
+  const c2 = document.getElementById('certUnderstand');
+  const certsOk = c1.checked && c2.checked;
+  if(firstBad){ firstBad.focus(); firstBad.scrollIntoView({behavior:'smooth', block:'center'}); }
+  return { fieldsOk: !firstBad, certsOk };
+}
+
+function showStatus(msg, ok){
+  const s = document.getElementById('statusMsg');
+  s.textContent = msg;
+  s.className = ok ? 'ok' : 'bad';
+}
+
+/* ---------- Save as PDF ---------- */
+document.getElementById('savePdfBtn').addEventListener('click', () => {
+  const { fieldsOk, certsOk } = validateForm();
+  if(!fieldsOk){
+    showStatus('Please complete all required fields (marked *) before saving.', false);
+    return;
+  }
+  if(!certsOk){
+    showStatus('Please check both certification statements before saving.', false);
+    document.querySelector('.cert-box').scrollIntoView({behavior:'smooth', block:'center'});
+    return;
+  }
+
+  const card = document.getElementById('formCard');
+  const wasDark = root.getAttribute('data-theme') === 'dark';
+
+  // Stamp the generation date into the PDF header
+  const now = new Date();
+  document.getElementById('pdfDateLine').textContent =
+    'Generated: ' + now.toLocaleDateString('en-US', {year:'numeric', month:'long', day:'numeric'}) +
+    ' at ' + now.toLocaleTimeString('en-US', {hour:'numeric', minute:'2-digit'});
+
+  // Force light, print-friendly rendering during capture
+  if(wasDark) root.removeAttribute('data-theme');
+  card.classList.add('pdf-mode');
+
+  const lastName = document.getElementById('lastName').value.trim().replace(/\s+/g,'_') || 'Applicant';
+  const filename = 'NCyTE_Stipend_Application_' + lastName + '_' + now.toISOString().slice(0,10) + '.pdf';
+
+  const opt = {
+    margin: [0.5, 0.5, 0.6, 0.5],
+    filename: filename,
+    image: { type: 'jpeg', quality: 0.98 },
+    html2canvas: { scale: 2, useCORS: true, scrollY: 0 },
+    jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' },
+    pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
+  };
+
+  const cleanup = () => {
+    card.classList.remove('pdf-mode');
+    if(wasDark) root.setAttribute('data-theme','dark');
+  };
+
+  if(typeof html2pdf !== 'undefined'){
+    showStatus('Generating PDF… this may take a few seconds.', true);
+    html2pdf().set(opt).from(card).save()
+      .then(() => { cleanup(); showStatus('PDF saved: ' + filename, true); })
+      .catch(err => { cleanup(); console.error(err); showStatus('PDF generation failed — opening the print dialog instead. Choose "Save as PDF" as the destination.', false); window.print(); });
+  } else {
+    // Offline / CDN-blocked fallback: browser print-to-PDF
+    showStatus('Opening the print dialog — choose "Save as PDF" as the destination.', true);
+    setTimeout(() => { window.print(); cleanup(); }, 300);
+  }
+});
+
+/* ---------- Clear form ---------- */
+document.getElementById('clearBtn').addEventListener('click', () => {
+  if(!confirm('Clear all entered information? This cannot be undone.')) return;
+  document.getElementById('stipendForm').reset();
+  document.querySelectorAll('.field.invalid').forEach(f => f.classList.remove('invalid'));
+  document.getElementById('sigDate').value = new Date().toISOString().slice(0,10);
+  updateTotal();
+  showStatus('Form cleared.', true);
+});
+</script>
+
+</body>
+</html>
